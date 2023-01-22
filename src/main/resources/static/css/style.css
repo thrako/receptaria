@@ -1,0 +1,320 @@
+/*
+  Josh's Custom CSS Reset
+  https://www.joshwcomeau.com/css/custom-css-reset/
+*/
+
+:root {
+    --main-font-size      : 16px;
+    --color-darkgrey      : #4B5347;
+    --color-teal          : #304B59;
+    --color-lavender      : #715780;
+    --color-pale-lavender : #BBB0BD;
+    --color-blush-pink    : #F4AC94;
+}
+
+/* RESET */
+*, *::before, *::after {
+    box-sizing : border-box;
+}
+
+* {
+    margin : 0;
+}
+
+html, body {
+    height     : 100%;
+    width      : 100%;
+    overflow-x : hidden;
+    font-size  : var(--main-font-size);
+}
+
+body {
+    line-height            : 1.2;
+    -webkit-font-smoothing : antialiased;
+}
+
+img, picture, video, canvas, svg {
+    display   : block;
+    max-width : 100%;
+}
+
+input, button, textarea, select {
+    font : inherit;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+    overflow-wrap : break-word;
+}
+
+#root, #__next {
+    isolation : isolate;
+}
+
+a, a:hover, a:focus, a:active {
+    text-decoration : none;
+    cursor          : pointer;
+    color           : olivedrab;
+}
+
+/* LAYOUT */
+
+body {
+    display               : grid;
+    grid-template-columns : minmax(200px, 15vw) 1fr minmax(150px, 15vw);
+    grid-template-rows    : 120px 1fr 60px;
+    grid-template-areas   :
+        "header header header"
+        "leftbar content rightbar"
+        "footer footer footer";
+    grid-gap              : 0;
+    min-height            : 100vh;
+}
+
+/* HEADER */
+
+.header {
+    grid-area : header;
+    position  : relative;
+}
+
+/* LEFT BAR */
+
+.leftbar {
+    grid-area : leftbar;
+    padding   : 10px 30px 10px 30px;
+}
+
+.leftbar a {
+    display     : block;
+    padding     : 5px 0px 5px 0;
+    border-left : 3px;
+}
+
+.leftbar a:hover {
+
+    border-left : 20px solid white;
+
+}
+
+
+/* RIGHT BAR */
+
+.rightbar {
+    grid-area : rightbar;
+    padding   : 10px 10px 10px 30px;
+}
+
+/* CONTENT */
+
+.content {
+    grid-area : content;
+    padding   : 10px 30px;
+}
+
+/* FOOTER */
+
+.footer {
+    grid-area  : footer;
+    /*     height     : 100%; */
+    background : black;
+    color      : white;
+    padding    : 1vw;
+    display    : inline;
+    text-align : center;
+}
+
+.footer a, .footer a:hover, .footer a:focus, .footer a:active {
+    padding : 5px 15px;
+    color   : white;
+}
+
+.login-panel {
+    position : absolute;
+    top      : 10px;
+    right    : 0;
+    display  : flex;
+    gap      : 2vw;
+    padding  : 0 2vw;
+}
+
+.logo-circle {
+    position      : absolute;
+    top           : 50%;
+    left          : 20px;
+
+    height        : 80px;
+    width         : 80px;
+
+    transform     : translateY(-50%);
+
+    background    : black;
+    border-radius : 50%;
+}
+
+.logo-panel {
+    position   : absolute;
+    top        : 50%;
+    left       : 47.5px;
+
+    height     : 50px;
+    width      : 100%;
+
+    transform  : translateY(-50%);
+
+    background : black;
+}
+
+.receptaria-logo {
+    vertical-align : middle;
+
+    color          : white;
+    font-family    : 'Satisfy', cursive;
+    font-size      : 44px;
+}
+
+.receptaria-logo, .receptaria-logo:hover, .receptaria-logo:focus, .receptaria-logo:active {
+    color : white;
+}
+
+
+/* REGISTRATION */
+
+.reg-form {
+
+}
+
+.reg-input {
+    display               : grid;
+    grid-template-columns : 100px 1fr;
+    grid-auto-rows        : auto;
+    grid-template-areas   :
+        "input-label input-field"
+        "none input-errors";
+    padding               : 8px 0;
+}
+
+.input-label {
+    grid-area : input-label;
+}
+
+.input-field {
+    grid-area    : input-field;
+    width        : 100%;
+    padding      : 0 0 10px 10px;
+    display      : block;
+    border       : solid 3px olivedrab;
+    border-top   : none;
+    border-right : none;
+}
+
+.input-field input {
+    border : none;
+}
+
+.input-errors {
+    grid-area : input-errors;
+}
+
+.input-errors ul {
+    padding : 0 20px;
+}
+
+.input-errors li {
+    color : indianred
+}
+
+.reg-field {
+    display : inline-grid;
+    gap     : 10px;
+
+
+    /*display               : grid;*/
+    /*grid-template-columns : 120px 1fr;*/
+    /*grid-auto-rows        : auto;*/
+    /*gap                   : 20px;*/
+    padding : 10px 0;
+    width   : 100%;
+}
+
+.reg-field label {
+    padding    : 0 0 10px 10px;
+    text-align : right;
+}
+
+.reg-field input {
+    width        : 100%;
+    padding      : 0 0 10px 10px;
+    display      : block;
+    border       : solid 3px olivedrab;
+    border-top   : none;
+    border-right : none;
+}
+
+.reg-field input:focus {
+    border-bottom-left-radius : 15px;
+    border                    : solid 3.5px olivedrab;
+    border-top                : none;
+    border-right              : none;
+}
+
+input:focus-visible {
+    outline : none;
+}
+
+.register-btn {
+    background-color : olivedrab;
+    color            : white;
+    padding          : 16px 20px;
+    margin           : 8px 0;
+    border           : none;
+    cursor           : pointer;
+    width            : 100%;
+    opacity          : 0.9;
+}
+
+.register-btn:hover {
+    opacity : 1;
+}
+
+.sign-in {
+    text-align : center;
+}
+
+@media screen and (max-width : 768px) {
+
+    html, body {
+        height     : 100%;
+        width      : 100%;
+        overflow-x : hidden;
+        font-size  : 14px;
+
+    }
+
+    body {
+        display               : grid;
+        grid-template-columns : 1fr;
+        grid-template-rows    : 120px 60px 1fr 60px 60px;
+        grid-template-areas   :
+            "header"
+            "leftbar"
+            "content"
+            "rightbar"
+            "footer";
+        grid-gap              : 0;
+        min-height            : 100%;
+    }
+
+    .leftbar, .rightbar, .content {
+        padding : 5px 20px;
+    }
+
+    .reg-field {
+        display               : grid;
+        grid-template-columns : 25vw 1fr;
+        grid-auto-rows        : auto;
+        gap                   : 12px;
+        padding               : 10px 0;
+        width                 : 100%;
+    }
+
+}

@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{general.html :: head}">
+</head>
+
+<body>
+
+<header th:replace="~{general.html :: header}">&nbsp;</header>
+
+<nav th:replace="~{general.html :: leftbar}">&nbsp;</nav>
+<div class="content">
+    <p>Please fill in this form to create an account.</p>
+    <br>
+    <form th:action="@{/registration}"
+          th:method="post"
+          th:object="${userRegistrationDTO}"
+          class="reg-form">
+<!--          <div th:if="${#fields.hasErrors()}" th:text="${#fields.errors}">Some Text</div>-->
+        <div class="reg-input">
+            <div class="input-label">
+                <label for="firstName">First Name:</label>
+            </div>
+            <div class="input-field">
+                <input type="text"
+                       th:field="*{firstName}"
+                       placeholder="Enter First Name"
+                       name="firstName"
+                       id="firstName"
+                       required
+                >
+            </div>
+            <div class="input-errors">
+                <ul th:if="${#fields.hasErrors('firstName')}">
+                    <li th:each="err : ${#fields.errors('firstName')}" th:text="${err}">Error</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="reg-input">
+            <div class="input-label">
+                <label for="lastName">Last Name:</label>
+            </div>
+            <div class="input-field">
+                <input type="text"
+                       th:field="*{lastName}"
+                       placeholder="Enter Last Name"
+                       name="lastName"
+                       id="lastName"
+                       required
+                >
+            </div>
+            <div class="input-errors">
+                <ul th:if="${#fields.hasErrors('lastName')}">
+                    <li th:each="err : ${#fields.errors('lastName')}" th:text="${err}">Error</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="reg-input">
+            <div class="input-label">
+                <label for="displayName">Display Name:</label>
+            </div>
+            <div class="input-field">
+                <input type="text"
+                       th:field="*{displayName}"
+                       placeholder="Enter Display Name"
+                       name="displayName"
+                       id="displayName"
+                >
+            </div>
+            <div class="input-errors">
+                <ul th:if="${#fields.hasErrors('displayName')}">
+                    <li th:each="err : ${#fields.errors('displayName')}" th:text="${err}">Error</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="reg-input">
+            <div class="input-label">
+                <label for="email">Email:</label>
+            </div>
+            <div class="input-field">
+                <input type="email"
+                       th:field="*{email}"
+                       placeholder="Enter Email"
+                       name="email"
+                       id="email"
+                       required
+                >
+            </div>
+            <div class="input-errors">
+                <ul th:if="${#fields.hasErrors('email')}">
+                    <li th:each="err : ${#fields.errors('email')}" th:text="${err}">Error</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="reg-input">
+            <div class="input-label">
+                <label for="password">Password:</label>
+            </div>
+            <div class="input-field">
+                <input type="password"
+                       th:field="*{password}"
+                       placeholder="Enter Password"
+                       name="password"
+                       id="password"
+                       required
+                >
+            </div>
+            <div class="input-errors">
+                <ul th:if="${#fields.hasErrors('password')}">
+                    <li th:each="err : ${#fields.errors('password')}" th:text="${err}">Error</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="reg-input">
+            <div class="input-label">
+                <label for="passwordRepeat">Repeat Password:</label>
+            </div>
+            <div class="input-field">
+                <input type="password"
+                       th:field="*{passwordRepeat}"
+                       placeholder="Enter Password"
+                       name="passwordRepeat"
+                       id="passwordRepeat"
+                       required
+                >
+            </div>
+            <div class="input-errors">
+                <ul th:if="${#fields.hasErrors('passwordRepeat')}">
+                    <li th:each="err : ${#fields.errors('passwordRepeat')}" th:text="${err}">Error</li>
+                </ul>
+            </div>
+        </div>
+
+        <br>
+        <p>By creating an account you agree to our <a th:href="@{/terms}">Terms & Privacy</a>.</p>
+
+        <button type="submit" class="register-btn">Register</button>
+
+    </form>
+    <div class="registration sign-in">
+        <p>Already have an account? <a th:href="@{/login}">Sign in</a>.</p>
+    </div>
+</div>
+
+<nav th:replace="~{general.html :: rightbar}">&nbsp;</nav>
+
+<footer th:replace="~{general.html :: footer}">&nbsp;</footer>
+
+</body>
+
+</html>

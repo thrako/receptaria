@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{general.html :: head}">
+</head>
+
+<body>
+
+<header th:replace="~{general.html :: header}">&nbsp;</header>
+
+<nav th:replace="~{general.html :: leftbar}">&nbsp;</nav>
+<div class="content">
+    <p>Please enter your credentials in the form below.</p>
+    <br>
+    <form th:action="@{/login}"
+          th:method="post"
+          th:object="${userLoginDTO}"
+          class="reg-form">
+<!--          <div th:if="${#fields.hasErrors()}" th:text="${#fields.errors}">Some Text</div>-->
+
+        <div class="reg-input">
+            <div class="input-label">
+                <label for="email">Email:</label>
+            </div>
+            <div class="input-field">
+                <input type="email"
+                       th:field="*{email}"
+                       placeholder="Enter Email"
+                       name="email"
+                       id="email"
+                       required
+                >
+            </div>
+            <div class="input-errors">
+
+            </div>
+        </div>
+
+        <div class="reg-input">
+            <div class="input-label">
+                <label for="password">Password:</label>
+            </div>
+            <div class="input-field">
+                <input type="password"
+                       th:field="*{password}"
+                       placeholder="Enter Password"
+                       name="password"
+                       id="password"
+                       required
+                >
+            </div>
+            <div class="input-errors">
+                <ul th:if="${#fields.hasErrors('*')}">
+                    <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Error</li>
+                </ul>
+            </div>
+        </div>
+
+
+        <button type="submit" class="register-btn">Login</button>
+
+    </form>
+
+</div>
+
+<nav th:replace="~{general.html :: rightbar}">&nbsp;</nav>
+
+<footer th:replace="~{general.html :: footer}">&nbsp;</footer>
+
+</body>
+
+</html>

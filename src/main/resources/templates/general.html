@@ -1,0 +1,73 @@
+<!doctype html>
+<html th:fragment="html"
+      lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="head">
+
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Receptaria</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+
+</head>
+
+<body>
+
+        <header th:fragment="header"
+                class="header"
+        >
+            <div th:fragment="login-panel" class="login-panel">
+                <div th:unless="${@currentUser.isLoggedIn()}"
+                     class="signup">
+                    <a th:href="@{/registration}" class="sign-up">Sign up</a>
+                </div>
+
+                <div th:unless="${@currentUser.isLoggedIn()}"
+                     class="login">
+                    <a th:href="@{/login}" class="login">Login</a>
+                </div>
+
+                <div th:if="${@currentUser.isLoggedIn()}" class="displayName">
+                    <span>
+                        Logged in as: <a th:href="@{/users/{userId}(userId=${@currentUser.id})}"><th:block th:text="${@currentUser.displayName}"></th:block></a>
+                    </span>
+                </div>
+
+                <div th:if="${@currentUser.isLoggedIn()}">
+                    <a th:href="@{/logout}" class="login">Logout</a>
+                </div>
+
+            </div>
+            <div th:fragment="logo-circle" class="logo-circle">&nbsp</div>
+            <div th:fragment="logo-panel" class="logo-panel">
+                <div th:fragment="logo" class="logo">
+                    <a th:href="@{/}" class="receptaria-logo">Receptaria</a>
+                </div>
+                <div th:fragment="search" class="search"></div>
+            </div>
+
+        </header>
+
+        <nav th:fragment="leftbar" class="leftbar">Left Panel</nav>
+
+        <div th:fragment="content" class="content">Some content;</div>
+
+        <nav th:fragment="rightbar" class="rightbar">Right Panel</nav>
+
+        <footer th:fragment="footer" class="footer">
+            <a th:href="@{/terms}">Terms & Privacy</a>
+            <a href=#>Some Link</a>
+            <a href=#>Other Link</a>
+            <a href=#>Yet Another Link</a>
+        </footer>
+
+</body>
+
+</html>
