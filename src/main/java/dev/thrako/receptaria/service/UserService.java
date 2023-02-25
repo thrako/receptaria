@@ -1,31 +1,40 @@
-package dev.thrako.receptaria.user;
+package dev.thrako.receptaria.service;
 
-import dev.thrako.receptaria.constants.Roles;
+import dev.thrako.receptaria.constant.Role;
+import dev.thrako.receptaria.model.user.UserEntity;
+import dev.thrako.receptaria.repository.RoleRepository;
+import dev.thrako.receptaria.repository.UserRepository;
 import dev.thrako.receptaria.security.CurrentUser;
-import dev.thrako.receptaria.user.dto.UserLoginDTO;
-import dev.thrako.receptaria.user.dto.UserRegistrationDTO;
+import dev.thrako.receptaria.model.user.dto.UserLoginDTO;
+import dev.thrako.receptaria.model.user.dto.UserRegistrationDTO;
+import jakarta.annotation.Resource;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Optional;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
-    private final ModelMapper mapper;
+    private final RoleRepository roleRepository;
+    private final ModelMapper userMapper;
+    @Resource(name = "currentUser")
+    private final CurrentUser currentUser;
     private final PasswordEncoder encoder;
 
-    private CurrentUser currentUser;
-
     public UserService (UserRepository userRepository,
-                        ModelMapper mapper,
+                        RoleRepository roleRepository,
+                        @Qualifier("userMapper") ModelMapper userMapper,
                         CurrentUser currentUser,
                         PasswordEncoder passwordEncoder) {
 
         this.userRepository = userRepository;
-        this.mapper = mapper;
+        this.roleRepository = roleRepository;
+        this.userMapper = userMapper;
         this.currentUser = currentUser;
         this.encoder = passwordEncoder;
     }
@@ -53,6 +62,16 @@ public class UserService {
         this.currentUser.setDisplayName(userEntity.getDisplayName());
     }
 
+    public CurrentUser getCurrentUser () {
+
+        return currentUser;
+    }
+
+    public UserEntity getCurrentUserEntity () {
+
+        return this.userRepository.getUserById(currentUser.getId());
+    }
+
     public void logout() {
         this.currentUser.clear();
     }
@@ -63,10 +82,10 @@ public class UserService {
 
     public boolean register (UserRegistrationDTO userDTO) {
 
-        UserEntity userEntity = this.mapper.map(userDTO, UserEntity.class);
+        UserEntity userEntity = this.userMapper.map(userDTO, UserEntity.class);
         userEntity.setPassword(encoder.encode(userDTO.getPassword()));
         userEntity.setActive(true);
-        userEntity.setRole(Roles.USER);
+        userEntity.addRole(roleRepository.getByRole(Role.USER));
         this.userRepository.saveAndFlush(userEntity);
 
         return this.userRepository
@@ -79,7 +98,4 @@ public class UserService {
         return this.userRepository.findUserById(id);
     }
 
-    public Optional<UserEntity> findById (Long id) {
-        return this.userRepository.findById(id);
-    }
 }

@@ -1,10 +1,9 @@
 package dev.thrako.receptaria.web.controllers;
 
-import dev.thrako.receptaria.security.CurrentUser;
-import dev.thrako.receptaria.user.UserEntity;
-import dev.thrako.receptaria.user.UserService;
-import dev.thrako.receptaria.user.dto.UserLoginDTO;
-import dev.thrako.receptaria.user.dto.UserRegistrationDTO;
+import dev.thrako.receptaria.model.user.UserEntity;
+import dev.thrako.receptaria.service.UserService;
+import dev.thrako.receptaria.model.user.dto.UserLoginDTO;
+import dev.thrako.receptaria.model.user.dto.UserRegistrationDTO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,14 +19,11 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
-    private final CurrentUser currentUser;
 
     @Autowired
-    public UserController (UserService userService,
-                           CurrentUser currentUser) {
+    public UserController (UserService userService) {
 
         this.userService = userService;
-        this.currentUser = currentUser;
     }
 
     @ModelAttribute("userRegistrationDTO")
@@ -43,7 +39,7 @@ public class UserController {
     @GetMapping("/registration")
     public String register () {
 
-        return "registration";
+        return "auth/registration";
     }
 
     @PostMapping("/registration")
@@ -65,67 +61,65 @@ public class UserController {
             return "redirect:/registration/success";
         }
 
-        return "error500";
+        return "error/500";
     }
 
     @GetMapping("/registration/success")
     public String getSuccessPage () {
 
-        return "registrationSuccess";
+        return "auth/registration-success";
     }
 
     @GetMapping("/login")
     public String login() {
-        return "login";
+        return "auth/login";
     }
+//
+//    @PostMapping("/login")
+//    public String login(@Valid UserLoginDTO userLoginDTO,
+//                        BindingResult bindingResult,
+//                        RedirectAttributes redirectAttrs) {
+//
+//        if (bindingResult.hasErrors() || !this.userService.login(userLoginDTO)) {
+//            ObjectError error = new ObjectError("globalError", "Incorrect username or password!");
+//            bindingResult.addError(error);
+//            redirectAttrs
+//                    .addFlashAttribute("userLoginDTO", userLoginDTO)
+//                    .addFlashAttribute("org.springframework.validation.BindingResult.userLoginDTO", bindingResult);
+//
+//            return "redirect:/login";
+//        }
+//
+//        return "redirect:/";
+//    }
 
-    @PostMapping("/login")
-    public String login(@Valid UserLoginDTO userLoginDTO,
-                        BindingResult bindingResult,
-                        RedirectAttributes redirectAttrs) {
-
-        if (bindingResult.hasErrors() || !this.userService.login(userLoginDTO)) {
-            ObjectError error = new ObjectError("globalError", "Incorrect username or password!");
-            bindingResult.addError(error);
-            redirectAttrs
-                    .addFlashAttribute("userLoginDTO", userLoginDTO)
-                    .addFlashAttribute("org.springframework.validation.BindingResult.userLoginDTO", bindingResult);
-
-            return "redirect:login";
-        }
-
-        return "redirect:/";
-    }
-
-    @GetMapping("/logout")
-    public String logout() {
-        if (!userService.isLoggedIn()){
-            return "redirect:/users/login";
-        }
-        this.userService.logout();
-        return "redirect:/";
-    }
+//    @GetMapping("/logout")
+//    public String logout() {
+////        if (!userService.isLoggedIn()){
+////            return "redirect:/login";
+////        }
+////        this.userService.logout();
+//        return "redirect:/";
+//    }
 
     @GetMapping("/users/{id}")
     public String userProfile(Model model,
                               @PathVariable Long id) {
 
-        Optional<UserEntity> userOpt = this.userService.findById(id);
+        Optional<UserEntity> userOpt = this.userService.findUserById(id);
 
         if (userOpt.isEmpty()) {
-            return "error404";
+            return "error/404";
         }
 
         final UserEntity userEntity = userOpt.get();
         model.addAttribute("user", userEntity);
 
-        if (id.equals(this.currentUser.getId())) {
-            return "myprofile";
+        if (id.equals(this.userService.getCurrentUser().getId())) {
+            return "profile/own";
         } else {
-            return "profile";
+            return "profile/other";
         }
     }
-
-
 
 }

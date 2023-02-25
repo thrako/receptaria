@@ -1,4 +1,4 @@
-package dev.thrako.receptaria.user.dto;
+package dev.thrako.receptaria.model.user.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

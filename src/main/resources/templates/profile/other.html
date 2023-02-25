@@ -11,10 +11,11 @@
     <header th:replace="~{general.html :: header}">&nbsp;</header>
 
     <nav th:replace="~{general.html :: leftbar}">&nbsp;</nav>
+
     <div class="content">
-        <p>Something bad happened. Please try again later and if the problem persists contact support@receptaria.com</p>
-        <p><a href="/">Go Home</a></p>
+        <p>This is the profile of <span th:text="${user.getDisplayName()}"></span>!</p>
     </div>
+
     <nav th:replace="~{general.html :: rightbar}">&nbsp;</nav>
 
     <footer th:replace="~{general.html :: footer}">&nbsp;</footer>

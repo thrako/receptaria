@@ -10,20 +10,12 @@
 
     <header th:replace="~{general.html :: header}">&nbsp;</header>
 
-    <nav class="leftbar">
-        <a href=#>Link</a>
-        <a href=#>Some Link</a>
-        <a href=#>Other Link</a>
-        <a href=#>Yet Another Link</a>
-    </nav>
-
+    <nav th:replace="~{general.html :: leftbar}">&nbsp;</nav>
     <div class="content">
-        <p>Do you want to edit your profile <span th:text="${user.getDisplayName()}"></span>?</p>
+        <p>File not found!</p>
+        <p><a href="/static">Go Home</a></p>
     </div>
-
-    <nav class="rightbar">
-        <a href=#>Edit Profile</a>
-    </nav>
+    <nav th:replace="~{general.html :: rightbar}">&nbsp;</nav>
 
     <footer th:replace="~{general.html :: footer}">&nbsp;</footer>
 

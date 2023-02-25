@@ -5,6 +5,7 @@
 
 :root {
     --main-font-size      : 16px;
+    accent-color          : olivedrab;
     --color-darkgrey      : #4B5347;
     --color-teal          : #304B59;
     --color-lavender      : #715780;
@@ -60,7 +61,7 @@ a, a:hover, a:focus, a:active {
 
 body {
     display               : grid;
-    grid-template-columns : minmax(200px, 15vw) 1fr minmax(150px, 15vw);
+    grid-template-columns : 20vw 65vw 15vw;
     grid-template-rows    : 120px 1fr 60px;
     grid-template-areas   :
         "header header header"
@@ -68,6 +69,7 @@ body {
         "footer footer footer";
     grid-gap              : 0;
     min-height            : 100vh;
+
 }
 
 /* HEADER */
@@ -80,20 +82,47 @@ body {
 /* LEFT BAR */
 
 .leftbar {
-    grid-area : leftbar;
-    padding   : 10px 30px 10px 30px;
+    grid-area  : leftbar;
+    padding    : 10px 10px 10px 0;
+    background : white;
+    height     : auto;
 }
 
-.leftbar a {
-    display     : block;
-    padding     : 5px 0px 5px 0;
-    border-left : 3px;
+.leftbar .left-link-cntnr {
+    position   : relative;
+    background : black;
 }
 
-.leftbar a:hover {
+.leftbar .left-link-cntnr a {
 
-    border-left : 20px solid white;
+    display    : block;
+    background : white;
+    transform  : translateX(15px);
 
+}
+
+
+.leftbar .left-link-cntnr a .dot {
+    position       : relative;
+    display        : inline-block;
+
+    vertical-align : middle;
+    transform      : translateY(-25%);
+    height         : 30px;
+    width          : 15px;
+
+}
+
+.leftbar .left-link-cntnr a span {
+
+}
+
+.leftbar .left-link-cntnr:hover a .dot {
+    border        : 0 solid black;
+    background    : black;
+    border-radius : 50%;
+    transform     : translateX(-17px);
+    width         : 30px;
 }
 
 
@@ -101,7 +130,7 @@ body {
 
 .rightbar {
     grid-area : rightbar;
-    padding   : 10px 10px 10px 30px;
+    padding   : 10px 15px 10px 30px;
 }
 
 /* CONTENT */
@@ -115,7 +144,6 @@ body {
 
 .footer {
     grid-area  : footer;
-    /*     height     : 100%; */
     background : black;
     color      : white;
     padding    : 1vw;
@@ -154,7 +182,7 @@ body {
 .logo-panel {
     position   : absolute;
     top        : 50%;
-    left       : 47.5px;
+    left       : 47px;
 
     height     : 50px;
     width      : 100%;
@@ -185,7 +213,7 @@ body {
 
 .reg-input {
     display               : grid;
-    grid-template-columns : 100px 1fr;
+    grid-template-columns : minmax(125px, 12vw) 1fr;
     grid-auto-rows        : auto;
     grid-template-areas   :
         "input-label input-field"
@@ -199,17 +227,29 @@ body {
 
 .input-field {
     grid-area    : input-field;
+    display      : block;
     width        : 100%;
     padding      : 0 0 10px 10px;
+    border       : 3px solid olivedrab;
+    border-top   : none;
+    border-right : none;
+}
+
+.input-field:focus-within {
+    grid-area    : input-field;
     display      : block;
-    border       : solid 3px olivedrab;
+    width        : 100%;
+    padding      : 0 0 10px 10px;
+    border       : 3px dashed olivedrab;
     border-top   : none;
     border-right : none;
 }
 
 .input-field input {
     border : none;
+    width  : 100%;
 }
+
 
 .input-errors {
     grid-area : input-errors;
@@ -227,34 +267,34 @@ body {
     display : inline-grid;
     gap     : 10px;
 
-
-    /*display               : grid;*/
-    /*grid-template-columns : 120px 1fr;*/
-    /*grid-auto-rows        : auto;*/
-    /*gap                   : 20px;*/
     padding : 10px 0;
+
     width   : 100%;
 }
 
 .reg-field label {
     padding    : 0 0 10px 10px;
+
     text-align : right;
 }
 
 .reg-field input {
-    width        : 100%;
-    padding      : 0 0 10px 10px;
     display      : block;
+
+    padding      : 0 0 10px 10px;
+
+    width        : 100%;
+
     border       : solid 3px olivedrab;
     border-top   : none;
     border-right : none;
 }
 
 .reg-field input:focus {
-    border-bottom-left-radius : 15px;
-    border                    : solid 3.5px olivedrab;
+    border                    : solid 3px olivedrab;
     border-top                : none;
     border-right              : none;
+    border-bottom-left-radius : 15px;
 }
 
 input:focus-visible {
@@ -262,14 +302,19 @@ input:focus-visible {
 }
 
 .register-btn {
+    padding          : 16px 20px;
+
+    margin           : 8px 0;
+
+    border           : none;
+
+    width            : 100%;
+
     background-color : olivedrab;
     color            : white;
-    padding          : 16px 20px;
-    margin           : 8px 0;
-    border           : none;
-    cursor           : pointer;
-    width            : 100%;
     opacity          : 0.9;
+
+    cursor           : pointer;
 }
 
 .register-btn:hover {
@@ -280,6 +325,307 @@ input:focus-visible {
     text-align : center;
 }
 
+/*** RECIPES / ADD ***/
+
+
+.add-form-container {
+    box-shadow    : 10px 10px 40px rgba(0, 0, 0, 0.15);
+    border-radius : 0 0 10px 10px;
+
+}
+
+.add-form-container .top {
+    width         : 100%;
+    height        : 50px;
+    background    : #333;
+    border-radius : 5px 5px 0 0;
+}
+
+.add-form-container .add-form {
+    width                 : 100%;
+    height                : 100%;
+    min-height            : 70vh;
+
+    margin-bottom         : 5vh;
+    padding               : 10px 20px 10px;
+
+    background            : #FDFCFC;
+    outline               : 0;
+
+    display               : grid;
+    grid-template-columns : 100%;
+    grid-template-rows    : auto;
+    grid-template-areas   :
+    "input-errors"
+    "title"
+    "pictures"
+    "ingredients"
+    "time-servings"
+    "description"
+    "submit-btn";
+    gap                   : 20px;
+
+}
+
+.add-form input[type=text],
+.add-form input[type=number],
+.add-form input[list=measures] {
+
+    display       : block;
+
+    width         : 100%;
+
+    border        : none;
+    border-bottom : 2px solid #35383D;
+    background    : transparent;
+
+    padding       : 0;
+    margin        : 0;
+}
+
+.add-form input[type=text]:focus,
+.add-form input[type=number]:focus,
+.add-form input[list=measures]:focus {
+    border-bottom : 2px dashed olivedrab;
+}
+
+.add-form .input-errors {
+    grid-area : "input-errors";
+}
+
+.add-form .title {
+    grid-area : "title";
+    display   : flex;
+    gap       : 0 10px;
+    padding   : 10px;
+}
+
+
+.add-form .pictures {
+    grid-area : "pictures";
+    padding   : 10px 0
+}
+
+.pictures .upload-photo {
+    display : grid;
+    gap     : 5px 0;
+    padding : 10px
+}
+
+.pictures .upload-photo:has(.signMinus:hover) {
+    /*         border : 2px dashed black; */
+    /*         box-shadow: 0 0 0 3px black, 0 0 0 1px white inset; */
+    outline : 2px dashed black;
+}
+
+.photos .upload-file,
+.photos .upload-description,
+.photos .upload-primary {
+    display               : grid;
+    grid-template-columns : 20% 60% 20%
+}
+
+
+.photos .align-sign-minus {
+    text-align : right;
+}
+
+.add-form .ingredients-ctr {
+    grid-area : "ingredients";
+    padding   : 20px 0 10px
+}
+
+.ingredients-ctr .ingredient-labels {
+    width                 : 100%;
+    display               : grid;
+    grid-template-columns : 50% 15% 20% 5%;
+    grid-template-rows    : auto;
+    grid-template-areas   :
+        "product-name-lbl product-qty-lbl product-msrm-lbl none";
+    gap                   : 3px 3%;
+    padding-bottom        : 5px
+
+}
+
+.ingredient-labels .ingredient-name-lbl {
+    grid-area : "product-name-lbl";
+}
+
+.ingredient-labels .ingredient-quantity-lbl {
+    grid-area  : "product-qty-lbl";
+    text-align : center;
+}
+
+.ingredient-labels .ingredient-unit-lbl {
+    grid-area : "product-msrm-lbl";
+}
+
+.ingredients-ctr .ingredient-box {
+    width                 : 100%;
+    display               : grid;
+    grid-template-columns : 50% 15% 20% 5%;
+    grid-template-rows    : auto;
+    grid-template-areas   :
+        "product-name product-qty product-msrm signMinus";
+    gap                   : 3px 3%;
+    padding-bottom        : 5px
+
+}
+
+.ingredient-box .ingredient-name {
+    grid-area     : "product-name";
+    border        : none;
+    border-bottom : 2px solid #35383D;
+    background    : transparent;
+
+}
+
+.ingredient-box .ingredient-quantity {
+    grid-area     : "product-qty";
+    text-align    : center;
+    border        : none;
+    border-bottom : 2px solid #35383D;
+    background    : transparent;
+}
+
+.ingredient-box .ingredient-unit {
+    grid-area     : "product-msrm";
+    border        : none;
+    border-bottom : 2px solid #35383D;
+    background    : transparent;
+
+}
+
+.signMinus {
+    grid-area  : "signMinus";
+
+    background : none;
+    border     : 2px solid #35383D;
+    width      : 30px;
+    height     : 25px;
+    text-align : center;
+    background : transparent;
+}
+
+.signMinus:hover {
+    color  : #E24646;
+    border : 2px dashed #E24646;
+}
+
+.signPlus {
+    border      : 2px solid black;
+    width       : 30px;
+    height      : 25px;
+    font-weight : 800;
+    background  : transparent;
+}
+
+.signPlus:hover {
+    /*     background : #f2f2f2; */
+    color  : olivedrab;
+    border : 2px dashed olivedrab;
+
+}
+
+.add-form .time-servings-ctr {
+    grid-area             : time-servings;
+    display               : grid;
+    grid-template-columns : 30% 30% 30%;
+    gap                   : 10px 5%;
+    padding               : 20px 0;
+}
+
+.time-picker {
+    display   : flex;
+    max-width : 60%
+}
+
+.servings-input {
+    display   : flex;
+    max-width : 35%
+}
+
+.hours-input, .minutes-input, .servings-input {
+    background    : transparent;
+
+    border        : none;
+    border-bottom : 2px solid #35383D;
+
+    text-align    : center;
+}
+
+.add-form .description {
+    grid-area : description;
+    padding   : 20px 0;
+}
+
+.description .notepad {
+    min-width   : 100%;
+    max-width   : 100%;
+
+    border      : none;
+    overflow    : hidden;
+    background  : repeating-linear-gradient(#FDFCFC, #FDFCFC 20px, #35383D 20px, #35383D 22px);
+    line-height : 22px;
+    min-height  : 30vh;
+    resize      : vertical;
+
+}
+
+.description .notepad:focus,
+.description .notepad:active {
+    border   : none;
+    overflow : hidden;
+    outline  : none;
+}
+
+.add-form .submit-btn {
+    grid-area  : submit-btn;
+    background : transparent;
+    width      : 100%;
+}
+
+.add-form .submit-btn:hover {
+
+    background : olivedrab;
+}
+
+.like-anchor {
+    align-items: normal;
+    background-color: rgba(0,0,0,0);
+    border-color: rgb(0, 0, 238);
+    border-style: none;
+    box-sizing: content-box;
+    color: olivedrab;
+    cursor: pointer;
+    display: inline;
+    font: inherit;
+    height: auto;
+    padding: 0;
+    perspective-origin: 0 0;
+    text-align: start;
+    /*text-decoration: underline;*/
+    transform-origin: 0 0;
+    width: auto;
+    outline: 1 solid red;
+    -moz-appearance: none;
+    -webkit-logical-height: 1em;
+    -webkit-logical-width: auto;
+}
+
+@supports (-moz-appearance:none) {
+    .like-anchor::-moz-focus-inner {
+        border: none;
+        padding: 0;
+    }
+
+    .like-anchor:focus {
+        outline-style: dotted;
+        outline-width: 1px;
+    }
+}
+
+
 @media screen and (max-width : 768px) {
 
     html, body {
@@ -287,13 +633,12 @@ input:focus-visible {
         width      : 100%;
         overflow-x : hidden;
         font-size  : 14px;
-
     }
 
     body {
         display               : grid;
         grid-template-columns : 1fr;
-        grid-template-rows    : 120px 60px 1fr 60px 60px;
+        grid-template-rows    : 120px auto 1fr 60px 60px;
         grid-template-areas   :
             "header"
             "leftbar"
@@ -304,8 +649,12 @@ input:focus-visible {
         min-height            : 100%;
     }
 
-    .leftbar, .rightbar, .content {
-        padding : 5px 20px;
+    .leftbar {
+        padding : 5px 20px 20px 0;
+    }
+
+    .rightbar, .content {
+        padding : 5px 30px;
     }
 
     .reg-field {
@@ -313,7 +662,9 @@ input:focus-visible {
         grid-template-columns : 25vw 1fr;
         grid-auto-rows        : auto;
         gap                   : 12px;
+
         padding               : 10px 0;
+
         width                 : 100%;
     }
 

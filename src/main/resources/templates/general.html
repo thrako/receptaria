@@ -2,7 +2,8 @@
 <html th:fragment="html"
       lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:fragment="head">
 
@@ -20,53 +21,72 @@
 
 <body>
 
-        <header th:fragment="header"
-                class="header"
-        >
-            <div th:fragment="login-panel" class="login-panel">
-                <div th:unless="${@currentUser.isLoggedIn()}"
-                     class="signup">
-                    <a th:href="@{/registration}" class="sign-up">Sign up</a>
-                </div>
+<header th:fragment="header"
+        class="header"
+>
+    <div th:fragment="login-panel" class="login-panel">
+        <div sec:authorize="isAuthenticated() == false"
+             class="signup">
+            <a th:href="@{/registration}" class="sign-up">Sign up</a>
+        </div>
 
-                <div th:unless="${@currentUser.isLoggedIn()}"
-                     class="login">
-                    <a th:href="@{/login}" class="login">Login</a>
-                </div>
+        <div sec:authorize="isAuthenticated() == false"
+             class="login">
+            <a th:href="@{/login}" class="login">Login</a>
+        </div>
 
-                <div th:if="${@currentUser.isLoggedIn()}" class="displayName">
+        <div sec:authorize="isAuthenticated()"
+             class="displayName">
                     <span>
-                        Logged in as: <a th:href="@{/users/{userId}(userId=${@currentUser.id})}"><th:block th:text="${@currentUser.displayName}"></th:block></a>
+                        Logged in as: <span sec:authentication="name">Bob</span>
                     </span>
-                </div>
+        </div>
 
-                <div th:if="${@currentUser.isLoggedIn()}">
-                    <a th:href="@{/logout}" class="login">Logout</a>
-                </div>
+        <div sec:authorize="isAuthenticated()">
+            <form th:method="POST"
+                  th:action="@{/logout}"
+                  >
+                <button type="submit" class="like-anchor">Logout</button>
+            </form>
+<!--            <a th:href="@{/logout}" class="login">Logout</a>-->
+        </div>
 
-            </div>
-            <div th:fragment="logo-circle" class="logo-circle">&nbsp</div>
-            <div th:fragment="logo-panel" class="logo-panel">
-                <div th:fragment="logo" class="logo">
-                    <a th:href="@{/}" class="receptaria-logo">Receptaria</a>
-                </div>
-                <div th:fragment="search" class="search"></div>
-            </div>
+    </div>
+    <div th:fragment="logo-circle" class="logo-circle">&nbsp</div>
+    <div th:fragment="logo-panel" class="logo-panel">
+        <div th:fragment="logo" class="logo">
+            <a th:href="@{/}" class="receptaria-logo">Receptaria</a>
+        </div>
+        <div th:fragment="search" class="search"></div>
+    </div>
 
-        </header>
+</header>
 
-        <nav th:fragment="leftbar" class="leftbar">Left Panel</nav>
+<nav th:fragment="leftbar" class="leftbar">
+    <div class="left-link-cntnr">
+        <a href=#><span class="dot">&nbsp;</span><span>Link</span></a>
+    </div>
+    <div class="left-link-cntnr">
+        <a href=#><span class="dot">&nbsp;</span><span>Link</span></a>
+    </div>
+    <div class="left-link-cntnr">
+        <a href=#><span class="dot">&nbsp;</span><span>Link</span></a>
+    </div>
+    <div class="left-link-cntnr">
+        <a href=#><span class="dot">&nbsp;</span><span>Another Link</span></a>
+    </div>
+</nav>
 
-        <div th:fragment="content" class="content">Some content;</div>
+<div th:fragment="content" class="content">Some content;</div>
 
-        <nav th:fragment="rightbar" class="rightbar">Right Panel</nav>
+<nav th:fragment="rightbar" class="rightbar">Right Panel</nav>
 
-        <footer th:fragment="footer" class="footer">
-            <a th:href="@{/terms}">Terms & Privacy</a>
-            <a href=#>Some Link</a>
-            <a href=#>Other Link</a>
-            <a href=#>Yet Another Link</a>
-        </footer>
+<footer th:fragment="footer" class="footer">
+    <a th:href="@{/terms}">Terms & Privacy</a>
+    <a href=#>Some Link</a>
+    <a href=#>Other Link</a>
+    <a href=#>Yet Another Link</a>
+</footer>
 
 </body>
 

@@ -18,7 +18,6 @@
           th:method="post"
           th:object="${userRegistrationDTO}"
           class="reg-form">
-<!--          <div th:if="${#fields.hasErrors()}" th:text="${#fields.errors}">Some Text</div>-->
         <div class="reg-input">
             <div class="input-label">
                 <label for="firstName">First Name:</label>
@@ -29,8 +28,7 @@
                        placeholder="Enter First Name"
                        name="firstName"
                        id="firstName"
-                       required
-                >
+                       required>
             </div>
             <div class="input-errors">
                 <ul th:if="${#fields.hasErrors('firstName')}">

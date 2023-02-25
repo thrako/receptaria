@@ -1,7 +1,8 @@
 <!doctype html>
 <html lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="~{general.html :: head}">
 </head>
@@ -11,7 +12,8 @@
     <header th:replace="~{general.html :: header}">&nbsp;</header>
 
     <nav th:replace="~{general.html :: leftbar}">&nbsp;</nav>
-    <div class="content">Welcome <span th:text="${@currentUser.getDisplayName()}"></span> to this amateurish website about recipes!</div>
+    <div sec:authorize="isAuthenticated() == false" class="content">Welcome to this amateurish website about recipes!</div>
+    <div sec:authorize="isAuthenticated()" class="content">Welcome <span sec:authentication="name"></span>! Nice to see you!</div>
     <nav th:replace="~{general.html :: rightbar}">&nbsp;</nav>
 
     <footer th:replace="~{general.html :: footer}">&nbsp;</footer>

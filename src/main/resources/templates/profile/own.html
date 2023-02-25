@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{general.html :: head}">
+</head>
+
+<body>
+
+    <header th:replace="~{general.html :: header}">&nbsp;</header>
+
+    <nav class="leftbar">
+
+        <div class="left-link-cntnr">
+            <a href=#><span class="dot">&nbsp;</span><span>My Recipes</span></a>
+        </div>
+        <div class="left-link-cntnr">
+            <a href=#><span class="dot">&nbsp;</span><span>Add Recipe</span></a>
+        </div>
+    </nav>
+
+    <div class="content">
+        <p>Do you want to edit your profile <span th:text="${user.getDisplayName()}"></span>?</p>
+    </div>
+
+    <nav class="rightbar">
+        <div class="right-link-cntnr">
+            <a href=#><span>Edit Profile</span></a>
+        </div>
+    </nav>
+
+    <footer th:replace="~{general.html :: footer}">&nbsp;</footer>
+
+</body>
+
+</html>
