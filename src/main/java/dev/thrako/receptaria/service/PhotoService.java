@@ -1,11 +1,12 @@
 package dev.thrako.receptaria.service;
 
-import dev.thrako.receptaria.model.photo.dto.PhotoDTO;
+import dev.thrako.receptaria.model.photo.dto.PhotoUploadDTO;
 import dev.thrako.receptaria.repository.PhotoRepository;
-import dev.thrako.receptaria.utilities.UploadUtility;
+import dev.thrako.receptaria.utility.UploadUtility;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
@@ -20,9 +21,13 @@ public class PhotoService {
     }
 
 
-    public List<PhotoDTO> getPhotoDtoList (Collection<MultipartFile> multipartFiles) {
+    public List<PhotoUploadDTO> getPhotoDtoList (Collection<MultipartFile> multipartFiles) {
 
-        return UploadUtility.getDTOList(multipartFiles);
+        try {
+            return UploadUtility.getDTOList(multipartFiles);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 

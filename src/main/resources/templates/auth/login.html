@@ -33,7 +33,7 @@
                        required
                 >
             </div>
-            <div class="input-errors">
+            <div class="global-errors-ctr">
 
             </div>
         </div>
@@ -51,7 +51,7 @@
                        required
                 >
             </div>
-            <div class="input-errors">
+            <div class="global-errors-ctr">
                 <ul th:if="${#fields.hasErrors('*')}">
                     <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Error</li>
                 </ul>

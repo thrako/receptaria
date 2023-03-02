@@ -4,8 +4,10 @@
 */
 
 :root {
+    accent-color        : olivedrab;
     --main-font-size      : 16px;
-    accent-color          : olivedrab;
+    --primary-color        : olivedrab;
+    --danger-color         : indianred;
     --color-darkgrey      : #4B5347;
     --color-teal          : #304B59;
     --color-lavender      : #715780;
@@ -54,7 +56,11 @@ p, h1, h2, h3, h4, h5, h6 {
 a, a:hover, a:focus, a:active {
     text-decoration : none;
     cursor          : pointer;
-    color           : olivedrab;
+    color           : var(--primary-color);
+}
+
+.error-text {
+    color : var(--danger-color);
 }
 
 /* LAYOUT */
@@ -81,19 +87,19 @@ body {
 
 /* LEFT BAR */
 
-.leftbar {
+.left-bar {
     grid-area  : leftbar;
     padding    : 10px 10px 10px 0;
     background : white;
     height     : auto;
 }
 
-.leftbar .left-link-cntnr {
+.left-bar .left-link-ctr {
     position   : relative;
     background : black;
 }
 
-.leftbar .left-link-cntnr a {
+.left-bar .left-link-ctr a {
 
     display    : block;
     background : white;
@@ -102,7 +108,7 @@ body {
 }
 
 
-.leftbar .left-link-cntnr a .dot {
+.left-bar .left-link-ctr a .dot {
     position       : relative;
     display        : inline-block;
 
@@ -113,11 +119,11 @@ body {
 
 }
 
-.leftbar .left-link-cntnr a span {
+.left-bar .left-link-ctr a span {
 
 }
 
-.leftbar .left-link-cntnr:hover a .dot {
+.left-bar .left-link-ctr:hover a .dot {
     border        : 0 solid black;
     background    : black;
     border-radius : 50%;
@@ -128,7 +134,7 @@ body {
 
 /* RIGHT BAR */
 
-.rightbar {
+.right-bar {
     grid-area : rightbar;
     padding   : 10px 15px 10px 30px;
 }
@@ -230,7 +236,7 @@ body {
     display      : block;
     width        : 100%;
     padding      : 0 0 10px 10px;
-    border       : 3px solid olivedrab;
+    border       : 3px solid var(--primary-color);
     border-top   : none;
     border-right : none;
 }
@@ -240,7 +246,7 @@ body {
     display      : block;
     width        : 100%;
     padding      : 0 0 10px 10px;
-    border       : 3px dashed olivedrab;
+    border       : 3px dashed var(--primary-color);
     border-top   : none;
     border-right : none;
 }
@@ -251,50 +257,16 @@ body {
 }
 
 
-.input-errors {
+.global-errors-ctr {
     grid-area : input-errors;
 }
 
-.input-errors ul {
+.global-errors-ctr ul {
     padding : 0 20px;
 }
 
-.input-errors li {
-    color : indianred
-}
-
-.reg-field {
-    display : inline-grid;
-    gap     : 10px;
-
-    padding : 10px 0;
-
-    width   : 100%;
-}
-
-.reg-field label {
-    padding    : 0 0 10px 10px;
-
-    text-align : right;
-}
-
-.reg-field input {
-    display      : block;
-
-    padding      : 0 0 10px 10px;
-
-    width        : 100%;
-
-    border       : solid 3px olivedrab;
-    border-top   : none;
-    border-right : none;
-}
-
-.reg-field input:focus {
-    border                    : solid 3px olivedrab;
-    border-top                : none;
-    border-right              : none;
-    border-bottom-left-radius : 15px;
+.global-errors-ctr li {
+    color : var(--danger-color);
 }
 
 input:focus-visible {
@@ -310,7 +282,7 @@ input:focus-visible {
 
     width            : 100%;
 
-    background-color : olivedrab;
+    background-color : var(--primary-color);
     color            : white;
     opacity          : 0.9;
 
@@ -328,20 +300,24 @@ input:focus-visible {
 /*** RECIPES / ADD ***/
 
 
-.add-form-container {
+.add-form-ctr {
     box-shadow    : 10px 10px 40px rgba(0, 0, 0, 0.15);
     border-radius : 0 0 10px 10px;
 
 }
 
-.add-form-container .top {
+.add-form .section-ctr {
+    padding : 10px 5px;
+}
+
+.add-form-ctr .top {
     width         : 100%;
     height        : 50px;
     background    : #333;
     border-radius : 5px 5px 0 0;
 }
 
-.add-form-container .add-form {
+.add-form-ctr .add-form {
     width                 : 100%;
     height                : 100%;
     min-height            : 70vh;
@@ -356,9 +332,9 @@ input:focus-visible {
     grid-template-columns : 100%;
     grid-template-rows    : auto;
     grid-template-areas   :
-    "input-errors"
-    "title"
-    "pictures"
+    "input-errors-ctr"
+    "title-ctr"
+    "pictures-ctr"
     "ingredients"
     "time-servings"
     "description"
@@ -386,35 +362,32 @@ input:focus-visible {
 .add-form input[type=text]:focus,
 .add-form input[type=number]:focus,
 .add-form input[list=measures]:focus {
-    border-bottom : 2px dashed olivedrab;
+    border-bottom : 2px dashed var(--primary-color);
 }
 
-.add-form .input-errors {
-    grid-area : "input-errors";
+.add-form .global-errors-ctr {
+    grid-area : input-errors-ctr;
 }
 
-.add-form .title {
-    grid-area : "title";
-    display   : flex;
+.add-form .title-ctr {
+    grid-area : title-ctr;
+    display   : grid;
     gap       : 0 10px;
-    padding   : 10px;
+    padding   : 10px 0;
 }
 
-
-.add-form .pictures {
-    grid-area : "pictures";
+.add-form .pictures-ctr {
+    grid-area : pictures-ctr;
     padding   : 10px 0
 }
 
-.pictures .upload-photo {
+.pictures-ctr .upload-photo {
     display : grid;
     gap     : 5px 0;
-    padding : 10px
+
 }
 
-.pictures .upload-photo:has(.signMinus:hover) {
-    /*         border : 2px dashed black; */
-    /*         box-shadow: 0 0 0 3px black, 0 0 0 1px white inset; */
+.pictures-ctr .upload-photo:has(.sign-minus:hover) {
     outline : 2px dashed black;
 }
 
@@ -431,7 +404,7 @@ input:focus-visible {
 }
 
 .add-form .ingredients-ctr {
-    grid-area : "ingredients";
+    grid-area : ingredients;
     padding   : 20px 0 10px
 }
 
@@ -448,16 +421,16 @@ input:focus-visible {
 }
 
 .ingredient-labels .ingredient-name-lbl {
-    grid-area : "product-name-lbl";
+    grid-area : product-name-lbl;
 }
 
 .ingredient-labels .ingredient-quantity-lbl {
-    grid-area  : "product-qty-lbl";
+    grid-area  : product-qty-lbl;
     text-align : center;
 }
 
 .ingredient-labels .ingredient-unit-lbl {
-    grid-area : "product-msrm-lbl";
+    grid-area : product-msrm-lbl;
 }
 
 .ingredients-ctr .ingredient-box {
@@ -466,14 +439,14 @@ input:focus-visible {
     grid-template-columns : 50% 15% 20% 5%;
     grid-template-rows    : auto;
     grid-template-areas   :
-        "product-name product-qty product-msrm signMinus";
+        "product-name product-qty product-msrm sign-minus";
     gap                   : 3px 3%;
     padding-bottom        : 5px
 
 }
 
 .ingredient-box .ingredient-name {
-    grid-area     : "product-name";
+    grid-area     : product-name;
     border        : none;
     border-bottom : 2px solid #35383D;
     background    : transparent;
@@ -481,7 +454,7 @@ input:focus-visible {
 }
 
 .ingredient-box .ingredient-quantity {
-    grid-area     : "product-qty";
+    grid-area     : product-qty;
     text-align    : center;
     border        : none;
     border-bottom : 2px solid #35383D;
@@ -489,15 +462,15 @@ input:focus-visible {
 }
 
 .ingredient-box .ingredient-unit {
-    grid-area     : "product-msrm";
+    grid-area     : product-msrm;
     border        : none;
     border-bottom : 2px solid #35383D;
     background    : transparent;
 
 }
 
-.signMinus {
-    grid-area  : "signMinus";
+.sign-minus {
+    grid-area  : sign-minus;
 
     background : none;
     border     : 2px solid #35383D;
@@ -507,12 +480,12 @@ input:focus-visible {
     background : transparent;
 }
 
-.signMinus:hover {
-    color  : #E24646;
-    border : 2px dashed #E24646;
+.sign-minus:hover {
+    color  : var(--danger-color);
+    border : 2px dashed var(--danger-color);
 }
 
-.signPlus {
+.sign-plus {
     border      : 2px solid black;
     width       : 30px;
     height      : 25px;
@@ -520,10 +493,9 @@ input:focus-visible {
     background  : transparent;
 }
 
-.signPlus:hover {
-    /*     background : #f2f2f2; */
-    color  : olivedrab;
-    border : 2px dashed olivedrab;
+.sign-plus:hover {
+    color  : var(--primary-color);
+    border : 2px dashed var(--primary-color);
 
 }
 
@@ -587,41 +559,40 @@ input:focus-visible {
 
 .add-form .submit-btn:hover {
 
-    background : olivedrab;
+    background : var(--primary-color);
 }
 
 .like-anchor {
-    align-items: normal;
-    background-color: rgba(0,0,0,0);
-    border-color: rgb(0, 0, 238);
-    border-style: none;
-    box-sizing: content-box;
-    color: olivedrab;
-    cursor: pointer;
-    display: inline;
-    font: inherit;
-    height: auto;
-    padding: 0;
-    perspective-origin: 0 0;
-    text-align: start;
-    /*text-decoration: underline;*/
-    transform-origin: 0 0;
-    width: auto;
-    outline: 1 solid red;
-    -moz-appearance: none;
-    -webkit-logical-height: 1em;
-    -webkit-logical-width: auto;
+    align-items            : normal;
+    background-color       : rgba(0, 0, 0, 0);
+    border-color           : rgb(0, 0, 238);
+    border-style           : none;
+    box-sizing             : content-box;
+    color                  : var(--primary-color);
+    cursor                 : pointer;
+    display                : inline;
+    font                   : inherit;
+    height                 : auto;
+    padding                : 0;
+    perspective-origin     : 0 0;
+    text-align             : start;
+    transform-origin       : 0 0;
+    width                  : auto;
+    outline                : 1 solid var(--danger-color);
+    -moz-appearance        : none;
+    -webkit-logical-height : 1em;
+    -webkit-logical-width  : auto;
 }
 
 @supports (-moz-appearance:none) {
     .like-anchor::-moz-focus-inner {
-        border: none;
-        padding: 0;
+        border  : none;
+        padding : 0;
     }
 
     .like-anchor:focus {
-        outline-style: dotted;
-        outline-width: 1px;
+        outline-style : dotted;
+        outline-width : 1px;
     }
 }
 
@@ -649,23 +620,12 @@ input:focus-visible {
         min-height            : 100%;
     }
 
-    .leftbar {
+    .left-bar {
         padding : 5px 20px 20px 0;
     }
 
-    .rightbar, .content {
+    .right-bar, .content {
         padding : 5px 30px;
-    }
-
-    .reg-field {
-        display               : grid;
-        grid-template-columns : 25vw 1fr;
-        grid-auto-rows        : auto;
-        gap                   : 12px;
-
-        padding               : 10px 0;
-
-        width                 : 100%;
     }
 
 }

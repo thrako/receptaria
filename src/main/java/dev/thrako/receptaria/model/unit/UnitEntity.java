@@ -20,10 +20,10 @@ public class UnitEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "unit", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "unit")
     private List<IngredientEntity> ingredients;
 
     public UnitEntity (String name) {

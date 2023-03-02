@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -21,16 +20,17 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain (HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity
-                .authorizeHttpRequests()
-                    .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                    .requestMatchers("/", "/login", "/registration").permitAll()
-                    .anyRequest().authenticated()
-            .and()
+            .authorizeHttpRequests()
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                .requestMatchers("/static/images/uploads/**").permitAll()
+                .requestMatchers("/", "/login", "/registration", "/test", "/api/test").permitAll()
+                .anyRequest().authenticated()
+                .and()
                 .formLogin()
                     .loginPage("/login")
                     .usernameParameter("email")
                     .passwordParameter("password")
-                    .defaultSuccessUrl("/")
+                    .defaultSuccessUrl("/users/me")
                     .failureForwardUrl("/login")
             .and()
                 .logout().deleteCookies("JSESSIONID").clearAuthentication(true).invalidateHttpSession(true)

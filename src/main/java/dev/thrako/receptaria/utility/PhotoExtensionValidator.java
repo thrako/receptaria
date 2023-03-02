@@ -1,4 +1,4 @@
-package dev.thrako.receptaria.utilities;
+package dev.thrako.receptaria.utility;
 
 import org.apache.tika.Tika;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,12 +46,4 @@ public class PhotoExtensionValidator {
         return detectedType;
     }
 
-    public static boolean isAllowedType (MultipartFile multipartFile) {
-        return getDetectedExtension(multipartFile) != null;
-    }
-
-    public static boolean isAnImage (MultipartFile multipartFile) {
-
-        return getDetectedType(multipartFile).startsWith("image/");
-    }
 }

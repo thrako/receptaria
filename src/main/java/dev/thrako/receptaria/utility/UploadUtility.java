@@ -1,7 +1,7 @@
-package dev.thrako.receptaria.utilities;
+package dev.thrako.receptaria.utility;
 
-import dev.thrako.receptaria.model.photo.dto.PhotoDTO;
 import dev.thrako.receptaria.exception.NotSupportedMediaTypeException;
+import dev.thrako.receptaria.model.photo.dto.PhotoUploadDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -16,9 +16,9 @@ import static dev.thrako.receptaria.constant.Constants.UPLOAD_DIR;
 
 public class UploadUtility {
 
-
     public static final String FILE_SEPARATOR = ".";
     public static final String DATE_FORMAT = "yyyyMMdd-HHmmss";
+
 
     private UploadUtility () {
 
@@ -44,9 +44,9 @@ public class UploadUtility {
         return UPLOAD_DIR + dateTimePrefixedName;
     }
 
-    public static List<PhotoDTO> getDTOList (Collection<MultipartFile> multipartFiles) {
+    public static List<PhotoUploadDTO> getDTOList (Collection<MultipartFile> multipartFiles) throws IOException {
 
-        List<PhotoDTO> photoDTOS = new ArrayList<>();
+        List<PhotoUploadDTO> photoDTOS = new ArrayList<>();
 
         for (var multipartFile : multipartFiles) {
 
@@ -62,17 +62,17 @@ public class UploadUtility {
                 continue;
             }
 
-            final PhotoDTO photoDTO = new PhotoDTO(url, multipartFile);
+            final PhotoUploadDTO photoDTO = new PhotoUploadDTO(url, multipartFile);
             photoDTOS.add(photoDTO);
         }
 
         return photoDTOS;
     }
 
-    public static boolean uploadPhoto(PhotoDTO photoDTO) {
+    public static boolean uploadPhoto(PhotoUploadDTO photoDTO) {
 
         final Path saveToPath = Paths.get(photoDTO.getUrl());
-        final MultipartFile multipartFile = photoDTO.getFile();
+        final MultipartFile multipartFile = photoDTO.getMultipartFile();
 
         try (final InputStream inputStream = multipartFile.getInputStream()) {
             Files.copy(inputStream, saveToPath);

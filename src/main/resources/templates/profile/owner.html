@@ -10,27 +10,29 @@
 
     <header th:replace="~{general.html :: header}">&nbsp;</header>
 
-    <nav class="leftbar">
+    <nav class="left-bar">
 
-        <div class="left-link-cntnr">
+        <div class="left-link-ctr">
             <a href=#><span class="dot">&nbsp;</span><span>My Recipes</span></a>
         </div>
-        <div class="left-link-cntnr">
-            <a href=#><span class="dot">&nbsp;</span><span>Add Recipe</span></a>
+        <div class="left-link-ctr">
+            <a th:href="@{/recipes/add}"><span class="dot">&nbsp;</span><span>Add Recipe</span></a>
         </div>
     </nav>
 
-    <div class="content">
-        <p>Do you want to edit your profile <span th:text="${user.getDisplayName()}"></span>?</p>
+    <div class="content" id="content">
+
     </div>
 
-    <nav class="rightbar">
+    <nav class="right-bar">
         <div class="right-link-cntnr">
             <a href=#><span>Edit Profile</span></a>
         </div>
     </nav>
 
     <footer th:replace="~{general.html :: footer}">&nbsp;</footer>
+
+<script src="/javascript/profile.js"></script>
 
 </body>
 

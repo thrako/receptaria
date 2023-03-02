@@ -1,4 +1,4 @@
-package dev.thrako.receptaria.web.controllers;
+package dev.thrako.receptaria.controller.html;
 
 import dev.thrako.receptaria.model.user.UserEntity;
 import dev.thrako.receptaria.service.UserService;
@@ -9,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.util.Optional;
 
 @Controller
@@ -74,33 +74,6 @@ public class UserController {
     public String login() {
         return "auth/login";
     }
-//
-//    @PostMapping("/login")
-//    public String login(@Valid UserLoginDTO userLoginDTO,
-//                        BindingResult bindingResult,
-//                        RedirectAttributes redirectAttrs) {
-//
-//        if (bindingResult.hasErrors() || !this.userService.login(userLoginDTO)) {
-//            ObjectError error = new ObjectError("globalError", "Incorrect username or password!");
-//            bindingResult.addError(error);
-//            redirectAttrs
-//                    .addFlashAttribute("userLoginDTO", userLoginDTO)
-//                    .addFlashAttribute("org.springframework.validation.BindingResult.userLoginDTO", bindingResult);
-//
-//            return "redirect:/login";
-//        }
-//
-//        return "redirect:/";
-//    }
-
-//    @GetMapping("/logout")
-//    public String logout() {
-////        if (!userService.isLoggedIn()){
-////            return "redirect:/login";
-////        }
-////        this.userService.logout();
-//        return "redirect:/";
-//    }
 
     @GetMapping("/users/{id}")
     public String userProfile(Model model,
@@ -115,11 +88,14 @@ public class UserController {
         final UserEntity userEntity = userOpt.get();
         model.addAttribute("user", userEntity);
 
-        if (id.equals(this.userService.getCurrentUser().getId())) {
-            return "profile/own";
-        } else {
-            return "profile/other";
-        }
+        return "profile/owner";
+    }
+
+    @GetMapping("/users/me")
+    public String ownProfile (Principal principal) {
+
+        final Long id = userService.getPrincipalEntity(principal.getName()).getId();
+        return "redirect:/users/" + id;
     }
 
 }

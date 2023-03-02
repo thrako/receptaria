@@ -1,4 +1,4 @@
-package dev.thrako.receptaria.web.controllers;
+package dev.thrako.receptaria.controller.html;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

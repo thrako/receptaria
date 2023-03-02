@@ -1,5 +1,6 @@
 package dev.thrako.receptaria.model.ingredient_name;
 
+import dev.thrako.receptaria.model.ingredient.IngredientEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,10 +21,11 @@ public class IngredientNameEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String name;
 
     @OneToMany(mappedBy = "ingredientName", cascade = CascadeType.ALL)
-    private List<dev.thrako.receptaria.model.ingredient.IngredientEntity> ingredients;
+    private List<IngredientEntity> ingredients;
 
     public IngredientNameEntity (String name) {
 

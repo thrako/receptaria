@@ -32,6 +32,7 @@ public class IngredientEntity {
     private UnitEntity unit;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "recipe_id")
     private RecipeEntity recipe;
 
 }

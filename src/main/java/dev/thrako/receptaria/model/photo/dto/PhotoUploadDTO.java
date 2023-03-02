@@ -5,16 +5,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-
-import java.io.File;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class PhotoDTO {
+public class PhotoUploadDTO {
 
-    private File file;
+    private String url;
+
+    private MultipartFile multipartFile;
 
 }

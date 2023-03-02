@@ -7,6 +7,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -38,8 +40,7 @@ public class RecipeEntity {
 
     @OneToMany(
             mappedBy = "recipe",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
+            cascade = CascadeType.ALL
     )
     private List<IngredientEntity> ingredients;
 
@@ -61,10 +62,10 @@ public class RecipeEntity {
     @ManyToOne
     private UserEntity author;
 
-    @Column
+    @CreationTimestamp
     private LocalDateTime addedOn;
 
-    @Column
+    @UpdateTimestamp
     private LocalDateTime lastUpdated;
 
     public RecipeEntity () {
@@ -75,10 +76,6 @@ public class RecipeEntity {
 
         this.preparationTime = Duration.ZERO;
         this.cookingTime = Duration.ZERO;
-
-        final LocalDateTime now = LocalDateTime.now();
-        this.addedOn = now;
-        this.lastUpdated = now;
     }
 
     public RecipeEntity addPreparationHours (int hours) {

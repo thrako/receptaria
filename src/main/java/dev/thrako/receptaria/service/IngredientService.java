@@ -23,9 +23,9 @@ public class IngredientService {
     public List<IngredientDTO> getIngredientDtoList (Map<String, String[]> parameterMap) {
 
         List<IngredientDTO> ingredientDTOS = new ArrayList<>();
-        final String[] names = parameterMap.get("ingredientName");
-        final String[] quantities = parameterMap.get("ingredientQuantity");
-        final String[] units = parameterMap.get("ingredientUnit");
+        final String[] names = parameterMap.get("ingredient-name");
+        final String[] quantities = parameterMap.get("ingredient-quantity");
+        final String[] units = parameterMap.get("ingredient-unit");
 
         for (int i = 0; i < names.length; i++) {
 

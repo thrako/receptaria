@@ -16,52 +16,47 @@
     <p>Please fill in this form to create a recipe.</p>
     <br>
 
-    <div class="add-form-container">
+    <div class="add-form-ctr">
 
-        <div class="top"></div>
-        <form class="add-form"
-              th:action="@{/recipes/add}"
-              th:method="post"
-              enctype="multipart/form-data"
-              th:object="${recipeDTO}"
-        >
-            <div class="input-errors" th:if="${#fields.hasErrors('*')}">
+        <div id="top" class="top"></div>
+        <form id="add-form" class="add-form"
+              th:action="@{/recipes/add}" th:method="post" enctype="multipart/form-data" th:object="${recipeDTO}">
+
+            <!-- Global Errors -->
+            <div id="global-errors-ctr" class="global-errors-ctr">
                 <ul>
-                    <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Error</li>
+                    <th:block th:if="${#fields.hasErrors('*')}" th:each="err : ${#fields.errors('*')}">
+                    <li th:text="${err}">Error</li>
+                    </th:block>
                 </ul>
             </div>
 
             <!-- Recipe Title -->
-            <div class="title">
-                <label id="title-lbl"
-                       class="label"
-                       for="title-input"
-                >Title:</label>
+            <div id="title-ctr" class="title-ctr">
+                <label id="title-lbl" class="label"
+                       for="title-input">Title:</label>
 
-                <input id="title-input"
-                       class="input"
-                       type="text"
-                       name="title-input"
-                       th:field="*{title}"
-                       placeholder="My Recipe"
-                >
+                <input id="title-input" class="input"
+                       type="text" name="title-input" th:field="*{title}" placeholder="My Recipe">
+
+
+                <div id="title-error" class="title-error"></div>
 
             </div>
 
             <!-- Pictures -->
-            <div class="pictures">
+            <div class="pictures-ctr">
                 <div id="photos" class="photos">
-
-                    <div id="file-1" class="upload-photo">
+                    <div id="files-0" class="upload-photo">
                         <div class="upload-file">
                             <div>
                                 <span>Image:</span>
                             </div>
                             <div>
-                                <input type="file" accept="image/*" name="photo-file" class="photo-file" id="file-1">
+                                <input type="file" accept="image/*" name="photo-file" class="photo-file" id="file-0">
                             </div>
                             <div class="align-sign-minus">
-                                <input class="signMinus" type="button" value="X" onclick="removeElement('file-1')">
+                                <input class="sign-minus" type="button" value="X" onclick="removeElement('files-0')">
                             </div>
                         </div>
                         <div class="upload-description">
@@ -70,18 +65,18 @@
                                 <input type="text" name="photo-description" class="photo-description">
                             </div>
                         </div>
-                        <div class="upload-primary">
-                            <div class="upload-primary-lbl">
-                                <span>Primary:</span></div>
-                            <div class="upload-primary-radio">
-                                <input type="radio" name="photo-primary" value="file-1">
-                            </div>
-                        </div>
+<!--                        <div class="upload-primary">-->
+<!--                            <div class="upload-primary-lbl">-->
+<!--                                <span>Primary:</span></div>-->
+<!--                            <div class="upload-primary-radio">-->
+<!--                                <input type="radio" name="photo-primary" value="file-0">-->
+<!--                            </div>-->
+<!--                        </div>-->
                     </div>
-                    <p>
-                        <input class="signPlus" type="button" value="+" onclick="addPic();">
-                    </p>
                 </div>
+                <p>
+                    <input class="sign-plus" type="button" value="+" onclick="addFile();">
+                </p>
             </div>
 
             <!-- Ingredients-->
@@ -108,29 +103,28 @@
                     <th:block th:if="${recipeDTO.ingredientDTOS}"
                               th:each="ingredient, iStat : ${recipeDTO.ingredientDTOS}"
                     >
-                        <div class="ingredient-box"
-                             th:id="|ingredient-box-${iStat.index}|"
+                        <div th:id="|ingredient-box-${iStat.index}|" class="ingredient-box" name="ingredient-box"
                         >
 
                             <input th:id="|ingredient-name-${iStat.index}|"
                                    class="ingredient-name"
                                    type="text"
-                                   name="ingredientName"
+                                   name="ingredient-name"
                                    th:value="${ingredient.getIngredientName}"
                             >
                             <input th:id="|ingredient-quantity-${iStat.index}|"
                                    class="ingredient-quantity"
                                    type="text"
-                                   name="ingredientQuantity"
+                                   name="ingredient-quantity"
                                    th:value="${ingredient.quantity}"
                             >
                             <input th:id="|ingredient-unit-${iStat.index}|"
                                    class="ingredient-unit"
                                    list="units"
-                                   name="ingredientUnit"
+                                   name="ingredient-unit"
                                    th:value="${ingredient.getUnitName}"
                             >
-                            <input class="signMinus"
+                            <input class="sign-minus"
                                    type="button"
                                    value="X"
                                    th:onclick="|removeElement('ingredient-box-${iStat.index}')|"
@@ -139,10 +133,10 @@
                     </th:block>
                 </div>
                 <div>
-                    <input class="signPlus"
+                    <input class="sign-plus"
                            type="button"
                            value="+"
-                           onclick="addIngr()"
+                           onclick="addIngredient()"
                     >
                 </div>
             </div>
@@ -222,11 +216,8 @@
                 ></textarea>
             </div>
 
-            <input id="submit"
-                   class="submit-btn"
-                   type="submit"
-                   name="submit"
-                   value="Submit"
+            <input id="submit-btn-add-recipe" class="submit-btn"
+                   type="submit" name="submit" value="Submit"
             >
 
         </form>
@@ -240,51 +231,7 @@
 <footer th:replace="~{general.html :: footer}">&nbsp;</footer>
 
 <!-- JAVA SCRIPT -->
-<script th:inline="javascript" type="text/javascript">
-
-    let fileId = 1001;
-    let ingrId = 1001;
-
-    function addElement(parentId, elementTag, elementId, elementClass, html) {
-
-        let parent = document.getElementById(parentId);
-        let newElement = document.createElement(elementTag);
-        newElement.setAttribute('id', elementId);
-        newElement.setAttribute('class', elementClass)
-        newElement.innerHTML = html;
-        parent.appendChild(newElement);
-    }
-
-    function addPic() {
-
-        fileId++;
-        let html = `<input type="file" accept="image/*" name="photo-file" class="upload-photo" id="file-${fileId}">\n` +
-            `<input type="text" name="photo-description">\n` +
-            `<input type="radio" name="photo-primary" value="file-${fileId}">\n` +
-            `<input class="signMinus" type="button" value="X" onclick="removeElement('file-${fileId}')">`;
-
-        addElement('photos', 'div', 'file-' + fileId, 'upload-photo', html);
-    }
-
-    function addIngr() {
-
-        ingrId++;
-        let html =
-            `<input class="ingredient-name" type="text" id="ingredient-name-${ingrId}" name="ingredientName">` +
-            `<input class="ingredient-quantity" type="text" id="ingredient-quantity-${ingrId}" name="ingredientQuantity">` +
-            `<input class="ingredient-unit" list="units" id="ingredient-unit-${ingrId}" name="ingredientUnit">` +
-            `<input class="signMinus" type="button" value="X" onclick="removeElement('ingredient-box-${ingrId}')">`;
-
-        addElement('ingredient-boxes', 'div', 'ingredient-box-' + ingrId, 'ingredient-box', html);
-    }
-
-    function removeElement(elementId) {
-
-        let element = document.getElementById(elementId);
-        element.parentNode.removeChild(element);
-    }
-
-</script>
+<script src="/javascript/recipe-add.js"></script>
 
 </body>
 

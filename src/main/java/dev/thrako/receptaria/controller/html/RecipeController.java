@@ -1,8 +1,9 @@
-package dev.thrako.receptaria.web.controllers;
+package dev.thrako.receptaria.controller.html;
 
 import dev.thrako.receptaria.model.ingredient.dto.IngredientDTO;
-import dev.thrako.receptaria.model.photo.dto.PhotoDTO;
+import dev.thrako.receptaria.model.photo.dto.PhotoUploadDTO;
 import dev.thrako.receptaria.model.recipe.dto.RecipeDTO;
+import dev.thrako.receptaria.model.recipe.dto.RecipeShortDTO;
 import dev.thrako.receptaria.service.PhotoService;
 import dev.thrako.receptaria.service.RecipeService;
 import dev.thrako.receptaria.service.IngredientService;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -63,11 +65,12 @@ public class RecipeController {
     @PostMapping("/recipes/add")
     public String addRecipe (@Valid RecipeDTO recipeDTO,
                              BindingResult bindingResult,
+                             RedirectAttributes redirectAttrs,
                              MultipartHttpServletRequest multipartRequest,
-                             RedirectAttributes redirectAttrs) {
+                             Principal principal) {
 
-        List<MultipartFile> multipartFiles = multipartRequest.getFiles("photos");
-        final List<PhotoDTO> photoDtoList = this.photoService.getPhotoDtoList(multipartFiles);
+        List<MultipartFile> multipartFiles = multipartRequest.getFiles("photo-file");
+        final List<PhotoUploadDTO> photoDtoList = this.photoService.getPhotoDtoList(multipartFiles);
         recipeDTO.setPhotoDTOS(photoDtoList);
 
         final Map<String, String[]> parameterMap = multipartRequest.getParameterMap();
@@ -89,7 +92,7 @@ public class RecipeController {
         }
 
 
-        if (this.recipeService.save(recipeDTO, parameterMap)) {
+        if (this.recipeService.save(recipeDTO, principal.getName())) {
             return "redirect:/recipes/add-success";
         }
 
@@ -100,6 +103,15 @@ public class RecipeController {
     public String recipeSuccess() {
 
         return "recipes/add-success";
+    }
+
+    @GetMapping("/recipes/all")
+    public String getAll(Model model) {
+
+        final List<RecipeShortDTO> recipeCards = this.recipeService.getRecipeCards();
+        model.addAttribute("recipeCards", recipeCards);
+
+        return "recipes/all";
     }
 
 }

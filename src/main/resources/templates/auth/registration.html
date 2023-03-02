@@ -30,7 +30,7 @@
                        id="firstName"
                        required>
             </div>
-            <div class="input-errors">
+            <div class="global-errors-ctr">
                 <ul th:if="${#fields.hasErrors('firstName')}">
                     <li th:each="err : ${#fields.errors('firstName')}" th:text="${err}">Error</li>
                 </ul>
@@ -50,7 +50,7 @@
                        required
                 >
             </div>
-            <div class="input-errors">
+            <div class="global-errors-ctr">
                 <ul th:if="${#fields.hasErrors('lastName')}">
                     <li th:each="err : ${#fields.errors('lastName')}" th:text="${err}">Error</li>
                 </ul>
@@ -69,7 +69,7 @@
                        id="displayName"
                 >
             </div>
-            <div class="input-errors">
+            <div class="global-errors-ctr">
                 <ul th:if="${#fields.hasErrors('displayName')}">
                     <li th:each="err : ${#fields.errors('displayName')}" th:text="${err}">Error</li>
                 </ul>
@@ -89,7 +89,7 @@
                        required
                 >
             </div>
-            <div class="input-errors">
+            <div class="global-errors-ctr">
                 <ul th:if="${#fields.hasErrors('email')}">
                     <li th:each="err : ${#fields.errors('email')}" th:text="${err}">Error</li>
                 </ul>
@@ -109,7 +109,7 @@
                        required
                 >
             </div>
-            <div class="input-errors">
+            <div class="global-errors-ctr">
                 <ul th:if="${#fields.hasErrors('password')}">
                     <li th:each="err : ${#fields.errors('password')}" th:text="${err}">Error</li>
                 </ul>
@@ -129,7 +129,7 @@
                        required
                 >
             </div>
-            <div class="input-errors">
+            <div class="global-errors-ctr">
                 <ul th:if="${#fields.hasErrors('passwordRepeat')}">
                     <li th:each="err : ${#fields.errors('passwordRepeat')}" th:text="${err}">Error</li>
                 </ul>

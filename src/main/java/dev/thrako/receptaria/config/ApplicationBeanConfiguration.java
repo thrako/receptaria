@@ -3,14 +3,14 @@ package dev.thrako.receptaria.config;
 import dev.thrako.receptaria.model.ingredient.IngredientEntity;
 import dev.thrako.receptaria.model.ingredient.dto.IngredientDTO;
 import dev.thrako.receptaria.model.photo.PhotoEntity;
-import dev.thrako.receptaria.model.photo.dto.PhotoDTO;
+import dev.thrako.receptaria.model.photo.dto.PhotoUploadDTO;
 import dev.thrako.receptaria.model.recipe.RecipeEntity;
 import dev.thrako.receptaria.model.recipe.dto.RecipeDTO;
 import dev.thrako.receptaria.model.user.UserEntity;
 import dev.thrako.receptaria.model.user.dto.UserLoginDTO;
 import dev.thrako.receptaria.service.IngredientNameService;
 import dev.thrako.receptaria.service.UnitService;
-import dev.thrako.receptaria.utilities.UploadUtility;
+import dev.thrako.receptaria.utility.UploadUtility;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -58,7 +58,7 @@ public class ApplicationBeanConfiguration {
 
         ModelMapper recipeMapper = new ModelMapper();
 
-        final Function<PhotoDTO, PhotoEntity> photoDtoToEntity = photoDTO -> {
+        final Function<PhotoUploadDTO, PhotoEntity> photoDtoToEntity = photoDTO -> {
             PhotoEntity entity = new PhotoEntity();
 
             if (UploadUtility.uploadPhoto(photoDTO)) {
@@ -69,7 +69,7 @@ public class ApplicationBeanConfiguration {
             return null;
         };
 
-        Converter<List<PhotoDTO>, List<PhotoEntity>> photoUpload = ctx -> (ctx.getSource() == null)
+        Converter<List<PhotoUploadDTO>, List<PhotoEntity>> photoConverter = ctx -> (ctx.getSource() == null)
                     ? new ArrayList<>()
                     : ctx.getSource()
                         .stream()
@@ -85,15 +85,13 @@ public class ApplicationBeanConfiguration {
                                         .setIngredientName(ingredientNameService.getOrCreateByName(dto.getIngredientName()))
                                         .setQuantity(dto.getQuantity())
                                         .setUnit(unitService.getOrCreateByName(dto.getUnitName())))
-                        .collect(Collectors.toList());
+                        .collect(Collectors.toCollection(ArrayList::new));
 
 
         recipeMapper.createTypeMap(RecipeDTO.class, RecipeEntity.class)
                 .addMappings(mpr -> mpr.map(RecipeDTO::getTitle, RecipeEntity::setTitle))
-                .addMappings(mpr -> mpr.using(photoUpload).map(RecipeDTO::getPhotoDTOS, RecipeEntity::setPhotos))
+                .addMappings(mpr -> mpr.using(photoConverter).map(RecipeDTO::getPhotoDTOS, RecipeEntity::setPhotos))
                 .addMappings(mpr -> mpr.using(ingredientConverter).map(RecipeDTO::getIngredientDTOS, RecipeEntity::setIngredients))
-//                .addMappings(mpr -> mpr.skip(RecipeEntity::setPhotos))
-//                .addMappings(mpr -> mpr.skip(RecipeEntity::setIngredients))
                 .addMappings(mpr -> mpr.map(RecipeDTO::getPreparationHours, RecipeEntity::addPreparationHours))
                 .addMappings(mpr -> mpr.map(RecipeDTO::getPreparationMinutes, RecipeEntity::addPreparationMinutes))
                 .addMappings(mpr -> mpr.map(RecipeDTO::getCookingHours, RecipeEntity::addCookingHours))

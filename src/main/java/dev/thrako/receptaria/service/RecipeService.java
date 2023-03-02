@@ -2,6 +2,7 @@ package dev.thrako.receptaria.service;
 
 import dev.thrako.receptaria.model.recipe.RecipeEntity;
 import dev.thrako.receptaria.model.recipe.dto.RecipeDTO;
+import dev.thrako.receptaria.model.recipe.dto.RecipeShortDTO;
 import dev.thrako.receptaria.model.user.UserEntity;
 import dev.thrako.receptaria.repository.*;
 import jakarta.transaction.Transactional;
@@ -10,7 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RecipeService {
@@ -18,42 +20,29 @@ public class RecipeService {
     private final ModelMapper recipeMapper;
     private final UserService userService;
     private final RecipeRepository recipeRepository;
-    private final PhotoRepository photoRepository;
-    private final IngredientRepository ingredientRepository;
-    private final IngredientNameRepository ingredientNameRepository;
-    private final UnitRepository unitRepository;
 
     @Autowired
     public RecipeService (@Qualifier("recipeMapper") ModelMapper recipeMapper,
                           UserService userService,
-                          RecipeRepository recipeRepository,
-                          PhotoRepository photoRepository,
-                          IngredientRepository ingredientRepository,
-                          IngredientNameRepository ingredientNameRepository,
-                          UnitRepository unitRepository) {
+                          RecipeRepository recipeRepository){
 
         this.recipeMapper = recipeMapper;
         this.userService = userService;
         this.recipeRepository = recipeRepository;
-        this.photoRepository = photoRepository;
-        this.ingredientRepository = ingredientRepository;
-        this.ingredientNameRepository = ingredientNameRepository;
-        this.unitRepository = unitRepository;
     }
 
     @Transactional
-    public boolean save (RecipeDTO recipeDTO, Map<String, String[]> parameterMap) {
+    public boolean save (RecipeDTO recipeDTO, String email) {
 
 
         RecipeEntity recipe = recipeMapper.map(recipeDTO, RecipeEntity.class);
         recipe.getPhotos().forEach(p -> p.setRecipe(recipe));
         recipe.getIngredients().forEach(i -> i.setRecipe(recipe));
 
-        UserEntity author = userService.getCurrentUserEntity();
+        UserEntity author = userService.getPrincipalEntity(email);
         recipe.setAuthor(author);
 
         recipeRepository.saveAndFlush(recipe);
-
 
         return this.recipeRepository
                 .findRecipeByTitle(recipeDTO.getTitle())
@@ -61,4 +50,16 @@ public class RecipeService {
     }
 
 
+    public boolean isAvailableRecipeTitle (Long principalId, String recipeTitle) {
+
+        return !this.recipeRepository.existsByAuthor_IdAndTitle(principalId, recipeTitle);
+    }
+
+    public List<RecipeShortDTO> getRecipeCards () {
+
+        return this.recipeRepository.findAll().stream()
+                .map(RecipeShortDTO::fromEntity)
+                .collect(Collectors.toList());
+
+    }
 }

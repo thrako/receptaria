@@ -6,6 +6,7 @@ import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -14,6 +15,7 @@ import java.util.Set;
 
 @Getter
 @Setter
+@Accessors(chain = true)
 @Entity
 @Table(name = "users")
 public class UserEntity {
@@ -58,14 +60,15 @@ public class UserEntity {
                 this.likedRecipes = new HashSet<>();
         }
 
-        public void addRole (RoleEntity roleEntity) {
+        public UserEntity addRoles (RoleEntity... roles) {
 
-                this.roles.add(roleEntity);
+                this.roles.addAll(List.of(roles));
+                return this;
         }
 
-        public boolean removeRole (RoleEntity roleEntity) {
+        public boolean removeRoles (RoleEntity... roles) {
 
-                return this.roles.remove(roleEntity);
+                return this.roles.removeAll(List.of(roles));
         }
 
         public void likeRecipe (RecipeEntity recipe) {

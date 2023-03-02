@@ -1,83 +1,58 @@
 package dev.thrako.receptaria.service;
 
 import dev.thrako.receptaria.constant.Role;
+import dev.thrako.receptaria.model.recipe.dto.RecipeShortDTO;
 import dev.thrako.receptaria.model.user.UserEntity;
+import dev.thrako.receptaria.model.user.dto.UserProfileDTO;
+import dev.thrako.receptaria.model.user.dto.UserRegistrationDTO;
+import dev.thrako.receptaria.repository.RecipeRepository;
 import dev.thrako.receptaria.repository.RoleRepository;
 import dev.thrako.receptaria.repository.UserRepository;
-import dev.thrako.receptaria.security.CurrentUser;
-import dev.thrako.receptaria.model.user.dto.UserLoginDTO;
-import dev.thrako.receptaria.model.user.dto.UserRegistrationDTO;
-import jakarta.annotation.Resource;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
+import java.security.Principal;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final RecipeRepository recipeRepository;
     private final ModelMapper userMapper;
-    @Resource(name = "currentUser")
-    private final CurrentUser currentUser;
     private final PasswordEncoder encoder;
 
     public UserService (UserRepository userRepository,
                         RoleRepository roleRepository,
+                        RecipeRepository recipeRepository,
                         @Qualifier("userMapper") ModelMapper userMapper,
-                        CurrentUser currentUser,
                         PasswordEncoder passwordEncoder) {
 
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.recipeRepository = recipeRepository;
         this.userMapper = userMapper;
-        this.currentUser = currentUser;
         this.encoder = passwordEncoder;
     }
 
-    public boolean login (UserLoginDTO userDTO) {
 
-        final String emailInput = userDTO.getEmail();
-        final String passwordInput = userDTO.getPassword();
+    public UserEntity getPrincipalEntity (String email) {
 
-        final UserEntity userEntity = this.userRepository.findUserByEmail(emailInput).orElse(null);
-
-        if (userEntity == null || !this.encoder.matches(passwordInput, userEntity.getPassword())) {
-            return false;
-        }
-
-        setCurrentUser(userEntity);
-
-        return true;
+        return this.userRepository.getUserByEmail(email);
     }
 
-    private void setCurrentUser (UserEntity userEntity) {
+    public Long getPrincipalId (Principal principal) {
 
-        this.currentUser.setId(userEntity.getId());
-        this.currentUser.setEmail(userEntity.getEmail());
-        this.currentUser.setDisplayName(userEntity.getDisplayName());
+        return this.getPrincipalEntity(principal).getId();
     }
 
-    public CurrentUser getCurrentUser () {
+    public UserEntity getPrincipalEntity (Principal principal) {
 
-        return currentUser;
-    }
-
-    public UserEntity getCurrentUserEntity () {
-
-        return this.userRepository.getUserById(currentUser.getId());
-    }
-
-    public void logout() {
-        this.currentUser.clear();
-    }
-
-    public boolean isLoggedIn() {
-        return currentUser.isLoggedIn();
+        return this.userRepository.getUserByEmail(principal.getName());
     }
 
     public boolean register (UserRegistrationDTO userDTO) {
@@ -85,7 +60,7 @@ public class UserService {
         UserEntity userEntity = this.userMapper.map(userDTO, UserEntity.class);
         userEntity.setPassword(encoder.encode(userDTO.getPassword()));
         userEntity.setActive(true);
-        userEntity.addRole(roleRepository.getByRole(Role.USER));
+        userEntity.addRoles(roleRepository.getByRole(Role.USER));
         this.userRepository.saveAndFlush(userEntity);
 
         return this.userRepository
@@ -93,9 +68,32 @@ public class UserService {
                 .isPresent();
     }
 
+    public UserProfileDTO getUserProfileById (Long id) {
+
+        return this.findUserById(id).map(this::mapToProfileDTO)
+                //TODO Make custom Exception
+                .orElseThrow(() -> new RuntimeException("User with id " + id + " not found!"));
+    }
+
     public Optional<UserEntity> findUserById (Long id) {
 
         return this.userRepository.findUserById(id);
     }
 
+    private UserProfileDTO mapToProfileDTO (UserEntity entity) {
+
+        return new UserProfileDTO()
+                .setDisplayName(entity.getDisplayName())
+                .setActive(entity.isActive())
+                .setUserRecipes(recipeRepository.findByAuthor_Id(entity.getId())
+                        .stream()
+                        .map(recipe -> new RecipeShortDTO()
+                                        .setEntityId(recipe.getId())
+                                        .setTitle(recipe.getTitle())
+//                                .setCoverPhoto(recipe.getPhotos()
+//                                        .stream()
+//                                        .findFirst()
+//                                        .map(photo -> new PhotoDTO(new File(photo.getUrl()))).orElse(null))
+                        ).collect(Collectors.toSet()));
+    }
 }
