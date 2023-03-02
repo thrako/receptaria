@@ -39,7 +39,7 @@
         <div sec:authorize="isAuthenticated()"
              class="displayName">
                     <span>
-                        Logged in as: <span sec:authentication="name">Bob</span>
+                        Logged in as: <a th:href="@{/users/me}"><span sec:authentication="name">Bob</span></a>
                     </span>
         </div>
 
@@ -63,8 +63,17 @@
 </header>
 
 <nav th:fragment="leftbar" class="left-bar">
-    <div class="left-link-ctr">
-        <a href=#><span class="dot">&nbsp;</span><span>Link</span></a>
+    <div sec:authorize="isAuthenticated()" class="left-link-ctr">
+        <a th:href="@{/recipes/all}" href=#>
+            <span class="dot">&nbsp;</span>
+            <span th:text="'All Recipes'">Link</span>
+        </a>
+    </div>
+    <div sec:authorize="isAuthenticated()" class="left-link-ctr">
+        <a th:href="@{/recipes/add}" href=#>
+            <span class="dot">&nbsp;</span>
+            <span th:text="'Add New Recipe'">Link</span>
+        </a>
     </div>
     <div class="left-link-ctr">
         <a href=#><span class="dot">&nbsp;</span><span>Link</span></a>

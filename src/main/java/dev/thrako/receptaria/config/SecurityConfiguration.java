@@ -23,7 +23,7 @@ public class SecurityConfiguration {
             .authorizeHttpRequests()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 .requestMatchers("/static/images/uploads/**").permitAll()
-                .requestMatchers("/", "/login", "/registration", "/test", "/api/test").permitAll()
+                .requestMatchers("/", "/login", "/registration", "/registration/success", "/test", "/api/test").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
