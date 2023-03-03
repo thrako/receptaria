@@ -1,5 +1,5 @@
-let fileId = 1000;
-let ingredientId = 1000;
+let fileId = 100;
+let ingredientId = document.getElementById("ingredients-count").value;
 
 function addElement(parentId, elementTag, elementId, elementClass, html) {
 
@@ -13,7 +13,7 @@ function addElement(parentId, elementTag, elementId, elementClass, html) {
 
 function addFile() {
 
-    ++fileId;
+    fileId++;
     let html =
         `<div class="upload-file">
             <div><span>Image:</span></div>
@@ -38,11 +38,11 @@ function addFile() {
 
 function addIngredient() {
 
-    ++ingredientId;
+    ingredientId++;
     let html =
-        `<input class="ingredient-name" type="text" id="ingredient-name-${ingredientId}" name="ingredient-name">` +
-        `<input class="ingredient-quantity" type="text" id="ingredient-quantity-${ingredientId}" name="ingredient-quantity">` +
-        `<input class="ingredient-unit" list="units" id="ingredient-unit-${ingredientId}" name="ingredient-unit">` +
+        `<input class="ingredient-name" type="text" id="ingredient-name-${ingredientId}" name="ingredientDTOS[${ingredientId}].ingredientName">` +
+        `<input class="ingredient-quantity" type="text" id="ingredient-quantity-${ingredientId}" name="ingredientDTOS[${ingredientId}].quantity">` +
+        `<input class="ingredient-unit" list="units" id="ingredient-unit-${ingredientId}" name="ingredientDTOS[${ingredientId}].unitName">` +
         `<input class="sign-minus" type="button" value="X" onclick="removeElement('ingredient-box-${ingredientId}')">`;
 
     addElement('ingredient-boxes', 'div', 'ingredient-box-' + ingredientId, 'ingredient-box', html);
@@ -57,27 +57,31 @@ function removeElement(elementId) {
 let titleInput = document.getElementById("title-input");
 
 checkTitle = (event) => {
-    let titleErrorElement = document.getElementById("title-error");
-    titleErrorElement.replaceChildren();
-
     let recipeTitle = event.target.value;
 
-    fetch(`/api/recipes/isAvailable/${recipeTitle}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.json()
-        })
-        .then(isAvailable => {
-            if (isAvailable === false) {
-                let smallElement = document.createElement("small");
-                smallElement.setAttribute("class", "error-text")
-                smallElement.innerText = "You already have recipe with the same title.";
-                titleErrorElement.appendChild(smallElement);
-            }
-        })
-        .catch(error => console.log(error));
+    if (recipeTitle > 3) {
+
+        let titleErrorElement = document.getElementById("title-error");
+
+        titleErrorElement.replaceChildren();
+
+        fetch(`/api/recipes/isAvailable/${recipeTitle}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json()
+            })
+            .then(isAvailable => {
+                if (isAvailable === false) {
+                    let smallElement = document.createElement("small");
+                    smallElement.setAttribute("class", "error-text")
+                    smallElement.innerText = "You already have recipe with the same title.";
+                    titleErrorElement.appendChild(smallElement);
+                }
+            })
+            .catch(error => console.log(error));
+    }
 };
 
 titleInput.addEventListener("change", checkTitle);

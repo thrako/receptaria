@@ -10,6 +10,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Getter
@@ -41,8 +42,8 @@ public class RecipeDTO {
 
     public RecipeDTO () {
 
-        this.photoDTOS = new ArrayList<>();
-        this.ingredientDTOS = new ArrayList<>();
+        this.photoDTOS = new LinkedList<>();
+        this.ingredientDTOS = new LinkedList<>();
     }
 
     public RecipeDTO addPhotoDTO (PhotoUploadDTO photoDTO) {

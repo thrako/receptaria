@@ -4,9 +4,9 @@ import dev.thrako.receptaria.model.ingredient.dto.IngredientDTO;
 import dev.thrako.receptaria.model.photo.dto.PhotoUploadDTO;
 import dev.thrako.receptaria.model.recipe.dto.RecipeDTO;
 import dev.thrako.receptaria.model.recipe.dto.RecipeShortDTO;
+import dev.thrako.receptaria.service.IngredientService;
 import dev.thrako.receptaria.service.PhotoService;
 import dev.thrako.receptaria.service.RecipeService;
-import dev.thrako.receptaria.service.IngredientService;
 import dev.thrako.receptaria.service.UnitService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +14,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +40,7 @@ public class RecipeController {
                              PhotoService photoService,
                              RecipeService recipeService,
                              UnitService unitService
-                             ) {
+    ) {
 
         this.ingredientService = ingredientService;
         this.photoService = photoService;
@@ -52,7 +51,8 @@ public class RecipeController {
     @ModelAttribute("recipeDTO")
     public void initRecipeDTO (Model model) {
 
-        model.addAttribute("recipeDTO", new RecipeDTO().setIngredientDTOS(List.of(EMPTY_INGREDIENT)));
+        final RecipeDTO recipeDTO = new RecipeDTO().addIngredientDTO(EMPTY_INGREDIENT);
+        model.addAttribute("recipeDTO", recipeDTO);
         model.addAttribute("units", unitService.getDistinctUnitNames());
     }
 
@@ -73,16 +73,19 @@ public class RecipeController {
         final List<PhotoUploadDTO> photoDtoList = this.photoService.getPhotoDtoList(multipartFiles);
         recipeDTO.setPhotoDTOS(photoDtoList);
 
-        final Map<String, String[]> parameterMap = multipartRequest.getParameterMap();
-        List<IngredientDTO> ingredientDtoList = ingredientService.getIngredientDtoList(parameterMap);
 
-        if (ingredientDtoList.isEmpty()) {
-            ingredientDtoList = List.of(EMPTY_INGREDIENT);
-            final String noIngredientsMsg = "Please add at least one ingredient!";
-            bindingResult.addError(new FieldError("recipeDTO", "ingredientDTOS", noIngredientsMsg));
-        }
 
-        recipeDTO.setIngredientDTOS(ingredientDtoList);
+//        final Map<String, String[]> parameterMap = multipartRequest.getParameterMap();
+//        List<IngredientDTO> ingredientDtoList = ingredientService.getIngredientDtoList(parameterMap);
+//
+//        if (ingredientDtoList.isEmpty()) {
+//            ingredientDtoList = new ArrayList<>();
+//            ingredientDtoList.add(EMPTY_INGREDIENT);
+//            final String noIngredientsMsg = "Please add at least one ingredient!";
+//            bindingResult.addError(new FieldError("recipeDTO", "ingredientDTOS", noIngredientsMsg));
+//        }
+//
+//        recipeDTO.setIngredientDTOS(ingredientDtoList);
 
         if (bindingResult.hasErrors()) {
             redirectAttrs.addFlashAttribute("recipeDTO", recipeDTO);
@@ -100,13 +103,13 @@ public class RecipeController {
     }
 
     @GetMapping("/recipes/add-success")
-    public String recipeSuccess() {
+    public String recipeSuccess () {
 
         return "recipes/add-success";
     }
 
     @GetMapping("/recipes/all")
-    public String getAll(Model model) {
+    public String getAll (Model model) {
 
         final List<RecipeShortDTO> recipeCards = this.recipeService.getRecipeCards();
         model.addAttribute("recipeCards", recipeCards);

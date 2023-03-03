@@ -94,40 +94,36 @@
                      name="ingredients">
 
                     <datalist id="units">
-                        <option th:each="unit : ${units}"
-                                th:text="${unit}"
-                        >some unit
-                        </option>
+                        <option th:each="unit : ${units}" th:text="${unit}">some unit</option>
                     </datalist>
 
-                    <th:block th:if="${recipeDTO.ingredientDTOS}"
-                              th:each="ingredient, iStat : ${recipeDTO.ingredientDTOS}"
-                    >
-                        <div th:id="|ingredient-box-${iStat.index}|" class="ingredient-box" name="ingredient-box"
+                    <th:block th:if="${recipeDTO.ingredientDTOS}" th:each="ingredient, itemStat : ${recipeDTO.ingredientDTOS}">
+                        <input hidden id="ingredients-count" th:value="${recipeDTO.ingredientDTOS.size()}"></input>
+                        <div th:id="|ingredient-box-${itemStat.index}|" class="ingredient-box" name="ingredient-box"
                         >
 
-                            <input th:id="|ingredient-name-${iStat.index}|"
+                            <input th:id="|ingredient-name-${itemStat.index}|"
                                    class="ingredient-name"
                                    type="text"
-                                   name="ingredient-name"
+                                   th:name="|ingredientDTOS[${itemStat.index}].ingredientName|"
                                    th:value="${ingredient.getIngredientName}"
                             >
-                            <input th:id="|ingredient-quantity-${iStat.index}|"
+                            <input th:id="|ingredient-quantity-${itemStat.index}|"
                                    class="ingredient-quantity"
                                    type="text"
-                                   name="ingredient-quantity"
-                                   th:value="${ingredient.quantity}"
+                                   th:name="|ingredientDTOS[${itemStat.index}].quantity|"
+                                   th:value="${ingredient.getQuantity}"
                             >
-                            <input th:id="|ingredient-unit-${iStat.index}|"
+                            <input th:id="|ingredient-unit-${itemStat.index}|"
                                    class="ingredient-unit"
                                    list="units"
-                                   name="ingredient-unit"
+                                   th:name="|ingredientDTOS[${itemStat.index}].unitName|"
                                    th:value="${ingredient.getUnitName}"
                             >
                             <input class="sign-minus"
                                    type="button"
                                    value="X"
-                                   th:onclick="|removeElement('ingredient-box-${iStat.index}')|"
+                                   th:onclick="|removeElement('ingredient-box-${itemStat.index}')|"
                             >
                         </div>
                     </th:block>
