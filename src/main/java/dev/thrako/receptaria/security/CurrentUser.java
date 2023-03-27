@@ -1,47 +1,53 @@
 package dev.thrako.receptaria.security;
 
+import dev.thrako.receptaria.model.role.RoleEntity;
+import dev.thrako.receptaria.model.user.UserEntity;
+import jakarta.annotation.Nonnull;
+import jakarta.persistence.Column;
+import jakarta.persistence.ManyToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
 
-@Getter
+import java.util.Collection;
+import java.util.List;
 
-@NoArgsConstructor
-@Component
-@SessionScope
-public class CurrentUser {
+import static dev.thrako.receptaria.constant.Constants.ROLE_PREFIX;
+
+@Getter
+@Setter
+@Accessors(chain = true)
+public class CurrentUser extends User {
 
     private Long id;
-    private String email;
+
+    private String firstName;
+
+    private String lastName;
+
     private String displayName;
 
-    public Boolean isLoggedIn () {
+    public CurrentUser (String username, String password, Collection<? extends GrantedAuthority> authorities) {
 
-        return email != null;
+        super(username, password, authorities);
     }
 
-    public void clear () {
+    public static CurrentUser fromEntity (UserEntity userEntity) {
 
-        id = null;
-        email = null;
-        displayName = null;
+        return new CurrentUser(userEntity.getEmail(),
+                               userEntity.getPassword(),
+                               userEntity.getRolesArray())
+                .setId(userEntity.getId())
+                .setDisplayName(userEntity.getDisplayName())
+                .setFirstName(userEntity.getFirstName())
+                .setLastName(userEntity.getLastName());
     }
 
-    public void setId (Long id) {
-
-        this.id = id;
-    }
-
-    public void setEmail (String email) {
-
-        this.email = email;
-    }
-
-    public void setDisplayName (String displayName) {
-
-        this.displayName = displayName;
-    }
 }
 

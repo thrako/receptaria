@@ -17,7 +17,8 @@ public class RestTestController {
     @GetMapping("/api/test")
     public String test () {
 
-        return photoRepository.getReferenceById(1L).getUrl();
+//        return photoRepository.getReferenceById(1L).getUrl();
+        return null;
     }
 
 }

@@ -1,7 +1,7 @@
 package dev.thrako.receptaria.model.recipe;
 
-import dev.thrako.receptaria.model.photo.PhotoEntity;
 import dev.thrako.receptaria.model.ingredient.IngredientEntity;
+import dev.thrako.receptaria.model.photo.PhotoEntity;
 import dev.thrako.receptaria.model.user.UserEntity;
 import jakarta.persistence.*;
 import lombok.Getter;

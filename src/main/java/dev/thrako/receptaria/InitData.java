@@ -62,7 +62,7 @@ public class InitData implements CommandLineRunner {
                 .setEmail("alibaba@gmail.com")
                 .setPassword(this.passwordEncoder.encode("1234"))
                 .setFirstName("Aladin")
-                .setLastName("Baba")
+                .setLastName("Babaitov")
                 .setDisplayName("Ali Baba")
                 .setActive(true)
                 .addRoles(roleUser)

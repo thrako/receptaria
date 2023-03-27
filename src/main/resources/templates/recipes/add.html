@@ -1,158 +1,143 @@
-<!doctype html>
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{general.html :: head}">
+<head>
+    <th:block th:insert="~{general.html :: head-include}">&nbsp;</th:block>
+    <title>Add new recipe</title>
+    <meta id="csrf" hidden th:name="${_csrf.getHeaderName()}" th:value="${_csrf.getToken()}">
 </head>
 
 <body>
 
 <header th:replace="~{general.html :: header}">&nbsp;</header>
-
 <nav th:replace="~{general.html :: leftbar}">&nbsp;</nav>
+
 <div class="content">
 
-    <p>Please fill in this form to create a recipe.</p>
+    <p>Please fill in and submit the form below to create a recipe:</p>
     <br>
 
-    <div class="add-form-ctr">
+    <div class="content-vw shadowed">
 
-        <div id="top" class="top"></div>
-        <form id="add-form" class="add-form"
-              th:action="@{/recipes/add}" th:method="post" enctype="multipart/form-data" th:object="${recipeDTO}">
+        <!-- TOP -->
+        <div id="recipe-add-form-top" class="form-top"></div>
 
-            <!-- Global Errors -->
-            <div id="global-errors-ctr" class="global-errors-ctr">
-                <ul>
-                    <th:block th:if="${#fields.hasErrors('*')}" th:each="err : ${#fields.errors('*')}">
-                    <li th:text="${err}">Error</li>
+        <!-- ADD FORM -->
+        <form id="recipe-add-form" class="add-form"
+              th:object="${recipeBM}"
+              th:action="@{/recipes/add}" th:method="POST" enctype="multipart/form-data">
+
+            <input id="recipe-bm-id" type="hidden" th:field="*{tempRecipeId}">
+
+            <!-- Title -->
+            <fieldset class="title">
+                <legend><i class="legend-lbl">Title</i></legend>
+
+                <div class="angle-border">
+                    <input id="title-input" class="input"
+                           type="text" th:field="*{title}"
+                           placeholder="My Recipe">
+                </div>
+
+                <th:block th:each="err : ${#fields.errors('title')}">
+                    <div class="errors-ctr">
+                        <ul>
+                            <li th:text="${err}">Error</li>
+                        </ul>
+                    </div>
+                </th:block>
+            </fieldset>
+
+            <!-- Photos -->
+            <fieldset class="photos">
+                <legend><i class="legend-lbl">Photos</i></legend>
+                <!-- Already Uploaded Photos -->
+                <div id="photos-ctr" class="photos-ctr">
+                    <th:block th:each="savedPhoto, upStat : *{savedPhotoDTOS}">
+                        <div th:id="|photo-box-${upStat.index}|" class="photo-box">
+                            <div class="grid-photo">
+                                <input type="hidden"
+                                       th:id="|photo-id-${upStat.index}|"
+                                       th:field="*{savedPhotoDTOS[__${upStat.index}__].id}">
+                                <input type="hidden"
+                                       th:field="*{savedPhotoDTOS[__${upStat.index}__].recipeBMId}">
+
+                                <label class="grid-photo-left">
+                                    <input th:id="|photo-primary-${upStat.index}|" class="grid-photo-left photo-primary"
+                                           th:name="primaryPhotoId"
+                                           th:value="*{savedPhotoDTOS[__${upStat.index}__].id}"
+                                           type="radio" th:checked="${savedPhoto.id == recipeBM.primaryPhotoId}">
+                                </label>
+
+                                <div class="grid-photo-center">
+                                    <img class="photo-file"
+                                         th:src="*{savedPhotoDTOS[__${upStat.index}__].url}" src=""
+                                         th:alt="*{savedPhotoDTOS[__${upStat.index}__].description}" alt="">
+                                </div>
+
+                                <div class="grid-photo-right align-sign-minus">
+                                    <input type="button"
+                                           class="sign-x"
+                                           value="X"
+                                           th:onclick="removePhoto(__${upStat.index}__)">
+                                </div>
+
+                                <div class="grid-photo-bottom photo-filename"
+                                     th:text="*{savedPhotoDTOS[__${upStat.index}__].filename}"></div>
+                            </div>
+                        </div>
+
+
                     </th:block>
-                </ul>
-            </div>
+                </div>
 
-            <!-- Recipe Title -->
-            <div id="title-ctr" class="title-ctr">
-                <label id="title-lbl" class="label"
-                       for="title-input">Title:</label>
+                <!-- Upload Photo Form -->
+                <div id="new-photo-ctr" class="new-photo-ctr">
 
-                <input id="title-input" class="input"
-                       type="text" name="title-input" th:field="*{title}" placeholder="My Recipe">
-
-
-                <div id="title-error" class="title-error"></div>
-
-            </div>
-
-            <!-- Pictures -->
-            <div class="pictures-ctr">
-                <div id="photos" class="photos">
-                    <div id="files-0" class="upload-photo">
-                        <div class="upload-file">
-                            <div>
-                                <span>Image:</span>
-                            </div>
-                            <div>
-                                <input type="file" accept="image/*" name="photo-file" class="photo-file" id="file-0">
-                            </div>
-                            <div class="align-sign-minus">
-                                <input class="sign-minus" type="button" value="X" onclick="removeElement('files-0')">
-                            </div>
-                        </div>
-                        <div class="upload-description">
-                            <span class="upload-description-lbl">Description:</span>
-                            <div class="upload-description-text">
-                                <input type="text" name="photo-description" class="photo-description">
-                            </div>
-                        </div>
-                        <div class="upload-primary">
-                            <div class="upload-primary-lbl">
-                                <span>Primary:</span></div>
-                            <div class="upload-primary-radio">
-                                <input type="radio" name="photo-primary" value="file-0">
-                            </div>
+                    <div class="grid-label-input-ctr lbl80 new-photo-file">
+                        <label class="grid-label">File:</label>
+                        <div class="angle-border grid-input">
+                            <input id="new-photo-file-data" class="new-photo-file-data"
+                                   type="file" accept="image/*">
                         </div>
                     </div>
-                </div>
-                <p>
-                    <input class="sign-plus" type="button" value="+" onclick="addFile();">
-                </p>
-            </div>
+                    <div class="grid-label-input-ctr lbl80">
+                        <div id="new-photo-file-error-ctr" class="grid-input errors-ctr"></div>
+                    </div>
 
-            <!-- Ingredients-->
-            <div class="ingredients-ctr">
-                <div class="ingredient-labels">
-                    <label class="ingredient-name-lbl"
-                    >Name:</label>
-                    <label class="ingredient-quantity-lbl"
-                    >Qty:</label>
-                    <label class="ingredient-unit-lbl"
-                    >Unit:</label>
-                </div>
-                <div id="ingredient-boxes"
-                     class="ingredients"
-                     name="ingredients">
-
-                    <datalist id="units">
-                        <option th:each="unit : ${units}" th:text="${unit}">some unit</option>
-                    </datalist>
-
-                    <th:block th:if="${recipeDTO.ingredientDTOS}" th:each="ingredient, itemStat : ${recipeDTO.ingredientDTOS}">
-                        <input hidden id="ingredients-count" th:value="${recipeDTO.ingredientDTOS.size()}"></input>
-                        <div th:id="|ingredient-box-${itemStat.index}|" class="ingredient-box" name="ingredient-box"
-                        >
-
-                            <input th:id="|ingredient-name-${itemStat.index}|"
-                                   class="ingredient-name"
-                                   type="text"
-                                   th:name="|ingredientDTOS[${itemStat.index}].ingredientName|"
-                                   th:value="${ingredient.getIngredientName}"
-                            >
-                            <input th:id="|ingredient-quantity-${itemStat.index}|"
-                                   class="ingredient-quantity"
-                                   type="text"
-                                   th:name="|ingredientDTOS[${itemStat.index}].quantity|"
-                                   th:value="${ingredient.getQuantity}"
-                            >
-                            <input th:id="|ingredient-unit-${itemStat.index}|"
-                                   class="ingredient-unit"
-                                   list="units"
-                                   th:name="|ingredientDTOS[${itemStat.index}].unitName|"
-                                   th:value="${ingredient.getUnitName}"
-                            >
-                            <input class="sign-minus"
-                                   type="button"
-                                   value="X"
-                                   th:onclick="|removeElement('ingredient-box-${itemStat.index}')|"
-                            >
+                    <div class="grid-label-input-ctr lbl80">
+                        <label for="new-photo-description-text"
+                               id="new-photo-description-lbl" class="grid-label">Description:</label>
+                        <div class="grid-input angle-border">
+                            <input id="new-photo-description-text"
+                                   type="text" placeholder="Photo Description">
                         </div>
-                    </th:block>
-                </div>
-                <div>
-                    <input class="sign-plus"
-                           type="button"
-                           value="+"
-                           onclick="addIngredient()"
-                    >
-                </div>
-            </div>
+                    </div>
+                    <div class="grid-label-input-ctr lbl80">
+                        <div id="new-photo-description-error-ctr" class="grid-input errors-ctr"></div>
+                    </div>
 
+                    <div class="grid-label-input-ctr lbl80">
+                        <input id="upload-btn-new-photo" class="grid-input submit-btn" type="button" value="Upload"
+                               onclick="uploadPhoto();">
+                    </div>
+                </div>
+            </fieldset>
 
             <!-- Time | Servings-->
             <div class="time-servings-ctr">
-                <div class="preparation">
-                    <div class="time-lbl">
-                        Preparation time:
-                    </div>
+                <fieldset class="preparation">
+                    <legend class="time-lbl"><i class="legend-lbl">Preparation Time</i></legend>
 
-                    <div class="time-picker">
+                    <div class="time-picker angle-border">
 
                         <input id="preparation-time-hours"
                                class="hours-input"
                                type="number" min="0" max="24"
                                name="preparationHours"
-                               th:field="*{preparationHours}"
-                        >
+                               th:field="*{preparationHours}">
 
                         <span class="hours-delimiter">:</span>
 
@@ -160,24 +145,34 @@
                                class="minutes-input"
                                type="number" min="0" max="59" step="5"
                                name="preparationMinutes"
-                               th:field="*{preparationMinutes}"
-                        >
+                               th:field="*{preparationMinutes}">
                     </div>
-                </div>
+                    <th:block th:each="err : ${#fields.errors('preparationHours')}">
+                        <div class="errors-ctr">
+                            <ul>
+                                <li th:text="${err}">Error</li>
+                            </ul>
+                        </div>
+                    </th:block>
+                    <th:block th:each="err : ${#fields.errors('preparationMinutes')}">
+                        <div class="errors-ctr">
+                            <ul>
+                                <li th:text="${err}">Error</li>
+                            </ul>
+                        </div>
+                    </th:block>
+                </fieldset>
 
-                <div class="cooking">
-                    <div class="time-lbl">
-                        Cooking time:
-                    </div>
+                <fieldset class="cooking">
+                    <legend class="time-lbl"><i class="legend-lbl">Cooking Time</i></legend>
 
-                    <div class="time-picker">
+                    <div class="time-picker angle-border">
 
                         <input id="cooking-time-hours"
                                class="hours-input"
-                               type="number" min="0" max="24"
+                               type="number" min="0"
                                name="cookingHours"
-                               th:field="*{cookingHours}"
-                        >
+                               th:field="*{cookingHours}">
 
                         <span class="hours-delimiter">:</span>
 
@@ -185,45 +180,131 @@
                                class="minutes-input"
                                type="number" min="0" max="59" step="5"
                                name="cookingMinutes"
-                               th:field="*{cookingMinutes}"
-                        >
+                               th:field="*{cookingMinutes}">
                     </div>
-                </div>
+                    <th:block th:each="err : ${#fields.errors('cookingHours')}">
+                        <div class="errors-ctr">
+                            <ul>
+                                <li th:text="${err}">Error</li>
+                            </ul>
+                        </div>
+                    </th:block>
+                    <th:block th:each="err : ${#fields.errors('cookingMinutes')}">
+                        <div class="errors-ctr">
+                            <ul>
+                                <li th:text="${err}">Error</li>
+                            </ul>
+                        </div>
+                    </th:block>
+                </fieldset>
 
-                <div class="servings">
-                    <div class="servings-lbl">
-                        Servings:
+                <fieldset class="servings">
+                    <legend class="servings-lbl"><i class="legend-lbl"> Servings </i></legend>
+                    <div class="servings-picker angle-border">
+                        <input class="servings-input"
+                               type="number"
+                               name="servings"
+                               th:field="*{servings}">
                     </div>
-                    <input class="servings-input"
-                           type="number"
-                           name="servings"
-                           th:field="*{servings}"
-                    >
-                </div>
+                    <th:block th:each="err : ${#fields.errors('servings')}">
+                        <div class="errors-ctr">
+                            <ul>
+                                <li th:text="${err}">Error</li>
+                            </ul>
+                        </div>
+                    </th:block>
+                </fieldset>
             </div>
+
+            <!-- Ingredients-->
+            <fieldset class="ingredients">
+                <legend><i class="legend-lbl">Ingredients</i></legend>
+                <div class="ingredients-ctr">
+
+                    <div id="ingredient-boxes" class="ingredients" name="ingredients">
+
+                        <datalist id="units">
+                            <option th:each="unit : ${units}" th:text="${unit}">Some unit</option>
+                        </datalist>
+
+                        <th:block th:if="${recipeBM.ingredientDTOS}"
+                                  th:each="ingredient, itemStat : ${recipeBM.ingredientDTOS}">
+
+                            <div th:id="|ingredient-box-${itemStat.index}|" class="ingredient-box">
+
+                                <div class="grid-ingredient angle-border"
+                                     name="ingredient-box">
+
+                                    <input type="text" th:value="${ingredient.getIngredientName}"
+                                           th:id="|ingredient-name-${itemStat.index}|" class="ingredient-name left"
+                                           th:name="|ingredientDTOS[${itemStat.index}].ingredientName|"
+                                           placeholder="Name">
+
+                                    <input type="text" th:value="${ingredient.getQuantity}"
+                                           th:id="|ingredient-quantity-${itemStat.index}|"
+                                           class="ingredient-quantity center"
+                                           th:name="|ingredientDTOS[${itemStat.index}].quantity|"
+                                           placeholder="Quantity">
+
+                                    <input list="units" th:value="${ingredient.getUnitName}"
+                                           th:id="|ingredient-unit-${itemStat.index}|" class="ingredient-unit right"
+                                           th:name="|ingredientDTOS[${itemStat.index}].unitName|"
+                                           placeholder="Unit">
+
+                                    <input type="button" value="X"
+                                           class="sign-x btn-x"
+                                           th:onclick="|removeElement('ingredient-box-${itemStat.index}')|">
+                                </div>
+
+                                <div th:if="*{ingredientDTOS[__${itemStat.index}__].ingredientName.isEmpty()}"
+                                     th:class="errors-ctr">
+                                    <ul>
+                                        <li th:errors="*{ingredientDTOS[__${itemStat.index}__].ingredientName}">Error
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </th:block>
+
+
+                    </div>
+                    <div class="grid-label-input-ctr lbl80">
+                        <input class="sign-plus grid-input"
+                               type="button"
+                               value="+"
+                               onclick="addIngredient()">
+                    </div>
+                </div>
+            </fieldset>
 
             <!-- Description -->
-            <div class="description">
-                <label for="description-notepad">Description:</label>
-                <textarea id="description-notepad"
-                          class="notepad"
-                          name="description"
-                          placeholder="Take about 2/3 of the flour and..."
-                ></textarea>
-            </div>
+            <fieldset class="description">
+                <legend><i class="legend-lbl">Description</i></legend>
 
-            <input id="submit-btn-add-recipe" class="submit-btn"
-                   type="submit" name="submit" value="Submit"
-            >
+                <textarea id="description-notepad" class="notepad"
+                          name="description"
+                          placeholder="Recipe Description"></textarea>
+                <th:block th:each="err : ${#fields.errors('description')}">
+                    <div class="errors-ctr">
+                        <ul>
+                            <li th:text="${err}">Error</li>
+                        </ul>
+                    </div>
+                </th:block>
+            </fieldset>
+
 
         </form>
-
     </div>
+
+    <input id="submit-btn-add-recipe" class="submit-btn content-vw"
+           type="submit" name="submit-btn" value="Submit"
+           form="recipe-add-form">
 
 </div>
 
 <nav th:replace="~{general.html :: rightbar}">&nbsp;</nav>
-
 <footer th:replace="~{general.html :: footer}">&nbsp;</footer>
 
 <!-- JAVA SCRIPT -->

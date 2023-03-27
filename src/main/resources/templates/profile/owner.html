@@ -20,19 +20,11 @@
         </div>
     </nav>
 
-    <div class="content" id="content">
-
+    <div class="content">
+        <p>Hello, <span th:text="${user.getDisplayName()}"></span>! How are you doing lately?</p>
     </div>
 
-    <nav class="right-bar">
-        <div class="right-link-cntnr">
-            <a href=#><span>Edit Profile</span></a>
-        </div>
-    </nav>
-
     <footer th:replace="~{general.html :: footer}">&nbsp;</footer>
-
-<script src="/javascript/profile.js"></script>
 
 </body>
 

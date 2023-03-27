@@ -3,14 +3,13 @@ package dev.thrako.receptaria.config;
 import dev.thrako.receptaria.model.ingredient.IngredientEntity;
 import dev.thrako.receptaria.model.ingredient.dto.IngredientDTO;
 import dev.thrako.receptaria.model.photo.PhotoEntity;
-import dev.thrako.receptaria.model.photo.dto.PhotoUploadDTO;
+import dev.thrako.receptaria.model.photo.dto.PhotoBM;
 import dev.thrako.receptaria.model.recipe.RecipeEntity;
-import dev.thrako.receptaria.model.recipe.dto.RecipeDTO;
+import dev.thrako.receptaria.model.recipe.dto.RecipeBM;
 import dev.thrako.receptaria.model.user.UserEntity;
-import dev.thrako.receptaria.model.user.dto.UserLoginDTO;
+import dev.thrako.receptaria.model.user.dto.UserLoginBM;
 import dev.thrako.receptaria.service.IngredientNameService;
 import dev.thrako.receptaria.service.UnitService;
-import dev.thrako.receptaria.utility.UploadUtility;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -46,8 +45,8 @@ public class ApplicationBeanConfiguration {
         Converter<String, String> passwordHash = ctx -> ctx.getSource() == null ? null :
                 passwordEncoder.encode(ctx.getSource());
 
-        mapper.createTypeMap(UserLoginDTO.class, UserEntity.class)
-                .addMappings(mpr -> mpr.using(passwordHash).map(UserLoginDTO::getPassword, UserEntity::setPassword));
+        mapper.createTypeMap(UserLoginBM.class, UserEntity.class)
+                .addMappings(mpr -> mpr.using(passwordHash).map(UserLoginBM::getPassword, UserEntity::setPassword));
 
         return mapper;
     }
@@ -58,18 +57,18 @@ public class ApplicationBeanConfiguration {
 
         ModelMapper recipeMapper = new ModelMapper();
 
-        final Function<PhotoUploadDTO, PhotoEntity> photoDtoToEntity = photoDTO -> {
+        final Function<PhotoBM, PhotoEntity> photoDtoToEntity = photoDTO -> {
             PhotoEntity entity = new PhotoEntity();
 
-            if (UploadUtility.uploadPhoto(photoDTO)) {
-                return entity.setUrl(photoDTO.getUrl());
-            }
+//            if (UploadUtility.uploadPhoto(photoDTO)) {
+//                return entity.setUrl(photoDTO.getUrl());
+//            }
 
             //TODO implement with exception
             return null;
         };
 
-        Converter<List<PhotoUploadDTO>, List<PhotoEntity>> photoConverter = ctx -> (ctx.getSource() == null)
+        Converter<List<PhotoBM>, List<PhotoEntity>> photoConverter = ctx -> (ctx.getSource() == null)
                     ? new ArrayList<>()
                     : ctx.getSource()
                         .stream()
@@ -88,15 +87,15 @@ public class ApplicationBeanConfiguration {
                         .collect(Collectors.toCollection(ArrayList::new));
 
 
-        recipeMapper.createTypeMap(RecipeDTO.class, RecipeEntity.class)
-                .addMappings(mpr -> mpr.map(RecipeDTO::getTitle, RecipeEntity::setTitle))
-                .addMappings(mpr -> mpr.using(photoConverter).map(RecipeDTO::getPhotoDTOS, RecipeEntity::setPhotos))
-                .addMappings(mpr -> mpr.using(ingredientConverter).map(RecipeDTO::getIngredientDTOS, RecipeEntity::setIngredients))
-                .addMappings(mpr -> mpr.map(RecipeDTO::getPreparationHours, RecipeEntity::addPreparationHours))
-                .addMappings(mpr -> mpr.map(RecipeDTO::getPreparationMinutes, RecipeEntity::addPreparationMinutes))
-                .addMappings(mpr -> mpr.map(RecipeDTO::getCookingHours, RecipeEntity::addCookingHours))
-                .addMappings(mpr -> mpr.map(RecipeDTO::getCookingMinutes, RecipeEntity::addCookingMinutes))
-                .addMappings(mpr -> mpr.skip(RecipeDTO::getAuthor, RecipeEntity::setAuthor));
+        recipeMapper.createTypeMap(RecipeBM.class, RecipeEntity.class)
+                .addMappings(mpr -> mpr.map(RecipeBM::getTitle, RecipeEntity::setTitle))
+//                .addMappings(mpr -> mpr.using(photoConverter).map(RecipeBM::getPhotoDTOS, RecipeEntity::setPhotos))
+                .addMappings(mpr -> mpr.using(ingredientConverter).map(RecipeBM::getIngredientDTOS, RecipeEntity::setIngredients))
+                .addMappings(mpr -> mpr.map(RecipeBM::getPreparationHours, RecipeEntity::addPreparationHours))
+                .addMappings(mpr -> mpr.map(RecipeBM::getPreparationMinutes, RecipeEntity::addPreparationMinutes))
+                .addMappings(mpr -> mpr.map(RecipeBM::getCookingHours, RecipeEntity::addCookingHours))
+                .addMappings(mpr -> mpr.map(RecipeBM::getCookingMinutes, RecipeEntity::addCookingMinutes));
+//                .addMappings(mpr -> mpr.skip(RecipeBM::getAuthor, RecipeEntity::setAuthor));
 
         return recipeMapper;
     }

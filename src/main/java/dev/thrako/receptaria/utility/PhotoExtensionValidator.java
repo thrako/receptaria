@@ -27,6 +27,10 @@ public class PhotoExtensionValidator {
 
         throw new UnsupportedOperationException();
     }
+
+    public static boolean validate (MultipartFile multipartFile) {
+        return getDetectedExtension(multipartFile) != null;
+    }
     
     public static String getDetectedExtension (MultipartFile multipartFile) {
 

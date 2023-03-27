@@ -1,13 +1,10 @@
-/*
-  Josh's Custom CSS Reset
-  https://www.joshwcomeau.com/css/custom-css-reset/
-*/
+/* ROOT */
 
 :root {
-    accent-color        : olivedrab;
+    accent-color          : olivedrab;
     --main-font-size      : 16px;
-    --primary-color        : olivedrab;
-    --danger-color         : indianred;
+    --color-primary       : olivedrab;
+    --color-danger        : indianred;
     --color-darkgrey      : #4B5347;
     --color-teal          : #304B59;
     --color-lavender      : #715780;
@@ -15,7 +12,6 @@
     --color-blush-pink    : #F4AC94;
 }
 
-/* RESET */
 *, *::before, *::after {
     box-sizing : border-box;
 }
@@ -36,38 +32,9 @@ body {
     -webkit-font-smoothing : antialiased;
 }
 
-img, picture, video, canvas, svg {
-    display   : block;
-    max-width : 100%;
-}
-
-input, button, textarea, select {
-    font : inherit;
-}
-
-p, h1, h2, h3, h4, h5, h6 {
-    overflow-wrap : break-word;
-}
-
-#root, #__next {
-    isolation : isolate;
-}
-
-a, a:hover, a:focus, a:active {
-    text-decoration : none;
-    cursor          : pointer;
-    color           : var(--primary-color);
-}
-
-.error-text {
-    color : var(--danger-color);
-}
-
-/* LAYOUT */
-
 body {
     display               : grid;
-    grid-template-columns : 20vw 65vw 15vw;
+    grid-template-columns : 20vw minmax(600px, 900px) 1fr;
     grid-template-rows    : 120px 1fr 60px;
     grid-template-areas   :
         "header header header"
@@ -75,94 +42,14 @@ body {
         "footer footer footer";
     grid-gap              : 0;
     min-height            : 100vh;
-
 }
 
-/* HEADER */
-
-.header {
+body .header {
     grid-area : header;
     position  : relative;
 }
 
-/* LEFT BAR */
-
-.left-bar {
-    grid-area  : leftbar;
-    padding    : 10px 10px 10px 0;
-    background : white;
-    height     : auto;
-}
-
-.left-bar .left-link-ctr {
-    position   : relative;
-    background : black;
-}
-
-.left-bar .left-link-ctr a {
-
-    display    : block;
-    background : white;
-    transform  : translateX(15px);
-
-}
-
-
-.left-bar .left-link-ctr a .dot {
-    position       : relative;
-    display        : inline-block;
-
-    vertical-align : middle;
-    transform      : translateY(-25%);
-    height         : 30px;
-    width          : 15px;
-
-}
-
-.left-bar .left-link-ctr a span {
-
-}
-
-.left-bar .left-link-ctr:hover a .dot {
-    border        : 0 solid black;
-    background    : black;
-    border-radius : 50%;
-    transform     : translateX(-17px);
-    width         : 30px;
-}
-
-
-/* RIGHT BAR */
-
-.right-bar {
-    grid-area : rightbar;
-    padding   : 10px 15px 10px 30px;
-}
-
-/* CONTENT */
-
-.content {
-    grid-area : content;
-    padding   : 10px 30px;
-}
-
-/* FOOTER */
-
-.footer {
-    grid-area  : footer;
-    background : black;
-    color      : white;
-    padding    : 1vw;
-    display    : inline;
-    text-align : center;
-}
-
-.footer a, .footer a:hover, .footer a:focus, .footer a:active {
-    padding : 5px 15px;
-    color   : white;
-}
-
-.login-panel {
+body .header .login-panel {
     position : absolute;
     top      : 10px;
     right    : 0;
@@ -171,7 +58,7 @@ body {
     padding  : 0 2vw;
 }
 
-.logo-circle {
+body .header .logo-circle {
     position      : absolute;
     top           : 50%;
     left          : 20px;
@@ -185,7 +72,7 @@ body {
     border-radius : 50%;
 }
 
-.logo-panel {
+body .header .logo-panel {
     position   : absolute;
     top        : 50%;
     left       : 47px;
@@ -198,7 +85,7 @@ body {
     background : black;
 }
 
-.receptaria-logo {
+body .header .receptaria-logo {
     vertical-align : middle;
 
     color          : white;
@@ -206,360 +93,207 @@ body {
     font-size      : 44px;
 }
 
-.receptaria-logo, .receptaria-logo:hover, .receptaria-logo:focus, .receptaria-logo:active {
+body .header .receptaria-logo,
+body .header .receptaria-logo:hover,
+body .header .receptaria-logo:focus,
+body .header .receptaria-logo:active {
     color : white;
 }
 
+body .left-bar {
+    grid-area  : leftbar;
+    padding    : 10px 10px 10px 0;
+    height     : auto;
 
-/* REGISTRATION */
-
-.reg-form {
-
+    background : white;
 }
 
-.reg-input {
-    display               : grid;
-    grid-template-columns : minmax(125px, 12vw) 1fr;
-    grid-auto-rows        : auto;
-    grid-template-areas   :
-        "input-label input-field"
-        "none input-errors";
-    padding               : 8px 0;
+body .left-bar .left-link-ctr {
+    position   : relative;
+
+    background : black;
 }
 
-.input-label {
-    grid-area : input-label;
+body .left-bar .left-link-ctr a {
+    display    : block;
+    transform  : translateX(15px);
+
+    background : white;
 }
 
-.input-field {
-    grid-area    : input-field;
-    display      : block;
-    width        : 100%;
-    padding      : 0 0 10px 10px;
-    border       : 3px solid var(--primary-color);
-    border-top   : none;
-    border-right : none;
+body .left-bar .left-link-ctr a .dot {
+    position       : relative;
+    display        : inline-block;
+
+    vertical-align : middle;
+    transform      : translateY(-25%);
+    height         : 30px;
+    width          : 15px;
 }
 
-.input-field:focus-within {
-    grid-area    : input-field;
-    display      : block;
-    width        : 100%;
-    padding      : 0 0 10px 10px;
-    border       : 3px dashed var(--primary-color);
-    border-top   : none;
-    border-right : none;
+body .left-bar .left-link-ctr:hover a .dot {
+    border        : 0 solid black;
+    background    : black;
+    border-radius : 50%;
+    transform     : translateX(-17px);
+    width         : 30px;
 }
 
-.input-field input {
-    border : none;
-    width  : 100%;
+body .right-bar {
+    grid-area : rightbar;
+    padding   : 10px 15px 10px 30px;
 }
 
-
-.global-errors-ctr {
-    grid-area : input-errors;
+body .content {
+    grid-area : content;
+    padding   : 10px 30px;
+    /*     width: 60vw; */
 }
 
-.global-errors-ctr ul {
-    padding : 0 20px;
+body .footer {
+    grid-area  : footer;
+    display    : inline;
+    text-align : center;
+
+    padding    : 1vw;
+
+    background : black;
+    color      : white;
 }
 
-.global-errors-ctr li {
-    color : var(--danger-color);
+body .footer a,
+body .footer a:hover,
+body .footer a:focus,
+body .footer a:active {
+    padding : 5px 15px;
+    color   : white;
+}
+
+a,
+a:hover,
+a:focus,
+a:active {
+    text-decoration : none;
+    cursor          : pointer;
+    color           : var(--color-primary);
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+    display   : block;
+    max-width : 100%;
+}
+
+input,
+button,
+textarea,
+select {
+    font : inherit;
 }
 
 input:focus-visible {
     outline : none;
 }
 
-.register-btn {
-    padding          : 16px 20px;
-
-    margin           : 8px 0;
-
-    border           : none;
-
-    width            : 100%;
-
-    background-color : var(--primary-color);
-    color            : white;
-    opacity          : 0.9;
-
-    cursor           : pointer;
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+    transition         : background-color 600000s 0s, color 600000s 0s;
+    -webkit-box-shadow : 0 0 0 50px white inset;
 }
 
-.register-btn:hover {
-    opacity : 1;
+input[data-autocompleted] {
+    background-color : white;
 }
 
-.sign-in {
-    text-align : center;
+input::placeholder,
+textarea::placeholder{
+    color: var(--color-pale-lavender);
+    opacity: 1;
+}
+input:placeholder-shown {
+    border : 1px solid var(--color-lavender);
 }
 
-/*** RECIPES / ADD ***/
-
-
-.add-form-ctr {
-    box-shadow    : 10px 10px 40px rgba(0, 0, 0, 0.15);
-    border-radius : 0 0 10px 10px;
-
+input.sign-x {
+    text-align: center;
 }
 
-.add-form .section-ctr {
-    padding : 10px 5px;
+p, h1, h2, h3, h4, h5, h6 {
+    overflow-wrap : break-word;
 }
 
-.add-form-ctr .top {
-    width         : 100%;
-    height        : 50px;
-    background    : #333;
-    border-radius : 5px 5px 0 0;
+fieldset {
+    margin-bottom: 2vh;
+    border : 1px black dashed;
 }
 
-.add-form-ctr .add-form {
-    width                 : 100%;
-    height                : 100%;
-    min-height            : 70vh;
-
-    margin-bottom         : 5vh;
-    padding               : 10px 20px 10px;
-
-    background            : #FDFCFC;
-    outline               : 0;
-
-    display               : grid;
-    grid-template-columns : 100%;
-    grid-template-rows    : auto;
-    grid-template-areas   :
-    "input-errors-ctr"
-    "title-ctr"
-    "pictures-ctr"
-    "ingredients"
-    "time-servings"
-    "description"
-    "submit-btn";
-    gap                   : 20px;
-
+fieldset legend {
+    margin-bottom: 1vh;
 }
 
-.add-form input[type=text],
-.add-form input[type=number],
-.add-form input[list=measures] {
-
-    display       : block;
-
-    width         : 100%;
-
-    border        : none;
-    border-bottom : 2px solid #35383D;
-    background    : transparent;
-
-    padding       : 0;
-    margin        : 0;
+fieldset legend .legend-lbl {
+    padding: 0 0.5rem;
 }
 
-.add-form input[type=text]:focus,
-.add-form input[type=number]:focus,
-.add-form input[list=measures]:focus {
-    border-bottom : 2px dashed var(--primary-color);
+#root, #__next {
+    isolation : isolate;
 }
 
-.add-form .global-errors-ctr {
-    grid-area : input-errors-ctr;
+/* GLOBAL */
+
+.hidden {
+    display : none;
 }
 
-.add-form .title-ctr {
-    grid-area : title-ctr;
-    display   : grid;
-    gap       : 0 10px;
-    padding   : 10px 0;
+.angle-border {
+    grid-area    : input-field;
+    display      : block;
+    width        : 100%;
+    padding      : 0 0 10px 10px;
+    border       : 3px solid var(--color-primary);
+    border-top   : none;
+    border-right : none;
 }
 
-.add-form .pictures-ctr {
-    grid-area : pictures-ctr;
-    padding   : 10px 0
+.angle-border:focus-within {
+    border       : 3px dashed var(--color-primary);
+    border-top   : none;
+    border-right : none;
 }
 
-.pictures-ctr .upload-photo {
-    display : grid;
-    gap     : 5px 0;
-
+.angle-border input {
+    border : none;
+    width  : 100%;
 }
 
-.pictures-ctr .upload-photo:has(.sign-minus:hover) {
-    outline : 2px dashed black;
-}
-
-.photos .upload-file,
-.photos .upload-description,
-.photos .upload-primary {
-    display               : grid;
-    grid-template-columns : 20% 60% 20%
-}
-
-
-.photos .align-sign-minus {
-    text-align : right;
-}
-
-.add-form .ingredients-ctr {
-    grid-area : ingredients;
-    padding   : 20px 0 10px
-}
-
-.ingredients-ctr .ingredient-labels {
-    width                 : 100%;
-    display               : grid;
-    grid-template-columns : 50% 15% 20% 5%;
-    grid-template-rows    : auto;
-    grid-template-areas   :
-        "product-name-lbl product-qty-lbl product-msrm-lbl none";
-    gap                   : 3px 3%;
-    padding-bottom        : 5px
-
-}
-
-.ingredient-labels .ingredient-name-lbl {
-    grid-area : product-name-lbl;
-}
-
-.ingredient-labels .ingredient-quantity-lbl {
-    grid-area  : product-qty-lbl;
-    text-align : center;
-}
-
-.ingredient-labels .ingredient-unit-lbl {
-    grid-area : product-msrm-lbl;
-}
-
-.ingredients-ctr .ingredient-box {
-    width                 : 100%;
-    display               : grid;
-    grid-template-columns : 50% 15% 20% 5%;
-    grid-template-rows    : auto;
-    grid-template-areas   :
-        "product-name product-qty product-msrm sign-minus";
-    gap                   : 3px 3%;
-    padding-bottom        : 5px
-
-}
-
-.ingredient-box .ingredient-name {
-    grid-area     : product-name;
-    border        : none;
-    border-bottom : 2px solid #35383D;
-    background    : transparent;
-
-}
-
-.ingredient-box .ingredient-quantity {
-    grid-area     : product-qty;
-    text-align    : center;
-    border        : none;
-    border-bottom : 2px solid #35383D;
-    background    : transparent;
-}
-
-.ingredient-box .ingredient-unit {
-    grid-area     : product-msrm;
-    border        : none;
-    border-bottom : 2px solid #35383D;
-    background    : transparent;
-
-}
-
-.sign-minus {
-    grid-area  : sign-minus;
-
-    background : none;
+.sign-x {
     border     : 2px solid #35383D;
     width      : 30px;
     height     : 25px;
     text-align : center;
-    background : transparent;
+    background : white;
 }
 
-.sign-minus:hover {
-    color  : var(--danger-color);
-    border : 2px dashed var(--danger-color);
+.sign-x:hover {
+    background : var(--color-blush-pink);
 }
 
 .sign-plus {
     border      : 2px solid black;
-    width       : 30px;
-    height      : 25px;
-    font-weight : 800;
+    width       : 100%;
+    height      : 40px;
+    font-weight : bold;
     background  : transparent;
 }
 
 .sign-plus:hover {
-    color  : var(--primary-color);
-    border : 2px dashed var(--primary-color);
-
-}
-
-.add-form .time-servings-ctr {
-    grid-area             : time-servings;
-    display               : grid;
-    grid-template-columns : 30% 30% 30%;
-    gap                   : 10px 5%;
-    padding               : 20px 0;
-}
-
-.time-picker {
-    display   : flex;
-    max-width : 60%
-}
-
-.servings-input {
-    display   : flex;
-    max-width : 35%
-}
-
-.hours-input, .minutes-input, .servings-input {
-    background    : transparent;
-
-    border        : none;
-    border-bottom : 2px solid #35383D;
-
-    text-align    : center;
-}
-
-.add-form .description {
-    grid-area : description;
-    padding   : 20px 0;
-}
-
-.description .notepad {
-    min-width   : 100%;
-    max-width   : 100%;
-
-    border      : none;
-    overflow    : hidden;
-    background  : repeating-linear-gradient(#FDFCFC, #FDFCFC 20px, #35383D 20px, #35383D 22px);
-    line-height : 22px;
-    min-height  : 30vh;
-    resize      : vertical;
-
-}
-
-.description .notepad:focus,
-.description .notepad:active {
-    border   : none;
-    overflow : hidden;
-    outline  : none;
-}
-
-.add-form .submit-btn {
-    grid-area  : submit-btn;
-    background : transparent;
-    width      : 100%;
-}
-
-.add-form .submit-btn:hover {
-
-    background : var(--primary-color);
+    border : 2px solid white;
+    outline : 2px solid var(--color-primary);
+    color : white;
+    background : var(--color-primary);
 }
 
 .like-anchor {
@@ -568,7 +302,7 @@ input:focus-visible {
     border-color           : rgb(0, 0, 238);
     border-style           : none;
     box-sizing             : content-box;
-    color                  : var(--primary-color);
+    color                  : var(--color-primary);
     cursor                 : pointer;
     display                : inline;
     font                   : inherit;
@@ -578,7 +312,7 @@ input:focus-visible {
     text-align             : start;
     transform-origin       : 0 0;
     width                  : auto;
-    outline                : 1 solid var(--danger-color);
+    outline                : 1 solid var(--color-danger);
     -moz-appearance        : none;
     -webkit-logical-height : 1em;
     -webkit-logical-width  : auto;
@@ -596,8 +330,296 @@ input:focus-visible {
     }
 }
 
+.submit-btn {
+    padding          : 14px 20px;
 
-@media screen and (max-width : 768px) {
+    margin           : 8px 0;
+
+    border           : none;
+
+    width            : 100%;
+
+    background-color : var(--color-primary);
+    color            : white;
+    opacity          : 0.9;
+
+    cursor           : pointer;
+}
+
+.submit-btn:hover {
+    opacity : 1;
+}
+
+.upload-btn {
+    padding          : 10px 20px;
+
+    margin           : 0 0;
+
+    /*border           : 2px solid black;*/
+
+    width            : 100%;
+
+    background-color : white;
+    color            : black;
+    opacity          : 1;
+
+    cursor           : pointer;
+}
+
+.upload-btn:hover {
+    opacity : 0.7;
+    background-color : var(--color-primary);
+    color: white;
+
+    border           : 2px solid white;
+    outline           : 2px solid var(--color-primary);
+}
+
+.errors-ctr ul {
+    padding: 0 0 0 15px;
+}
+
+.errors-ctr li {
+    color           : var(--color-danger);
+    list-style-type : none;
+}
+
+.error-text {
+    color : var(--color-danger);
+}
+
+.section {
+    padding : 2vh 0;
+}
+
+.section-title {
+
+    padding          : 14px 20px;
+
+    margin           : 8px 0;
+
+    border           : 3px solid black;
+
+    width            : 100%;
+
+    background-color : var(--color-pale-lavender);
+    color            : black;
+}
+
+.grid-label-input-ctr {
+    display               : grid;
+    grid-template-columns : minmax(125px, 12vw) 1fr;
+    grid-auto-rows        : auto;
+    grid-template-areas   :
+        "input-label    input-field";
+    padding               : 0.5vh 0;
+}
+
+.grid-label-input-ctr.lbl80 {
+    grid-template-columns : minmax(80px, 10vw) 1fr;
+}
+
+.grid-label {
+    grid-area : input-label;
+}
+
+.grid-input {
+    grid-area : input-field;
+    width     : 100%;
+}
+
+
+
+.form-top {
+    width         : 100%;
+    height        : 50px;
+    background    : black;
+    border-radius : 5px 5px 0 0;
+}
+
+.add-form {
+    padding : 2.5vw;
+}
+
+
+
+.photo-box {
+    display : inline;
+    height  : 150px;
+}
+
+.grid-photo {
+    display               : inline-grid;
+    grid-template-columns : 40px 120px 30px;
+    grid-auto-rows        : auto;
+    grid-template-areas   :
+        "left  center  right"
+        "none  bottom  bottom";
+    padding               : 10px 10px;
+
+
+}
+
+.grid-photo:has(.sign-x:hover) {
+    outline : 2px var(--color-danger) dashed;
+}
+
+.grid-photo-left {
+    grid-area    : left;
+    align-self   : center;
+    justify-self : center;
+}
+
+.grid-photo-center {
+    grid-area           : center;
+
+    width               : 150px;
+    height              : 150px;
+    object-fit          : contain;
+    overflow            : hidden;
+    background          : white;
+    border              : 1px solid var(--color-pale-lavender);
+}
+
+.grid-photo-right {
+    grid-area    : right;
+    justify-self : right;
+}
+
+.grid-photo-bottom {
+    grid-area : bottom;
+    overflow-wrap: break-word;
+    -ms-word-wrap: break-word;
+    word-wrap: break-word;
+    -ms-hyphens: auto;
+}
+
+.new-photo-ctr {
+    padding: 10px 0;
+}
+
+.ingredient-box {
+    padding: 10px 5px;
+}
+
+.ingredient-box .grid-ingredient {
+    display               : inline-grid;
+    grid-template-columns: 2fr 1fr 1fr minmax(40px, 3vw);
+    grid-auto-rows        : auto;
+    grid-template-areas   :
+        "left  center  right  btn-x";
+    padding               : 0 0 10px 10px;
+    width : 100%;
+}
+
+.ingredient-box .grid-ingredient .left {
+    grid-area: left;
+    width : 100%;
+}
+
+.ingredient-box .grid-ingredient .center {
+    grid-area: center;
+    width : 100%;
+}
+
+.ingredient-box .grid-ingredient .right {
+    grid-area: right;
+    width : 100%;
+    text-align: right;
+}
+
+.ingredient-box .grid-ingredient .btn-x {
+    grid-area: btn-x;
+    justify-self: end;
+}
+
+.ingredient-box .angle-border .sign-x {
+    border     : 2px solid #35383D;
+    width      : 30px;
+    height     : 25px;
+    text-align : center;
+}
+
+.ingredient-box:has(.sign-x:hover) {
+   outline: 2px var(--color-danger) dashed;
+}
+
+.max-width-800px {
+    max-width : 800px;
+}
+
+.shadowed {
+    box-shadow    : 10px 10px 40px rgba(0, 0, 0, 0.15);
+    border-radius : 0 0 10px 10px;
+}
+
+.registration.sign-in-para {
+    text-align : center;
+}
+
+
+
+.add-form .time-servings-ctr {
+    grid-area             : time-servings;
+    display               : grid;
+    grid-template-columns: min(160px) 1fr min(160px) 1fr 1fr min(180px);
+    grid-template-areas:
+        "preparation gap1 cooking gap2 gap3 servings";
+}
+
+.time-servings-ctr .preparation {
+    grid-area : preparation;
+}
+
+.time-servings-ctr .cooking {
+    grid-area : cooking;
+}
+
+.time-servings-ctr .servings {
+    grid-area : servings;
+}
+
+.time-picker,
+.servings-picker {
+    display   : flex;
+}
+
+.hours-input,
+.minutes-input,
+.servings-input {
+    background    : transparent;
+
+    border        : none;
+    border-bottom : 2px solid #35383D;
+
+    text-align    : center;
+    padding : 0;
+}
+
+.description .notepad {
+    min-width   : 100%;
+    max-width   : 100%;
+    border      : none;
+    overflow    : hidden;
+    background: repeating-linear-gradient(#FFFFFF, #FFFFFF 20px, #c1c1c1 20px, #c1c1c13d 22px);
+    line-height : 22px;
+    min-height  : 30vh;
+    resize      : vertical;
+}
+
+.description .notepad:focus,
+.description .notepad:active {
+    border   : none;
+    overflow : hidden;
+    outline  : none;
+}
+
+
+
+
+
+
+@media screen and (max-width : 800px) {
 
     html, body {
         height     : 100%;
@@ -620,12 +642,36 @@ input:focus-visible {
         min-height            : 100%;
     }
 
-    .left-bar {
+    body .left-bar {
         padding : 5px 20px 20px 0;
     }
 
-    .right-bar, .content {
+    body .right-bar,
+    body .content {
         padding : 5px 30px;
     }
 
+    body .content {
+        grid-area : content;
+        padding   : 10px 2.5VW;
+        width     : 95vw;
+    }
+
+    .content-vw {
+        width : 95vw;
+    }
+
+
+
+}
+
+@media screen and (max-width : 600px) {
+    .add-form .time-servings-ctr {
+        grid-area             : time-servings;
+        display               : grid;
+        grid-template-columns : min(160px) 1fr min(160px);
+        grid-template-areas :
+    "preparation gap servings"
+    "cooking     gap none ";
+    }
 }

@@ -1,7 +1,7 @@
 package dev.thrako.receptaria.service;
 
 import dev.thrako.receptaria.model.recipe.RecipeEntity;
-import dev.thrako.receptaria.model.recipe.dto.RecipeDTO;
+import dev.thrako.receptaria.model.recipe.dto.RecipeBM;
 import dev.thrako.receptaria.model.recipe.dto.RecipeShortDTO;
 import dev.thrako.receptaria.model.user.UserEntity;
 import dev.thrako.receptaria.repository.*;
@@ -20,23 +20,25 @@ public class RecipeService {
     private final ModelMapper recipeMapper;
     private final UserService userService;
     private final RecipeRepository recipeRepository;
+    private final TempPhotoRepository tempPhotoRepository;
 
     @Autowired
     public RecipeService (@Qualifier("recipeMapper") ModelMapper recipeMapper,
                           UserService userService,
-                          RecipeRepository recipeRepository){
+                          RecipeRepository recipeRepository,
+                          TempPhotoRepository tempPhotoRepository){
 
         this.recipeMapper = recipeMapper;
         this.userService = userService;
         this.recipeRepository = recipeRepository;
+        this.tempPhotoRepository = tempPhotoRepository;
     }
 
     @Transactional
-    public boolean save (RecipeDTO recipeDTO, String email) {
+    public boolean save (RecipeBM recipeBM, String email) {
 
 
-        RecipeEntity recipe = recipeMapper.map(recipeDTO, RecipeEntity.class);
-        recipe.getPhotos().forEach(p -> p.setRecipe(recipe));
+        RecipeEntity recipe = recipeMapper.map(recipeBM, RecipeEntity.class);
         recipe.getIngredients().forEach(i -> i.setRecipe(recipe));
 
         UserEntity author = userService.getPrincipalEntity(email);
@@ -45,7 +47,7 @@ public class RecipeService {
         recipeRepository.saveAndFlush(recipe);
 
         return this.recipeRepository
-                .findRecipeByTitle(recipeDTO.getTitle())
+                .findRecipeByTitle(recipeBM.getTitle())
                 .isPresent();
     }
 
@@ -62,4 +64,30 @@ public class RecipeService {
                 .collect(Collectors.toList());
 
     }
+
+//    public RecipeBM processPhotoUploads (RecipeBM recipeBM) {
+//
+//        final UUID recipeBMTemporaryId = recipeBM.getTempRecipeId();
+//
+////        final List<PhotoEntity> temporaryPhotoEntities = recipeBM.getPhotoUploadDTOS().stream()
+////                .filter(dto -> {
+////                    final MultipartFile file = dto.getFile();
+////                    return file != null &&
+////                           !file.isEmpty() &&
+////                           PhotoExtensionValidator.validate(file);
+//                })
+//                .map(PhotoEntity::fromDto)
+//                .map(tpe -> tpe.setRecipeBMId(recipeBMTemporaryId))
+//                .toList();
+
+//        temporaryPhotoRepository.saveAll(temporaryPhotoEntities);
+//
+//        var temporaryPhotoDTOS = temporaryPhotoRepository.findAllByRecipeBMId(recipeBMTemporaryId).stream()
+//                .map(SavedPhotoDTO::fromEntity)
+//                .toList();
+//        recipeBM.setTemporaryPhotos(temporaryPhotoDTOS);
+//        recipeBM.setPhotoUploadDTOS(new ArrayList<>());
+//
+//        return recipeBM;
+//    }
 }

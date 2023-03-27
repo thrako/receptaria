@@ -6,14 +6,13 @@ import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-@EnableWebSecurity
 public class SecurityConfiguration {
 
     @Bean
@@ -21,21 +20,27 @@ public class SecurityConfiguration {
 
         httpSecurity
             .authorizeHttpRequests()
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                .requestMatchers("/static/images/uploads/**").permitAll()
-                .requestMatchers("/", "/login", "/registration", "/registration/success", "/test", "/api/test").permitAll()
-                .anyRequest().authenticated()
-                .and()
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
+                    .permitAll()
+                .requestMatchers("/", "/test", "/api/test")
+                    .permitAll()
+                .requestMatchers("/login", "/registration", "/registration/success")
+                    .anonymous()
+                .anyRequest()
+                    .authenticated()
+            .and()
                 .formLogin()
                     .loginPage("/login")
                     .usernameParameter("email")
                     .passwordParameter("password")
                     .defaultSuccessUrl("/users/me")
-                    .failureForwardUrl("/login")
+                    .failureUrl("/login?error=true")
             .and()
-                .logout().deleteCookies("JSESSIONID").clearAuthentication(true).invalidateHttpSession(true)
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/")
+                .logout()
+                    .logoutUrl("/logout")
+                    .deleteCookies("JSESSIONID")
+                    .clearAuthentication(true)
+                    .invalidateHttpSession(true)
         ;
 
         return httpSecurity.build();
@@ -46,6 +51,7 @@ public class SecurityConfiguration {
     public PasswordEncoder passwordEncoder () {
 
         return Pbkdf2PasswordEncoder.defaultsForSpringSecurity_v5_8();
+
     }
 
     @Bean

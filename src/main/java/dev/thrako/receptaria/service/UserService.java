@@ -4,7 +4,7 @@ import dev.thrako.receptaria.constant.Role;
 import dev.thrako.receptaria.model.recipe.dto.RecipeShortDTO;
 import dev.thrako.receptaria.model.user.UserEntity;
 import dev.thrako.receptaria.model.user.dto.UserProfileDTO;
-import dev.thrako.receptaria.model.user.dto.UserRegistrationDTO;
+import dev.thrako.receptaria.model.user.dto.UserRegistrationBM;
 import dev.thrako.receptaria.repository.RecipeRepository;
 import dev.thrako.receptaria.repository.RoleRepository;
 import dev.thrako.receptaria.repository.UserRepository;
@@ -55,7 +55,7 @@ public class UserService {
         return this.userRepository.getUserByEmail(principal.getName());
     }
 
-    public boolean register (UserRegistrationDTO userDTO) {
+    public boolean register (UserRegistrationBM userDTO) {
 
         UserEntity userEntity = this.userMapper.map(userDTO, UserEntity.class);
         userEntity.setPassword(encoder.encode(userDTO.getPassword()));
@@ -93,7 +93,12 @@ public class UserService {
 //                                .setCoverPhoto(recipe.getPhotos()
 //                                        .stream()
 //                                        .findFirst()
-//                                        .map(photo -> new PhotoDTO(new File(photo.getUrl()))).orElse(null))
+//                                        .map(photo -> new SavedPhotoDTO(new File(photo.getUrl()))).orElse(null))
                         ).collect(Collectors.toSet()));
+    }
+
+    public boolean existsByEmail (String email) {
+
+        return this.userRepository.existsByEmail(email);
     }
 }

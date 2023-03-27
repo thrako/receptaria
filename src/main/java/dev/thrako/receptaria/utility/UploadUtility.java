@@ -1,7 +1,7 @@
 package dev.thrako.receptaria.utility;
 
 import dev.thrako.receptaria.exception.NotSupportedMediaTypeException;
-import dev.thrako.receptaria.model.photo.dto.PhotoUploadDTO;
+import dev.thrako.receptaria.model.photo.dto.PhotoBM;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -25,7 +25,7 @@ public class UploadUtility {
         throw new UnsupportedOperationException();
     }
 
-    public static String getDateTimePrefixedURL (MultipartFile multipartFile) {
+    public static String uploadAndGetURL (MultipartFile multipartFile) {
 
         String originalFilename = Optional.ofNullable(multipartFile.getOriginalFilename()).orElse("unnamed");
 
@@ -41,12 +41,22 @@ public class UploadUtility {
         String dateTimePrefixedName = new SimpleDateFormat(DATE_FORMAT + "'_" + filename + extension + "'")
                 .format(new Date());
 
-        return UPLOAD_DIR + dateTimePrefixedName;
+        String url = UPLOAD_DIR + dateTimePrefixedName;
+
+        final Path saveToPath = Paths.get(url);
+
+        try (final InputStream inputStream = multipartFile.getInputStream()) {
+            Files.copy(inputStream, saveToPath);
+            return url;
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage(), e.getCause());
+        }
+
     }
 
-    public static List<PhotoUploadDTO> getDTOList (Collection<MultipartFile> multipartFiles) throws IOException {
+    public static List<PhotoBM> getDTOList (Collection<MultipartFile> multipartFiles) throws IOException {
 
-        List<PhotoUploadDTO> photoDTOS = new ArrayList<>();
+        List<PhotoBM> photoDTOS = new ArrayList<>();
 
         for (var multipartFile : multipartFiles) {
 
@@ -56,30 +66,17 @@ public class UploadUtility {
 
             String url;
             try {
-                url = UploadUtility.getDateTimePrefixedURL(multipartFile);
+                url = UploadUtility.uploadAndGetURL(multipartFile);
             } catch (NotSupportedMediaTypeException e) {
                 System.out.println(e.getMessage());
                 continue;
             }
 
-            final PhotoUploadDTO photoDTO = new PhotoUploadDTO(url, multipartFile);
-            photoDTOS.add(photoDTO);
+//            final PhotoBM photoDTO = new PhotoBM(url, multipartFile);
+//            photoDTOS.add(photoDTO);
         }
 
         return photoDTOS;
-    }
-
-    public static boolean uploadPhoto(PhotoUploadDTO photoDTO) {
-
-        final Path saveToPath = Paths.get(photoDTO.getUrl());
-        final MultipartFile multipartFile = photoDTO.getMultipartFile();
-
-        try (final InputStream inputStream = multipartFile.getInputStream()) {
-            Files.copy(inputStream, saveToPath);
-            return true;
-        } catch (IOException ignored) {
-            return false;
-        }
     }
 
 }

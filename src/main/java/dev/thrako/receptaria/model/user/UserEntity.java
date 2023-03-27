@@ -7,11 +7,15 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static dev.thrako.receptaria.constant.Constants.ROLE_PREFIX;
 
 @Getter
 @Setter
@@ -79,5 +83,12 @@ public class UserEntity {
         public boolean unlikeRecipe (RecipeEntity recipe) {
 
                 return this.likedRecipes.remove(recipe);
+        }
+
+        public List<GrantedAuthority> getRolesArray () {
+
+                return AuthorityUtils.createAuthorityList(this.roles.stream()
+                        .map(entity -> ROLE_PREFIX + entity.getRole().name())
+                        .toArray(String[]::new));
         }
 }

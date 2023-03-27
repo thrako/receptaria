@@ -6,17 +6,18 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:fragment="head">
-
+<th:block th:fragment="head-include">
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Receptaria</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="/images/favicon.png">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</th:block>
+    <title>Receptaria</title>
 
 </head>
 
@@ -26,12 +27,12 @@
         class="header"
 >
     <div th:fragment="login-panel" class="login-panel">
-        <div sec:authorize="isAuthenticated() == false"
+        <div sec:authorize="isAnonymous()"
              class="signup">
             <a th:href="@{/registration}" class="sign-up">Sign up</a>
         </div>
 
-        <div sec:authorize="isAuthenticated() == false"
+        <div sec:authorize="isAnonymous()"
              class="login">
             <a th:href="@{/login}" class="login">Login</a>
         </div>
@@ -64,7 +65,7 @@
 
 <nav th:fragment="leftbar" class="left-bar">
     <div sec:authorize="isAuthenticated()" class="left-link-ctr">
-        <a th:href="@{/recipes/all}" href=#>
+        <a th:href="@{/recipes/all}">
             <span class="dot">&nbsp;</span>
             <span th:text="'All Recipes'">Link</span>
         </a>
@@ -88,7 +89,7 @@
 
 <div th:fragment="content" class="content">Some content</div>
 
-<nav th:fragment="rightbar" class="right-bar">Right Panel</nav>
+<nav th:fragment="rightbar" class="right-bar">&nbsp;</nav>
 
 <footer th:fragment="footer" class="footer">
     <a th:href="@{/terms}">Terms & Privacy</a>

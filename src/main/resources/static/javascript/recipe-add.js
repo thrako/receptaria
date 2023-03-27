@@ -1,51 +1,26 @@
-let fileId = 100;
-let ingredientId = document.getElementById("ingredients-count").value;
+//VARIABLES
+let fileIdx = document.getElementsByClassName("photo-box").length;
+let ingredientIdx = document.getElementsByClassName("ingredient-box").length;
+let csrfHeaderName = document.getElementById("csrf").getAttribute("name");
+let csrfHeaderToken = document.getElementById("csrf").getAttribute("value");
+
+
+//FUNCTIONS
+function ensureDefaultIngredientInputs() {
+
+    if (ingredientIdx === 0) {
+        addIngredient();
+    }
+}
 
 function addElement(parentId, elementTag, elementId, elementClass, html) {
 
     let parent = document.getElementById(parentId);
     let newElement = document.createElement(elementTag);
-    newElement.setAttribute('id', elementId);
-    newElement.setAttribute('class', elementClass)
+    newElement.setAttribute("id", elementId);
+    newElement.setAttribute("class", elementClass)
     newElement.innerHTML = html;
     parent.appendChild(newElement);
-}
-
-function addFile() {
-
-    fileId++;
-    let html =
-        `<div class="upload-file">
-            <div><span>Image:</span></div>
-            <div>
-                <input type="file" accept="image/*" name="photo-file" class="photo-file" id="file-${fileId}">
-            </div>
-            <div class="align-sign-minus"><input class="sign-minus" type="button" value="X" onclick="removeElement('files-${fileId}')"></div>
-        </div>
-        <div class="upload-description">
-            <span class="upload-description-lbl">Description:</span>
-            <div class="upload-description-text">
-                <input type="text" name="photo-description" class="photo-description">
-            </div>
-        </div>
-        <div class="upload-primary">
-            <div class="upload-primary-lbl"><span>Primary:</span></div>
-            <div class="upload-primary-radio"><input type="radio" name="photo-primary" value="file-${fileId}"></div>
-        </div>`
-
-    addElement('photos', 'div', 'files-' + fileId, 'upload-photo', html);
-}
-
-function addIngredient() {
-
-    ingredientId++;
-    let html =
-        `<input class="ingredient-name" type="text" id="ingredient-name-${ingredientId}" name="ingredientDTOS[${ingredientId}].ingredientName">` +
-        `<input class="ingredient-quantity" type="text" id="ingredient-quantity-${ingredientId}" name="ingredientDTOS[${ingredientId}].quantity">` +
-        `<input class="ingredient-unit" list="units" id="ingredient-unit-${ingredientId}" name="ingredientDTOS[${ingredientId}].unitName">` +
-        `<input class="sign-minus" type="button" value="X" onclick="removeElement('ingredient-box-${ingredientId}')">`;
-
-    addElement('ingredient-boxes', 'div', 'ingredient-box-' + ingredientId, 'ingredient-box', html);
 }
 
 function removeElement(elementId) {
@@ -54,12 +29,37 @@ function removeElement(elementId) {
     element.parentNode.removeChild(element);
 }
 
-let titleInput = document.getElementById("title-input");
+function addIngredient() {
 
-checkTitle = (event) => {
+    ingredientIdx++;
+    let html =
+        `
+        <div class="grid-ingredient angle-border">
+            <input type="text" 
+                   id="ingredient-name-${ingredientIdx}" class="ingredient-name left" 
+                   name="ingredientDTOS[${ingredientIdx}].ingredientName"
+                   placeholder="Name">
+            <input type="text" 
+                   id="ingredient-quantity-${ingredientIdx}" class="ingredient-quantity center" 
+                   name="ingredientDTOS[${ingredientIdx}].quantity"
+                   placeholder="Quantity">
+            <input list="units" 
+                   id="ingredient-unit-${ingredientIdx}" class="ingredient-unit right" 
+                   name="ingredientDTOS[${ingredientIdx}].unitName"
+                   placeholder="Unit">
+            <input type="button" 
+                   class="sign-x btn-x" 
+                   value="X" onclick="removeElement('ingredient-box-${ingredientIdx}')">
+        </div>
+        `;
+
+    addElement("ingredient-boxes", "div", `ingredient-box-${ingredientIdx}`, "ingredient-box", html);
+}
+
+function checkTitle(event) {
     let recipeTitle = event.target.value;
 
-    if (recipeTitle > 3) {
+    if (recipeTitle.length > 2) {
 
         let titleErrorElement = document.getElementById("title-error");
 
@@ -75,29 +75,213 @@ checkTitle = (event) => {
             .then(isAvailable => {
                 if (isAvailable === false) {
                     let smallElement = document.createElement("small");
-                    smallElement.setAttribute("class", "error-text")
+                    smallElement.className = "error-text";
                     smallElement.innerText = "You already have recipe with the same title.";
                     titleErrorElement.appendChild(smallElement);
                 }
             })
             .catch(error => console.log(error));
     }
-};
+}
 
-titleInput.addEventListener("change", checkTitle);
+function uploadPhoto() {
 
 
-// let addFormElement = document.getElementById("add-form");
-//
-// function postData(event) {
-//
-//     event.preventDefault();
-//     let formData = new FormData(addFormElement);
-//     console.log(formData);
-//     let entries = Object.fromEntries(formData);
-//     console.log(entries);
-// }
-//
-// let submitBtnElement = document.getElementById("submit-btn-add-recipe");
-// submitBtnElement.addEventListener("click", postData);
+    let fileData = document.getElementById("new-photo-file-data").files[0];
+    let description = document.getElementById("new-photo-description-text").value;
+    let recipeBMId = document.getElementById("recipe-bm-id").getAttribute("value");
 
+    let newFileErrorCtr = document.getElementById("new-photo-file-error-ctr")
+    let newDescriptionErrorCtr = document.getElementById("new-photo-description-error-ctr")
+
+    newFileErrorCtr.replaceChildren();
+    newDescriptionErrorCtr.replaceChildren()
+
+    let formData = new FormData();
+    formData.append("fileData", fileData);
+    formData.append("description", description);
+    formData.append("recipeBMId", recipeBMId);
+
+    fetch("/api/photos/temp/upload", {
+        method: "POST",
+        headers: {
+            [csrfHeaderName]: csrfHeaderToken
+        },
+        body: formData
+    })
+        .then(response => {
+
+            return response.ok
+                ? response.json().then(data => {
+                    addPhoto(data);
+
+                })
+                : response.json().then(data => {
+
+                    if (data.errors.fileData) {
+                        let listElement = document.createElement("ul");
+                        for (err of data.errors.fileData) {
+                            let element = document.createElement("li");
+                            element.innerText = err;
+                            listElement.appendChild(element)
+                        }
+                        newFileErrorCtr.appendChild(listElement);
+                    }
+
+                    if (data.errors.description) {
+                        let listElement = document.createElement("ul");
+                        for (err of data.errors.description) {
+                            let element = document.createElement("li");
+                            element.innerText = err;
+                            listElement.appendChild(element)
+                        }
+                        newDescriptionErrorCtr.appendChild(listElement);
+                    }
+                });
+        });
+}
+
+function addPhoto(photo) {
+    clearPhotoInput();
+
+    let html =
+        `
+        <div id="photo-box-${fileIdx}" class="grid-photo">
+            <input type="hidden" id="photo-id-${fileIdx}" name="recipeBM.savedPhotoDTOS[${fileIdx}].id}" value="${photo.id}">
+            <input type="hidden" name="recipeBM.savedPhotoDTOS[${fileIdx}].recipeBMId}" value="${photo.recipeBMId}">
+            
+            <label class="grid-photo-left">
+                <input id="photo-primary-${photo.id}" class="grid-photo-left photo-primary" 
+                       name="primaryPhotoId" value="${photo.id}" 
+                       type="radio">
+            </label>
+        
+            <div class="grid-photo-center">
+                <img class="photo-file" src=${photo.url} alt="${photo.description}">
+            </div>
+            
+            <div class="grid-photo-right align-sign-minus">
+                <input type="button" 
+                       class="sign-x" 
+                       value="X" onclick="removePhoto('${fileIdx}')">
+            </div>
+            
+            <div class="grid-photo-bottom photo-filename">${photo.filename}</div>    
+        </div>
+        `;
+
+
+    addElement("photos-ctr",
+        "div",
+        `photo-box-${fileIdx++}`,
+        "photo-box",
+        html)
+    ;
+}
+
+function clearPhotoInput() {
+
+    let parent = document.getElementById("new-photo-ctr");
+
+    parent.innerHTML =
+        `
+        <div class="grid-label-input-ctr lbl80 new-photo-file">
+            <label class="grid-label">File:</label>
+            <div class="angle-border grid-input">
+                <input id="new-photo-file-data" class="new-photo-file-data"
+                       type="file" accept="image/*">
+            </div>
+        </div>
+        <div class="grid-label-input-ctr lbl80">
+            <div id="new-photo-file-error-ctr" class="grid-input errors-ctr"></div>
+        </div>
+
+        <div class="grid-label-input-ctr lbl80">
+            <label for="new-photo-description-text"
+                   id="new-photo-description-lbl" class="grid-label">Description:</label>
+            <div class="grid-input angle-border">
+                <input id="new-photo-description-text"
+                       type="text" placeholder="Photo Description">
+            </div>
+        </div>
+        <div class="grid-label-input-ctr lbl80">
+            <div id="new-photo-description-error-ctr" class="grid-input errors-ctr"></div>
+        </div>
+
+        <div class="grid-label-input-ctr lbl80">
+            <input id="upload-btn-new-photo" class="grid-input submit-btn" type="button" value="Upload"
+                   onclick="uploadPhoto();">
+        </div>
+    `;
+
+}
+
+function removePhoto(idx) {
+
+    let parentElement = document.getElementById("photos-ctr");
+    let childElement = document.getElementById(`photo-box-${idx}`);
+    let id = document.getElementById(`photo-id-${idx}`).value;
+
+    if (!childElement) {
+        return;
+    }
+
+    fetch(`/api/photos/temp/delete/${id}`, {
+        method: "DELETE",
+        headers: {
+            [csrfHeaderName]: csrfHeaderToken
+        }
+    })
+        .then(response => {
+
+            if (response.ok) {
+                parentElement.removeChild(childElement);
+            } else {
+                response.json().then(data => console.log(data));
+            }
+
+        });
+
+}
+
+function submitRenumbered(event) {
+
+    event.preventDefault();
+
+    renumberPhotoBoxes();
+    renumberIngredientBoxes();
+
+    document.getElementById("recipe-add-form").submit();
+}
+
+function renumberPhotoBoxes() {
+    let photoBoxes = document.getElementsByClassName("photo-box");
+    let photoFiles = document.getElementsByClassName("photo-file");
+    let photoDescriptions = document.getElementsByClassName("photo-filename");
+
+    for (let idx = 0; idx < photoBoxes.length; idx++) {
+        photoFiles[idx].name = `photoUploadDTOS[${idx}].file`
+        photoDescriptions[idx].name = `photoUploadDTOS[${idx}].description`
+    }
+}
+
+function renumberIngredientBoxes() {
+    let ingredientBoxes = document.getElementsByClassName("ingredient-box");
+    let ingredientNames = document.getElementsByClassName("ingredient-name");
+    let ingredientQuantities = document.getElementsByClassName("ingredient-quantity");
+    let ingredientUnits = document.getElementsByClassName("ingredient-unit");
+
+    for (let idx = 0; idx < ingredientBoxes.length; idx++) {
+        ingredientNames[idx].name = `ingredientDTOS[${idx}].ingredientName`;
+        ingredientQuantities[idx].name = `ingredientDTOS[${idx}].quantity`;
+        ingredientUnits[idx].name = `ingredientDTOS[${idx}].unitName`;
+    }
+}
+
+
+//EVENT LISTENERS
+window.addEventListener("load", ensureDefaultIngredientInputs);
+
+document.getElementById("title-input").addEventListener("change", checkTitle);
+
+document.getElementById("submit-btn-add-recipe").addEventListener("click", submitRenumbered);

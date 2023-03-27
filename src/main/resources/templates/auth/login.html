@@ -3,7 +3,10 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{general.html :: head}">
+<head>
+    <th:block th:insert="~{general.html :: head-include}">&nbsp;</th:block>
+    <link rel="stylesheet" th:href="@{/css/login.css}"/>
+    <title>Login</title>
 </head>
 
 <body>
@@ -11,58 +14,50 @@
 <header th:replace="~{general.html :: header}">&nbsp;</header>
 
 <nav th:replace="~{general.html :: leftbar}">&nbsp;</nav>
+
 <div class="content">
-    <p>Please enter your credentials in the form below.</p>
+
+    <h4 th:if="${param.logout}" th:text="'You have been successfully logged out.'">Log out message</h4>
     <br>
-    <form th:action="@{/login}"
-          th:method="post"
-          th:object="${userLoginDTO}"
-          class="reg-form">
-<!--          <div th:if="${#fields.hasErrors()}" th:text="${#fields.errors}">Some Text</div>-->
 
-        <div class="reg-input">
-            <div class="input-label">
-                <label for="email">Email:</label>
+    <p>Please enter your credentials in the form below<span th:if="${param.logout}"
+                                                            th:text="' to log in again'">&nbsp;</span>:</p>
+    <br>
+    <div class="max-width-800px">
+        <form id="login-form" class="login-form"
+              th:action="@{/login}" th:method="post">
+
+            <div class="grid-label-input-ctr">
+                <div class="grid-label">
+                    <label for="email">Email:</label>
+                </div>
+                <div class="angle-border grid-input">
+                    <input id="email" name="email"
+                           type="email"
+                           placeholder='e.g., "user@example.com"'
+                           required>
+                </div>
             </div>
-            <div class="input-field">
-                <input type="email"
-                       th:field="*{email}"
-                       placeholder="Enter Email"
-                       name="email"
-                       id="email"
-                       required
-                >
+
+            <div class="grid-label-input-ctr">
+                <div class="grid-label">
+                    <label for="password">Password:</label>
+                </div>
+                <div class="angle-border grid-input">
+                    <input id="password" name="password"
+                           type="password"
+                           placeholder='e.g., "1234"'
+                           required>
+                </div>
             </div>
-            <div class="global-errors-ctr">
-
+            <div class="grid-label-input-ctr">
+                <h4 th:if="${param.error}" th:text="'Bad Credentials'" class="error-text grid-input">Error</h4>
             </div>
-        </div>
-
-        <div class="reg-input">
-            <div class="input-label">
-                <label for="password">Password:</label>
-            </div>
-            <div class="input-field">
-                <input type="password"
-                       th:field="*{password}"
-                       placeholder="Enter Password"
-                       name="password"
-                       id="password"
-                       required
-                >
-            </div>
-            <div class="global-errors-ctr">
-                <ul th:if="${#fields.hasErrors('*')}">
-                    <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Error</li>
-                </ul>
-            </div>
-        </div>
-
-
-        <button type="submit" class="register-btn">Login</button>
-
-    </form>
-
+        </form>
+        <button id="login-submit-btn" class="submit-btn"
+                type="submit" form="login-form">Login
+        </button>
+    </div>
 </div>
 
 <nav th:replace="~{general.html :: rightbar}">&nbsp;</nav>
