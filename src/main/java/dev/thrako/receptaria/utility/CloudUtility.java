@@ -22,8 +22,7 @@ public class CloudUtility {
 
     public void delete (String publicId) throws IOException {
 
-        final Map destroyMap = this.cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
-        System.out.println(destroyMap);
+        this.cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
     }
 
     public UploadedPhotoDTO saveTemporary (PhotoBM photoBM) {

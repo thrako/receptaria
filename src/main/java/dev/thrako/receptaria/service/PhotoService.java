@@ -1,5 +1,6 @@
 package dev.thrako.receptaria.service;
 
+import dev.thrako.receptaria.exception.CloudException;
 import dev.thrako.receptaria.exception.NoSuchTempPhotoException;
 import dev.thrako.receptaria.model.photo.TempPhotoEntity;
 import dev.thrako.receptaria.model.photo.dto.UploadedPhotoDTO;
@@ -14,8 +15,11 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import static dev.thrako.receptaria.constant.Constants.FORMAT_NO_SUCH_TEMP_PHOTO;
+
 @Service
 public class PhotoService {
+
 
     private final PhotoRepository photoRepository;
     private final TempPhotoRepository tempPhotoRepository;
@@ -44,13 +48,12 @@ public class PhotoService {
 
         final Optional<TempPhotoEntity> optionalTempPhoto = this.tempPhotoRepository.findById(id);
         final TempPhotoEntity tempPhotoEntity = optionalTempPhoto
-                .orElseThrow(() -> new NoSuchTempPhotoException("Attempt to delete temporary photo with non-existing id: " + id));
+                .orElseThrow(() -> new NoSuchTempPhotoException(FORMAT_NO_SUCH_TEMP_PHOTO.formatted(id)));
         try {
             this.cloudUtility.delete(tempPhotoEntity.getPublicId()) ;
             this.tempPhotoRepository.delete(tempPhotoEntity);
         } catch (IOException e) {
-            throw new RuntimeException(e);
-            //TODO throw custom exception
+            throw new CloudException(e);
         }
 
     }

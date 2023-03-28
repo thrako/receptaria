@@ -2,16 +2,20 @@ package dev.thrako.receptaria.controller;
 
 import dev.thrako.receptaria.constant.Constants;
 import dev.thrako.receptaria.model.user.UserEntity;
+import dev.thrako.receptaria.security.CurrentUser;
 import dev.thrako.receptaria.service.UserService;
 import dev.thrako.receptaria.model.user.dto.UserRegistrationBM;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
@@ -40,8 +44,6 @@ public class UserController {
     @GetMapping("/registration")
     public String register (Model model) {
 
-        model.addAttribute("validationConstraints", Constants.Registration.constraints);
-        model.addAttribute("validationMessages", Constants.Registration.messages);
 
         return "auth/registration";
     }
@@ -100,11 +102,9 @@ public class UserController {
     }
 
     @GetMapping(value = "/users/me", consumes = MediaType.ALL_VALUE)
-    public String ownProfile (Model model, Principal principal) {
+    public String ownProfile (Model model, @AuthenticationPrincipal CurrentUser currentUser) {
 
-        final UserEntity userEntity = userService.getPrincipalEntity(principal.getName());
-
-        model.addAttribute("user", userEntity);
+        model.addAttribute("displayName", currentUser.getDisplayName());
 
         return "profile/owner";
     }
@@ -113,14 +113,12 @@ public class UserController {
     public String userProfile (Model model,
                                @PathVariable Long id) {
 
-        Optional<UserEntity> userOpt = this.userService.findUserById(id);
+        final String displayName = this.userService
+                .findUserById(id)
+                .map(UserEntity::getDisplayName)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No such user exists!"));
 
-        if (userOpt.isEmpty()) {
-            return "error/404";
-        }
-
-        final UserEntity userEntity = userOpt.get();
-        model.addAttribute("user", userEntity);
+        model.addAttribute("displayName", displayName);
 
         return "profile/other";
     }

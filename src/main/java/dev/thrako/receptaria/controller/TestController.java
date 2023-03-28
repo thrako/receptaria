@@ -16,4 +16,10 @@ public class TestController {
         return "test";
     }
 
+    @GetMapping("/error500")
+    public String error () {
+
+        throw new RuntimeException();
+    }
+
 }

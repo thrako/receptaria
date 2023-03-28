@@ -12,7 +12,8 @@
 
     <nav th:replace="~{general.html :: leftbar}">&nbsp;</nav>
     <div class="content">
-        <p>File not found!</p>
+        <p th:text="${T(dev.thrako.receptaria.constant.CustomErrors).NOT_FOUND.message}">Some error</p>
+        <br>
         <p><a href="/">Go Home</a></p>
     </div>
     <nav th:replace="~{general.html :: rightbar}">&nbsp;</nav>

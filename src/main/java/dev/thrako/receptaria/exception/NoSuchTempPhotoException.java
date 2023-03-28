@@ -6,5 +6,6 @@ public class NoSuchTempPhotoException extends NoSuchElementException {
 
     public NoSuchTempPhotoException (String s) {
 
+        super(s);
     }
 }

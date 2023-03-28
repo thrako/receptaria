@@ -1,5 +1,6 @@
 package dev.thrako.receptaria.model.recipe.dto;
 
+import dev.thrako.receptaria.constant.VisibilityStatus;
 import dev.thrako.receptaria.model.ingredient.dto.IngredientDTO;
 import dev.thrako.receptaria.model.photo.dto.SavedPhotoDTO;
 import jakarta.validation.Valid;
@@ -48,6 +49,9 @@ public class RecipeBM {
 
     @NotEmpty(message = "Description is required.")
     private String description;
+
+    @NotNull(message = "Visibility status is required.")
+    private VisibilityStatus visibilityStatus;
 
     private Long authorId;
 

@@ -108,40 +108,37 @@ function uploadPhoto() {
             [csrfHeaderName]: csrfHeaderToken
         },
         body: formData
-    })
-        .then(response => {
-
+    }).then(response => {
             return response.ok
-                ? response.json().then(data => {
-                    addPhoto(data);
-
-                })
-                : response.json().then(data => {
-
-                    if (data.errors.fileData) {
-                        let listElement = document.createElement("ul");
-                        for (err of data.errors.fileData) {
-                            let element = document.createElement("li");
-                            element.innerText = err;
-                            listElement.appendChild(element)
-                        }
-                        newFileErrorCtr.appendChild(listElement);
-                    }
-
-                    if (data.errors.description) {
-                        let listElement = document.createElement("ul");
-                        for (err of data.errors.description) {
-                            let element = document.createElement("li");
-                            element.innerText = err;
-                            listElement.appendChild(element)
-                        }
-                        newDescriptionErrorCtr.appendChild(listElement);
-                    }
-                });
+                ? response.json().then(data => addPhoto(data))
+                : response.json().then(data => showErrors(data));
         });
+
+    function showErrors(data) {
+        if (data.errors.fileData) {
+            let listElement = document.createElement("ul");
+            for (err of data.errors.fileData) {
+                let element = document.createElement("li");
+                element.innerText = err;
+                listElement.appendChild(element)
+            }
+            newFileErrorCtr.appendChild(listElement);
+        }
+
+        if (data.errors.description) {
+            let listElement = document.createElement("ul");
+            for (err of data.errors.description) {
+                let element = document.createElement("li");
+                element.innerText = err;
+                listElement.appendChild(element)
+            }
+            newDescriptionErrorCtr.appendChild(listElement);
+        }
+    }
 }
 
 function addPhoto(photo) {
+
     clearPhotoInput();
 
     let html =
@@ -218,6 +215,9 @@ function clearPhotoInput() {
 
 function removePhoto(idx) {
 
+    let errorsElement = document.getElementById("photos-error-ctr");
+    errorsElement.replaceChildren();
+
     let parentElement = document.getElementById("photos-ctr");
     let childElement = document.getElementById(`photo-box-${idx}`);
     let id = document.getElementById(`photo-id-${idx}`).value;
@@ -231,16 +231,21 @@ function removePhoto(idx) {
         headers: {
             [csrfHeaderName]: csrfHeaderToken
         }
-    })
-        .then(response => {
+    }).then(response => process(response));
 
-            if (response.ok) {
-                parentElement.removeChild(childElement);
-            } else {
-                response.json().then(data => console.log(data));
-            }
-
-        });
+    function process(response) {
+        if (response.ok) {
+            parentElement.removeChild(childElement);
+        } else {
+            response.json().then(data => {
+                let listItem = document.createElement("li");
+                listItem.innerText = data.message;
+                let unorderedList = document.createElement("ul");
+                unorderedList.appendChild(listItem);
+                errorsElement.appendChild(unorderedList);
+            });
+        }
+    }
 
 }
 

@@ -17,8 +17,12 @@
 <div class="content">
     <p>Please fill in and submit the form below:</p>
     <br>
-    <div class="max-width-800px">
-        <form id="reg-form"
+
+<!--    <div class="content-vw shadowed">-->
+
+    <div class="content-vw shadowed">
+        <div class="form-top"></div>
+        <form id="reg-form" class="max-width-800px registration-form"
               th:method="POST" th:action="@{/registration}"
               th:object="${userRegistrationBM}">
 
@@ -150,14 +154,16 @@
                 </div>
             </div>
 
+            <br>
+            <p>By creating an account you agree to our <a th:href="@{/terms}"><u>Terms & Privacy</u></a>.</p>
+            <!--Submit-->
+            <button type="submit" form="reg-form" class="submit-btn">Register</button>
+            <div class="registration sign-in-para">
+                <p>Already have an account? <a th:href="@{/login}"><u>Sign in</u></a>.</p>
+            </div>
+
         </form>
-        <br>
-        <p>By creating an account you agree to our <a th:href="@{/terms}"><u>Terms & Privacy</u></a>.</p>
-        <!--Submit-->
-        <button type="submit" form="reg-form" class="submit-btn">Register</button>
-        <div class="registration sign-in-para">
-            <p>Already have an account? <a th:href="@{/login}"><u>Sign in</u></a>.</p>
-        </div>
+
     </div>
 </div>
 

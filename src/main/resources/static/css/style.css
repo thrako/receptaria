@@ -3,7 +3,7 @@
 :root {
     accent-color          : olivedrab;
     --main-font-size      : 16px;
-    --color-primary       : olivedrab;
+    --color-primary       : rgba(107, 142, 35, .9);
     --color-danger        : indianred;
     --color-darkgrey      : #4B5347;
     --color-teal          : #304B59;
@@ -238,6 +238,47 @@ fieldset legend .legend-lbl {
     padding: 0 0.5rem;
 }
 
+select {
+
+    appearance: none;
+    outline: 0;
+    border: 3px solid var(--color-primary);
+    border-top : none;
+    border-right : none;
+    box-shadow: none;
+
+    flex: 1;
+    padding: 0 0 0 10px;
+    color: black;
+    background-color: white;
+    background-image: none;
+    cursor: pointer;
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+.select {
+    position: relative;
+    display: flex;
+    width: 70%;
+    height: 40px;
+
+    overflow: hidden;
+}
+/* Arrow */
+.select::after {
+    content: '\25BD';
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    padding: 8px;
+    color : black;
+    pointer-events: none;
+}
+
+
 #root, #__next {
     isolation : isolate;
 }
@@ -332,17 +373,12 @@ fieldset legend .legend-lbl {
 
 .submit-btn {
     padding          : 14px 20px;
-
     margin           : 8px 0;
-
     border           : none;
-
     width            : 100%;
-
-    background-color : var(--color-primary);
+    background-color: rgb(107 142 35);
     color            : white;
     opacity          : 0.9;
-
     cursor           : pointer;
 }
 
@@ -428,8 +464,6 @@ fieldset legend .legend-lbl {
     width     : 100%;
 }
 
-
-
 .form-top {
     width         : 100%;
     height        : 50px;
@@ -437,11 +471,15 @@ fieldset legend .legend-lbl {
     border-radius : 5px 5px 0 0;
 }
 
-.add-form {
+.add-form,
+.registration-form {
     padding : 2.5vw;
 }
 
-
+.shadowed {
+    box-shadow    : 10px 10px 40px rgba(0, 0, 0, 0.15);
+    border-radius : 0 0 10px 10px;
+}
 
 .photo-box {
     display : inline;
@@ -541,17 +579,15 @@ fieldset legend .legend-lbl {
 }
 
 .ingredient-box:has(.sign-x:hover) {
-   outline: 2px var(--color-danger) dashed;
+    outline: 2px var(--color-danger) dashed;
 }
 
 .max-width-800px {
     max-width : 800px;
 }
 
-.shadowed {
-    box-shadow    : 10px 10px 40px rgba(0, 0, 0, 0.15);
-    border-radius : 0 0 10px 10px;
-}
+
+
 
 .registration.sign-in-para {
     text-align : center;

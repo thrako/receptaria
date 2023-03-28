@@ -26,16 +26,18 @@ public class RecipeController {
 
     private final RecipeService recipeService;
     private final UnitService unitService;
-    private final TempPhotoRepository tempPhotoRepository;
+    private final TempPhotoService tempPhotoService;
+
 
     @Autowired
     public RecipeController (RecipeService recipeService,
                              UnitService unitService,
-                             TempPhotoRepository tempPhotoRepository) {
+                             TempPhotoService tempPhotoService) {
 
         this.recipeService = recipeService;
         this.unitService = unitService;
-        this.tempPhotoRepository = tempPhotoRepository;
+        this.tempPhotoService = tempPhotoService;
+        ;
     }
 
 
@@ -71,11 +73,7 @@ public class RecipeController {
                              RedirectAttributes redirectAttrs,
                              @AuthenticationPrincipal UserDetails principal) {
 
-        recipeBM.setSavedPhotoDTOS(tempPhotoRepository.findAllByRecipeBMId(recipeBM.getTempRecipeId())
-                .stream()
-                .map(SavedPhotoDTO::fromTempEntity)
-                .map(dto -> dto.setPrimary(recipeBM.getPrimaryPhotoId().equals(dto.getId())))
-                .toList());
+        recipeBM.setSavedPhotoDTOS(this.tempPhotoService.getSavedPhotos(recipeBM.getTempRecipeId(), recipeBM.getPrimaryPhotoId()));
 
         if (bindingResult.hasErrors()) {
             redirectAttrs.addFlashAttribute("recipeBM", recipeBM);
@@ -90,6 +88,8 @@ public class RecipeController {
 
         throw new RuntimeException();
     }
+
+
 
     @GetMapping("/recipes/add-success")
     public String recipeSuccess () {

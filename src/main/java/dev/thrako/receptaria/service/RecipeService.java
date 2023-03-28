@@ -1,5 +1,6 @@
 package dev.thrako.receptaria.service;
 
+import dev.thrako.receptaria.model.photo.dto.SavedPhotoDTO;
 import dev.thrako.receptaria.model.recipe.RecipeEntity;
 import dev.thrako.receptaria.model.recipe.dto.RecipeBM;
 import dev.thrako.receptaria.model.recipe.dto.RecipeShortDTO;
@@ -57,6 +58,8 @@ public class RecipeService {
         return !this.recipeRepository.existsByAuthor_IdAndTitle(principalId, recipeTitle);
     }
 
+
+
     public List<RecipeShortDTO> getRecipeCards () {
 
         return this.recipeRepository.findAll().stream()
@@ -65,29 +68,5 @@ public class RecipeService {
 
     }
 
-//    public RecipeBM processPhotoUploads (RecipeBM recipeBM) {
-//
-//        final UUID recipeBMTemporaryId = recipeBM.getTempRecipeId();
-//
-////        final List<PhotoEntity> temporaryPhotoEntities = recipeBM.getPhotoUploadDTOS().stream()
-////                .filter(dto -> {
-////                    final MultipartFile file = dto.getFile();
-////                    return file != null &&
-////                           !file.isEmpty() &&
-////                           PhotoExtensionValidator.validate(file);
-//                })
-//                .map(PhotoEntity::fromDto)
-//                .map(tpe -> tpe.setRecipeBMId(recipeBMTemporaryId))
-//                .toList();
 
-//        temporaryPhotoRepository.saveAll(temporaryPhotoEntities);
-//
-//        var temporaryPhotoDTOS = temporaryPhotoRepository.findAllByRecipeBMId(recipeBMTemporaryId).stream()
-//                .map(SavedPhotoDTO::fromEntity)
-//                .toList();
-//        recipeBM.setTemporaryPhotos(temporaryPhotoDTOS);
-//        recipeBM.setPhotoUploadDTOS(new ArrayList<>());
-//
-//        return recipeBM;
-//    }
 }

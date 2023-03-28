@@ -53,6 +53,9 @@
             <!-- Photos -->
             <fieldset class="photos">
                 <legend><i class="legend-lbl">Photos</i></legend>
+                <!-- Global Photos Errors-->
+                <div id="photos-error-ctr" class="errors-ctr"></div>
+
                 <!-- Already Uploaded Photos -->
                 <div id="photos-ctr" class="photos-ctr">
                     <th:block th:each="savedPhoto, upStat : *{savedPhotoDTOS}">
@@ -294,13 +297,38 @@
                 </th:block>
             </fieldset>
 
+            <!-- Visibility -->
+            <fieldset class="description">
+                <legend><i class="legend-lbl">Visibility Status</i></legend>
 
+                <div class="select">
+                    <select id="visibility" class="visibility"
+                            th:field="*{visibilityStatus}">
+                        <option value="" selected>-- Please select! --</option>
+                        <th:block th:each="status : ${T(dev.thrako.receptaria.constant.VisibilityStatus).values()}">
+                            <option th:text="${#strings.capitalize(#strings.toLowerCase(status))}" th:value="${status}">
+                                &nbsp;
+                            </option>
+                        </th:block>
+                    </select>
+                </div>
+                <th:block th:each="err : ${#fields.errors('visibilityStatus')}">
+                    <div class="errors-ctr">
+                        <ul>
+                            <li th:text="${err}">Error</li>
+                        </ul>
+                    </div>
+                </th:block>
+            </fieldset>
+
+            <!-- Submit Button -->
+            <input id="submit-btn-add-recipe" class="submit-btn"
+                   type="submit" name="submit-btn" value="Submit"
+                   form="recipe-add-form">
         </form>
+
     </div>
 
-    <input id="submit-btn-add-recipe" class="submit-btn content-vw"
-           type="submit" name="submit-btn" value="Submit"
-           form="recipe-add-form">
 
 </div>
 
