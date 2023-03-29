@@ -1,12 +1,15 @@
 package dev.thrako.receptaria;
 
 import dev.thrako.receptaria.constant.Role;
+import dev.thrako.receptaria.constant.VisibilityStatus;
 import dev.thrako.receptaria.model.role.RoleEntity;
 import dev.thrako.receptaria.model.unit.UnitEntity;
 import dev.thrako.receptaria.model.user.UserEntity;
+import dev.thrako.receptaria.model.visibility.VisibilityEntity;
 import dev.thrako.receptaria.repository.RoleRepository;
 import dev.thrako.receptaria.repository.UnitRepository;
 import dev.thrako.receptaria.repository.UserRepository;
+import dev.thrako.receptaria.repository.VisibilityRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -22,16 +25,18 @@ public class InitData implements CommandLineRunner {
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
     private final UnitRepository unitRepository;
+    private final VisibilityRepository visibilityRepository;
     private final PasswordEncoder passwordEncoder;
 
     public InitData (RoleRepository roleRepository,
                      UserRepository userRepository,
                      UnitRepository unitRepository,
-                     PasswordEncoder passwordEncoder) {
+                     VisibilityRepository visibilityRepository, PasswordEncoder passwordEncoder) {
 
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.unitRepository = unitRepository;
+        this.visibilityRepository = visibilityRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -41,6 +46,7 @@ public class InitData implements CommandLineRunner {
         if (this.roleRepository.findAll().isEmpty()) initRoles();
         if (this.userRepository.findAll().isEmpty()) initUsers();
         if (this.unitRepository.findAll().isEmpty()) initUnits();
+        if (this.visibilityRepository.findAll().isEmpty()) initVisibilityStatuses();
     }
 
     public void initRoles () {
@@ -106,6 +112,13 @@ public class InitData implements CommandLineRunner {
                 )
                 .map(UnitEntity::new)
                 .toList());
+    }
+
+    private void initVisibilityStatuses () {
+        final List<VisibilityEntity> visibilityEntities = Arrays.stream(VisibilityStatus.values())
+                .map(VisibilityEntity::new)
+                .toList();
+        this.visibilityRepository.saveAllAndFlush(visibilityEntities);
     }
 
 }

@@ -448,7 +448,7 @@ select::-ms-expand {
     grid-auto-rows        : auto;
     grid-template-areas   :
         "input-label    input-field";
-    padding               : 0.5vh 0;
+    padding               : 1.5vh 0;
 }
 
 .grid-label-input-ctr.lbl80 {
@@ -533,7 +533,7 @@ select::-ms-expand {
 }
 
 .new-photo-ctr {
-    padding: 10px 0;
+    padding: 0;
 }
 
 .ingredient-box {

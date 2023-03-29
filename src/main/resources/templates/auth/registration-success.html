@@ -11,9 +11,8 @@
     <header th:replace="~{general.html :: header}">&nbsp;</header>
 
     <nav th:replace="~{general.html :: leftbar}">&nbsp;</nav>
-    <div class="content"
-         th:object="${userRegistrationDTO}">
-        Congratulations, <th:block th:text="${userRegistrationBM.displayName}"></th:block>!
+    <div class="content">
+        Congratulations, <th:block th:text="${displayName}"></th:block>!
         You have registered successfully.
         You can now log in from <a th:href="@{/login}">here</a> using your credentials!
     </div>

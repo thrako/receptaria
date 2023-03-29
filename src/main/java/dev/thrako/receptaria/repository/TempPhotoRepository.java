@@ -7,9 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.UUID;
 
-
 @Repository
 public interface TempPhotoRepository extends JpaRepository<TempPhotoEntity, Long> {
 
-    List<TempPhotoEntity> findAllByRecipeBMId (UUID recipeBMTemporaryId);
+    List<TempPhotoEntity> findAllByTempRecipeId (UUID tempRecipeId);
 }

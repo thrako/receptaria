@@ -12,7 +12,7 @@ import java.util.UUID;
 @Setter
 @Accessors(chain = true)
 @NoArgsConstructor
-public class SavedPhotoDTO {
+public class PhotoVM {
 
     private Long id;
 
@@ -24,16 +24,16 @@ public class SavedPhotoDTO {
 
     private String filename;
 
-    private UUID recipeBMId;
+    private UUID tempRecipeId;
 
-    public static SavedPhotoDTO fromTempEntity (TempPhotoEntity tempPhotoEntity) {
+    public static PhotoVM fromTempEntity (TempPhotoEntity tempPhotoEntity) {
 
-        return new SavedPhotoDTO()
+        return new PhotoVM()
                 .setId(tempPhotoEntity.getId())
                 .setPrimary(tempPhotoEntity.isPrimary())
                 .setUrl(tempPhotoEntity.getUrl())
                 .setDescription(tempPhotoEntity.getDescription())
                 .setFilename(tempPhotoEntity.getFilename())
-                .setRecipeBMId(tempPhotoEntity.getRecipeBMId());
+                .setTempRecipeId(tempPhotoEntity.getTempRecipeId());
     }
 }

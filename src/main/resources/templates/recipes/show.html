@@ -1,0 +1,34 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <th:block th:insert="~{general.html :: head-include}">&nbsp;</th:block>
+  <title th:text="recipeCard.title">Receptaria</title>
+  <meta id="csrf" hidden th:name="${_csrf.getHeaderName()}" th:value="${_csrf.getToken()}">
+</head>
+
+<body>
+
+<header th:replace="~{general.html :: header}">&nbsp;</header>
+<nav th:replace="~{general.html :: leftbar}">&nbsp;</nav>
+
+<div class="content">
+
+  <p th:text="|This is the page for recipe with id ${recipeCard.getEntityId()}|">Coming soon</p>
+  <br>
+  <p>Rest is coming soon...</p>
+
+
+</div>
+
+<nav th:replace="~{general.html :: rightbar}">&nbsp;</nav>
+<footer th:replace="~{general.html :: footer}">&nbsp;</footer>
+
+<!-- JAVA SCRIPT -->
+<script src="/javascript/recipe-add.js"></script>
+
+</body>
+
+</html>

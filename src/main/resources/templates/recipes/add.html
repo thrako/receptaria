@@ -30,6 +30,7 @@
               th:action="@{/recipes/add}" th:method="POST" enctype="multipart/form-data">
 
             <input id="recipe-bm-id" type="hidden" th:field="*{tempRecipeId}">
+            <input id="author-id" type="hidden" th:field="*{authorId}">
 
             <!-- Title -->
             <fieldset class="title">
@@ -40,14 +41,13 @@
                            type="text" th:field="*{title}"
                            placeholder="My Recipe">
                 </div>
-
-                <th:block th:each="err : ${#fields.errors('title')}">
-                    <div class="errors-ctr">
+                <div id="title-error" class="errors-ctr">
+                    <th:block th:each="err : ${#fields.errors('title')}">
                         <ul>
                             <li th:text="${err}">Error</li>
                         </ul>
-                    </div>
-                </th:block>
+                    </th:block>
+                </div>
             </fieldset>
 
             <!-- Photos -->
@@ -58,26 +58,26 @@
 
                 <!-- Already Uploaded Photos -->
                 <div id="photos-ctr" class="photos-ctr">
-                    <th:block th:each="savedPhoto, upStat : *{savedPhotoDTOS}">
+                    <th:block th:each="photoVM, upStat : *{photoVMList}">
                         <div th:id="|photo-box-${upStat.index}|" class="photo-box">
                             <div class="grid-photo">
                                 <input type="hidden"
                                        th:id="|photo-id-${upStat.index}|"
-                                       th:field="*{savedPhotoDTOS[__${upStat.index}__].id}">
+                                       th:field="*{photoVMList[__${upStat.index}__].id}">
                                 <input type="hidden"
-                                       th:field="*{savedPhotoDTOS[__${upStat.index}__].recipeBMId}">
+                                       th:field="*{photoVMList[__${upStat.index}__].tempRecipeId}">
 
                                 <label class="grid-photo-left">
                                     <input th:id="|photo-primary-${upStat.index}|" class="grid-photo-left photo-primary"
                                            th:name="primaryPhotoId"
-                                           th:value="*{savedPhotoDTOS[__${upStat.index}__].id}"
-                                           type="radio" th:checked="${savedPhoto.id == recipeBM.primaryPhotoId}">
+                                           th:value="*{photoVMList[__${upStat.index}__].id}"
+                                           type="radio" th:checked="${photoVM.id == recipeBM.primaryPhotoId}">
                                 </label>
 
                                 <div class="grid-photo-center">
                                     <img class="photo-file"
-                                         th:src="*{savedPhotoDTOS[__${upStat.index}__].url}" src=""
-                                         th:alt="*{savedPhotoDTOS[__${upStat.index}__].description}" alt="">
+                                         th:src="*{photoVMList[__${upStat.index}__].url}" src=""
+                                         th:alt="*{photoVMList[__${upStat.index}__].description}" alt="">
                                 </div>
 
                                 <div class="grid-photo-right align-sign-minus">
@@ -88,7 +88,7 @@
                                 </div>
 
                                 <div class="grid-photo-bottom photo-filename"
-                                     th:text="*{savedPhotoDTOS[__${upStat.index}__].filename}"></div>
+                                     th:text="*{photoVMList[__${upStat.index}__].filename}"></div>
                             </div>
                         </div>
 
@@ -99,15 +99,13 @@
                 <!-- Upload Photo Form -->
                 <div id="new-photo-ctr" class="new-photo-ctr">
 
+
                     <div class="grid-label-input-ctr lbl80 new-photo-file">
                         <label class="grid-label">File:</label>
                         <div class="angle-border grid-input">
                             <input id="new-photo-file-data" class="new-photo-file-data"
                                    type="file" accept="image/*">
                         </div>
-                    </div>
-                    <div class="grid-label-input-ctr lbl80">
-                        <div id="new-photo-file-error-ctr" class="grid-input errors-ctr"></div>
                     </div>
 
                     <div class="grid-label-input-ctr lbl80">
@@ -118,9 +116,8 @@
                                    type="text" placeholder="Photo Description">
                         </div>
                     </div>
-                    <div class="grid-label-input-ctr lbl80">
-                        <div id="new-photo-description-error-ctr" class="grid-input errors-ctr"></div>
-                    </div>
+
+                    <div id="new-photo-error-ctr"></div>
 
                     <div class="grid-label-input-ctr lbl80">
                         <input id="upload-btn-new-photo" class="grid-input submit-btn" type="button" value="Upload"
@@ -303,13 +300,13 @@
 
                 <div class="select">
                     <select id="visibility" class="visibility"
-                            th:field="*{visibilityStatus}">
+                            th:field="*{visibilityStatus}"
+                            required>
                         <option value="" selected>-- Please select! --</option>
-                        <th:block th:each="status : ${T(dev.thrako.receptaria.constant.VisibilityStatus).values()}">
-                            <option th:text="${#strings.capitalize(#strings.toLowerCase(status))}" th:value="${status}">
-                                &nbsp;
-                            </option>
-                        </th:block>
+                        <option th:each="status : ${T(dev.thrako.receptaria.constant.VisibilityStatus).values()}"
+                                th:text="${#strings.capitalize(#strings.toLowerCase(status))}"
+                                th:value="${status}">&nbsp;
+                        </option>
                     </select>
                 </div>
                 <th:block th:each="err : ${#fields.errors('visibilityStatus')}">

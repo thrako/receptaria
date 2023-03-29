@@ -2,7 +2,9 @@ package dev.thrako.receptaria.model.recipe.dto;
 
 import dev.thrako.receptaria.constant.VisibilityStatus;
 import dev.thrako.receptaria.model.ingredient.dto.IngredientDTO;
-import dev.thrako.receptaria.model.photo.dto.SavedPhotoDTO;
+import dev.thrako.receptaria.model.photo.dto.PhotoVM;
+import dev.thrako.receptaria.model.recipe.RecipeEntity;
+import dev.thrako.receptaria.validation.annotation.UniqueRecipeForUser;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -19,6 +21,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @Accessors(chain = true)
+
+@UniqueRecipeForUser
 public class RecipeBM {
 
     private UUID tempRecipeId;
@@ -26,7 +30,7 @@ public class RecipeBM {
     @NotEmpty(message = "Title is required.")
     private String title;
 
-    private List<SavedPhotoDTO> savedPhotoDTOS;
+    private List<PhotoVM> photoVMList;
 
     private Long primaryPhotoId;
 
@@ -57,8 +61,20 @@ public class RecipeBM {
 
     public RecipeBM () {
 
-        this.savedPhotoDTOS = new ArrayList<>();
+        this.photoVMList = new ArrayList<>();
         this.ingredientDTOS = new ArrayList<>();
+    }
+
+    public RecipeEntity toEntity () {
+        return new RecipeEntity()
+                .setTitle(this.getTitle())
+                .addPreparationHours(this.getPreparationHours())
+                .addPreparationMinutes(this.getPreparationMinutes())
+                .addCookingHours(this.getCookingHours())
+                .addCookingMinutes(this.getCookingMinutes())
+                .setServings(this.getServings())
+                .setDescription(this.getDescription())
+                .setVisibilityStatus(this.getVisibilityStatus());
     }
 
 }

@@ -1,6 +1,6 @@
 package dev.thrako.receptaria.constant;
 
-import dev.thrako.receptaria.utility.ErrorMessage;
+import dev.thrako.receptaria.error.ErrorMessage;
 
 public enum CustomErrors {
     INTERNAL_SERVER_ERROR ("Error 500: Something bad happened at the server side. Please try again later and if the problem persists contact support@receptaria.com."),

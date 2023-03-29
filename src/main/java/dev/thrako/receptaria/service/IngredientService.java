@@ -1,13 +1,11 @@
 package dev.thrako.receptaria.service;
 
-import dev.thrako.receptaria.model.ingredient.dto.IngredientDTO;
+import dev.thrako.receptaria.model.ingredient.IngredientEntity;
 import dev.thrako.receptaria.repository.IngredientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class IngredientService {
@@ -20,27 +18,8 @@ public class IngredientService {
         this.ingredientRepository = ingredientRepository;
     }
 
-    public List<IngredientDTO> getIngredientDtoList (Map<String, String[]> parameterMap) {
+    public List<IngredientEntity> saveAllAndFlush (List<IngredientEntity> ingredientEntities) {
 
-        List<IngredientDTO> ingredientDTOS = new ArrayList<>();
-        final String[] names = parameterMap.get("ingredient-name");
-        final String[] quantities = parameterMap.get("ingredient-quantity");
-        final String[] units = parameterMap.get("ingredient-unit");
-
-        for (int i = 0; i < names.length; i++) {
-
-            if ((names[i]).isBlank() && quantities[i].isBlank() && units[i].isBlank()) {
-                continue;
-            }
-
-            ingredientDTOS.add(new IngredientDTO()
-                    .setIngredientName(names[i])
-                    .setQuantity(quantities[i])
-                    .setUnitName(units[i]));
-        }
-
-        return ingredientDTOS;
+        return this.ingredientRepository.saveAllAndFlush(ingredientEntities);
     }
-
-
 }

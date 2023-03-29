@@ -22,9 +22,6 @@ public class TempPhotoEntity {
     private String publicId;
 
     @Column
-    private boolean isPrimary;
-
-    @Column
     private String url;
 
     @Column
@@ -34,6 +31,9 @@ public class TempPhotoEntity {
     private String filename;
 
     @Column
-    private UUID recipeBMId;
+    private boolean isPrimary;
+
+    @Column
+    private UUID tempRecipeId;
 
 }

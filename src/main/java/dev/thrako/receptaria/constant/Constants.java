@@ -1,12 +1,7 @@
 package dev.thrako.receptaria.constant;
 
-
-import java.util.HashMap;
-import java.util.Map;
-
 public enum Constants {
     ;
-    public static final String UPLOAD_DIR = "src/main/resources/static/images/uploads/";
     public static final String BINDING_RESULT_PATH = "org.springframework.validation.BindingResult.";
     public static final String ROLE_PREFIX = "ROLE_";
     public static final String FORMAT_USER_WITH_EMAIL_NOT_FOUND = "User with email: %s not found!";
@@ -31,27 +26,6 @@ public enum Constants {
         public static final String MSG_EMAIL_NOT_AVAILABLE = "There is existing registration with this email.";
         public static final String MSG_PASSWORD_EMPTY = "Password should not be empty.";
         public static final String MSG_MIN_PASSWORD_LENGTH = "Password length should be minimum " + MIN_PASSWORD_LENGTH + " characters.";
-
-//        public static final Map<String, Integer> constraints = new HashMap<>();
-//
-//        static {
-//            constraints.put("MIN_DISPLAY_NAME_LENGTH", MIN_DISPLAY_NAME_LENGTH);
-//            constraints.put("MAX_DISPLAY_NAME_LENGTH", MAX_DISPLAY_NAME_LENGTH);
-//            constraints.put("MIN_PASSWORD_LENGTH", MIN_PASSWORD_LENGTH);
-//        }
-//
-//        public static final Map<String, String> messages = new HashMap<>();
-//
-//        static {
-//            messages.put("MSG_FIRST_NAME_BLANK_OR_EMPTY", MSG_FIRST_NAME_BLANK_OR_EMPTY);
-//            messages.put("MSG_LAST_NAME_BLANK_OR_EMPTY", MSG_LAST_NAME_BLANK_OR_EMPTY);
-//            messages.put("MSG_DISPLAY_NAME_BLANK_OR_EMPTY", MSG_DISPLAY_NAME_BLANK_OR_EMPTY);
-//            messages.put("MSG_MIN_DISPLAY_NAME", MSG_MIN_DISPLAY_NAME);
-//            messages.put("MSG_MAX_DISPLAY_NAME", MSG_MAX_DISPLAY_NAME);
-//            messages.put("MSG_EMAIL_NOT_AVAILABLE", MSG_EMAIL_NOT_AVAILABLE);
-//            messages.put("MSG_PASSWORD_EMPTY", MSG_PASSWORD_EMPTY);
-//            messages.put("MSG_MIN_PASSWORD_LENGTH", MSG_MIN_PASSWORD_LENGTH);
-//        }
 
     }
 

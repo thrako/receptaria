@@ -4,9 +4,10 @@ import dev.thrako.receptaria.constant.CustomErrors;
 import dev.thrako.receptaria.exception.CloudException;
 import dev.thrako.receptaria.exception.NoSuchTempPhotoException;
 import dev.thrako.receptaria.model.photo.dto.PhotoBM;
-import dev.thrako.receptaria.model.photo.dto.SavedPhotoDTO;
+import dev.thrako.receptaria.model.photo.dto.PhotoVM;
 import dev.thrako.receptaria.service.PhotoService;
-import dev.thrako.receptaria.utility.ErrorMessage;
+import dev.thrako.receptaria.error.ErrorMessage;
+import dev.thrako.receptaria.service.TempPhotoService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,28 +22,31 @@ public class RestPhotoController {
 
 
     private final PhotoService photoService;
+    private final TempPhotoService tempPhotoService;
 
 
-    public RestPhotoController (PhotoService photoService) {
+    public RestPhotoController (PhotoService photoService,
+                                TempPhotoService tempPhotoService) {
 
         this.photoService = photoService;
+        this.tempPhotoService = tempPhotoService;
     }
 
     @PostMapping(path = "/temp/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<SavedPhotoDTO> upload (@Valid PhotoBM photoBM) {
+    public ResponseEntity<PhotoVM> upload (@Valid PhotoBM photoBM) {
 
-        final SavedPhotoDTO savedPhotoDTO = this.photoService.save(photoBM);
+        final PhotoVM photoVM = this.tempPhotoService.save(photoBM);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(savedPhotoDTO);
+                .body(photoVM);
     }
 
     @DeleteMapping("/temp/delete/{id}")
     public ResponseEntity<Object> delete (@PathVariable Long id) {
 
         try {
-            this.photoService.delete(id);
+            this.tempPhotoService.delete(id);
 
             return ResponseEntity
                     .status(HttpStatus.NO_CONTENT)

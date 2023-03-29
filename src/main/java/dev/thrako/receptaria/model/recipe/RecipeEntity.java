@@ -1,5 +1,6 @@
 package dev.thrako.receptaria.model.recipe;
 
+import dev.thrako.receptaria.constant.VisibilityStatus;
 import dev.thrako.receptaria.model.ingredient.IngredientEntity;
 import dev.thrako.receptaria.model.photo.PhotoEntity;
 import dev.thrako.receptaria.model.user.UserEntity;
@@ -33,8 +34,7 @@ public class RecipeEntity {
 
     @OneToMany(
             mappedBy = "recipe",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
+            cascade = CascadeType.ALL
     )
     private List<PhotoEntity> photos;
 
@@ -44,10 +44,10 @@ public class RecipeEntity {
     )
     private List<IngredientEntity> ingredients;
 
-    @Column(name = "prep_time")
+    @Column
     private Duration preparationTime;
 
-    @Column(name = "cook_time")
+    @Column
     private Duration cookingTime;
 
     @Column
@@ -56,8 +56,11 @@ public class RecipeEntity {
     @ManyToMany(mappedBy = "likedRecipes")
     private Set<UserEntity> likes;
 
-    @Column(columnDefinition = "TEXT")
+    @Column
     private String description;
+
+    @Enumerated(EnumType.STRING)
+    private VisibilityStatus visibilityStatus;
 
     @ManyToOne
     private UserEntity author;

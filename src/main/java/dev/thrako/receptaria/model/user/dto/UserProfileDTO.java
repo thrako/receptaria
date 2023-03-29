@@ -1,13 +1,13 @@
 package dev.thrako.receptaria.model.user.dto;
 
-import dev.thrako.receptaria.model.recipe.dto.RecipeShortDTO;
+import dev.thrako.receptaria.model.recipe.dto.RecipeCardDTO;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,11 +19,11 @@ public class UserProfileDTO {
 
     private boolean active;
 
-    private Set<RecipeShortDTO> userRecipes;
+    private List<RecipeCardDTO> userRecipes;
 
     public UserProfileDTO () {
 
-        this.userRecipes = new HashSet<>();
+        this.userRecipes = new ArrayList<>();
     }
 
 

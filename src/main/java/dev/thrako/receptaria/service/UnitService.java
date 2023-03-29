@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 public class UnitService {
 
-    private UnitRepository unitRepository;
+    private final UnitRepository unitRepository;
 
     public UnitService (UnitRepository unitRepository) {
 

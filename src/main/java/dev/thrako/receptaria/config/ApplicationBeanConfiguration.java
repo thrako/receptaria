@@ -57,25 +57,6 @@ public class ApplicationBeanConfiguration {
 
         ModelMapper recipeMapper = new ModelMapper();
 
-        final Function<PhotoBM, PhotoEntity> photoDtoToEntity = photoDTO -> {
-            PhotoEntity entity = new PhotoEntity();
-
-//            if (UploadUtility.uploadPhoto(photoDTO)) {
-//                return entity.setUrl(photoDTO.getUrl());
-//            }
-
-            //TODO implement with exception
-            return null;
-        };
-
-        Converter<List<PhotoBM>, List<PhotoEntity>> photoConverter = ctx -> (ctx.getSource() == null)
-                    ? new ArrayList<>()
-                    : ctx.getSource()
-                        .stream()
-                        .map(photoDtoToEntity)
-                        .filter(Objects::nonNull)
-                        .collect(Collectors.toList());
-
         Converter<List<IngredientDTO>, List<IngredientEntity>> ingredientConverter = ctx -> (ctx.getSource() == null)
                     ? new ArrayList<>()
                     : ctx.getSource()

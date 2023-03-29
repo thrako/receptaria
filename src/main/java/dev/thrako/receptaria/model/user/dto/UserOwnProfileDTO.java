@@ -1,6 +1,6 @@
 package dev.thrako.receptaria.model.user.dto;
 
-import dev.thrako.receptaria.model.recipe.dto.RecipeShortDTO;
+import dev.thrako.receptaria.model.recipe.dto.RecipeCardDTO;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -27,9 +27,9 @@ public class UserOwnProfileDTO {
 
     private boolean isPrincipal;
 
-    private Set<RecipeShortDTO> likedRecipes;
+    private Set<RecipeCardDTO> likedRecipes;
 
-    private Set<RecipeShortDTO> ownRecipes;
+    private Set<RecipeCardDTO> ownRecipes;
 
     public UserOwnProfileDTO () {
 

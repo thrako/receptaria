@@ -1,4 +1,4 @@
-package dev.thrako.receptaria.utility;
+package dev.thrako.receptaria.error;
 
 import lombok.Getter;
 

@@ -1,7 +1,8 @@
 package dev.thrako.receptaria.service;
 
 import dev.thrako.receptaria.constant.Role;
-import dev.thrako.receptaria.model.recipe.dto.RecipeShortDTO;
+import dev.thrako.receptaria.exception.UserNotFoundException;
+import dev.thrako.receptaria.model.recipe.dto.RecipeCardDTO;
 import dev.thrako.receptaria.model.user.UserEntity;
 import dev.thrako.receptaria.model.user.dto.UserProfileDTO;
 import dev.thrako.receptaria.model.user.dto.UserRegistrationBM;
@@ -10,12 +11,12 @@ import dev.thrako.receptaria.repository.RoleRepository;
 import dev.thrako.receptaria.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.security.Principal;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -39,40 +40,21 @@ public class UserService {
         this.encoder = passwordEncoder;
     }
 
-
-    public UserEntity getPrincipalEntity (String email) {
-
-        return this.userRepository.getUserByEmail(email);
-    }
-
-    public Long getPrincipalId (Principal principal) {
-
-        return this.getPrincipalEntity(principal).getId();
-    }
-
-    public UserEntity getPrincipalEntity (Principal principal) {
-
-        return this.userRepository.getUserByEmail(principal.getName());
-    }
-
-    public boolean register (UserRegistrationBM userDTO) {
+    public void register (UserRegistrationBM userDTO) {
 
         UserEntity userEntity = this.userMapper.map(userDTO, UserEntity.class);
         userEntity.setPassword(encoder.encode(userDTO.getPassword()));
         userEntity.setActive(true);
         userEntity.addRoles(roleRepository.getByRole(Role.USER));
-        this.userRepository.saveAndFlush(userEntity);
 
-        return this.userRepository
-                .findUserByEmail(userEntity.getEmail())
-                .isPresent();
+        this.userRepository.saveAndFlush(userEntity);
     }
 
     public UserProfileDTO getUserProfileById (Long id) {
 
         return this.findUserById(id).map(this::mapToProfileDTO)
                 //TODO Make custom Exception
-                .orElseThrow(() -> new RuntimeException("User with id " + id + " not found!"));
+                .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found!"));
     }
 
     public Optional<UserEntity> findUserById (Long id) {
@@ -87,18 +69,25 @@ public class UserService {
                 .setActive(entity.isActive())
                 .setUserRecipes(recipeRepository.findByAuthor_Id(entity.getId())
                         .stream()
-                        .map(recipe -> new RecipeShortDTO()
-                                        .setEntityId(recipe.getId())
-                                        .setTitle(recipe.getTitle())
-//                                .setCoverPhoto(recipe.getPhotos()
-//                                        .stream()
-//                                        .findFirst()
-//                                        .map(photo -> new SavedPhotoDTO(new File(photo.getUrl()))).orElse(null))
-                        ).collect(Collectors.toSet()));
+                        .map(RecipeCardDTO::fromEntity)
+                        .toList());
     }
 
     public boolean existsByEmail (String email) {
 
         return this.userRepository.existsByEmail(email);
+    }
+
+    public UserEntity getUserEntity (Long id) {
+
+        return this.userRepository.getUserEntityById(id);
+
+    }
+
+    public String getDisplayNameById (Long id) {
+
+        return this.findUserById(id)
+                .map(UserEntity::getDisplayName)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No such user exists!"));
     }
 }

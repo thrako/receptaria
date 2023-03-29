@@ -74,10 +74,11 @@ function checkTitle(event) {
             })
             .then(isAvailable => {
                 if (isAvailable === false) {
-                    let smallElement = document.createElement("small");
-                    smallElement.className = "error-text";
-                    smallElement.innerText = "You already have recipe with the same title.";
-                    titleErrorElement.appendChild(smallElement);
+                    let listElement = document.createElement("ul");
+                    let itemElement = document.createElement("li");
+                    itemElement.innerText = "You already have recipe with the same title.";
+                    listElement.appendChild(itemElement);
+                    titleErrorElement.appendChild(listElement);
                 }
             })
             .catch(error => console.log(error));
@@ -89,18 +90,18 @@ function uploadPhoto() {
 
     let fileData = document.getElementById("new-photo-file-data").files[0];
     let description = document.getElementById("new-photo-description-text").value;
-    let recipeBMId = document.getElementById("recipe-bm-id").getAttribute("value");
+    let tempRecipeId = document.getElementById("recipe-bm-id").getAttribute("value");
 
-    let newFileErrorCtr = document.getElementById("new-photo-file-error-ctr")
-    let newDescriptionErrorCtr = document.getElementById("new-photo-description-error-ctr")
+    let newFileErrorCtr = document.getElementById("new-photo-error-ctr")
+    // let newDescriptionErrorCtr = document.getElementById("new-photo-description-error-ctr")
 
     newFileErrorCtr.replaceChildren();
-    newDescriptionErrorCtr.replaceChildren()
+    // newDescriptionErrorCtr.replaceChildren()
 
     let formData = new FormData();
     formData.append("fileData", fileData);
     formData.append("description", description);
-    formData.append("recipeBMId", recipeBMId);
+    formData.append("tempRecipeId", tempRecipeId);
 
     fetch("/api/photos/temp/upload", {
         method: "POST",
@@ -109,43 +110,56 @@ function uploadPhoto() {
         },
         body: formData
     }).then(response => {
-            return response.ok
-                ? response.json().then(data => addPhoto(data))
-                : response.json().then(data => showErrors(data));
-        });
+        return response.ok
+            ? response.json().then(data => addPhoto(data))
+            : response.json().then(data => showErrors(data));
+    });
 
     function showErrors(data) {
+
+        let containerElement = document.createElement("div");
+        containerElement.classList.add("grid-label-input-ctr")
+        containerElement.classList.add("lbl80")
+
+        let listElement = document.createElement("ul");
+        listElement.classList.add("grid-input");
+        listElement.classList.add("errors-ctr");
+        containerElement.appendChild(listElement);
+
         if (data.errors.fileData) {
-            let listElement = document.createElement("ul");
+
             for (err of data.errors.fileData) {
                 let element = document.createElement("li");
                 element.innerText = err;
                 listElement.appendChild(element)
             }
-            newFileErrorCtr.appendChild(listElement);
         }
 
         if (data.errors.description) {
-            let listElement = document.createElement("ul");
+
             for (err of data.errors.description) {
                 let element = document.createElement("li");
                 element.innerText = err;
                 listElement.appendChild(element)
             }
-            newDescriptionErrorCtr.appendChild(listElement);
+        }
+
+        if (data.errors.fileData || data.errors.description) {
+
+            newFileErrorCtr.appendChild(containerElement);
         }
     }
 }
 
 function addPhoto(photo) {
 
-    clearPhotoInput();
+    resetPhotoInput();
 
     let html =
         `
         <div id="photo-box-${fileIdx}" class="grid-photo">
-            <input type="hidden" id="photo-id-${fileIdx}" name="recipeBM.savedPhotoDTOS[${fileIdx}].id}" value="${photo.id}">
-            <input type="hidden" name="recipeBM.savedPhotoDTOS[${fileIdx}].recipeBMId}" value="${photo.recipeBMId}">
+            <input type="hidden" id="photo-id-${fileIdx}" name="recipeBM.photoVMList[${fileIdx}].id}" value="${photo.id}">
+            <input type="hidden" name="recipeBM.photoVMList[${fileIdx}].tempRecipeId}" value="${photo.tempRecipeId}">
             
             <label class="grid-photo-left">
                 <input id="photo-primary-${photo.id}" class="grid-photo-left photo-primary" 
@@ -176,7 +190,7 @@ function addPhoto(photo) {
     ;
 }
 
-function clearPhotoInput() {
+function resetPhotoInput() {
 
     let parent = document.getElementById("new-photo-ctr");
 
@@ -189,9 +203,6 @@ function clearPhotoInput() {
                        type="file" accept="image/*">
             </div>
         </div>
-        <div class="grid-label-input-ctr lbl80">
-            <div id="new-photo-file-error-ctr" class="grid-input errors-ctr"></div>
-        </div>
 
         <div class="grid-label-input-ctr lbl80">
             <label for="new-photo-description-text"
@@ -201,9 +212,8 @@ function clearPhotoInput() {
                        type="text" placeholder="Photo Description">
             </div>
         </div>
-        <div class="grid-label-input-ctr lbl80">
-            <div id="new-photo-description-error-ctr" class="grid-input errors-ctr"></div>
-        </div>
+        
+        <div id="new-photo-error-ctr"></div>
 
         <div class="grid-label-input-ctr lbl80">
             <input id="upload-btn-new-photo" class="grid-input submit-btn" type="button" value="Upload"

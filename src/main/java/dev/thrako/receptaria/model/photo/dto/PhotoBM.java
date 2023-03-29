@@ -25,6 +25,6 @@ public class PhotoBM {
     private String description;
 
     @NotNull
-    private UUID recipeBMId;
+    private UUID tempRecipeId;
 
 }

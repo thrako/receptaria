@@ -85,10 +85,4 @@ public class UserEntity {
                 return this.likedRecipes.remove(recipe);
         }
 
-        public List<GrantedAuthority> getRolesArray () {
-
-                return AuthorityUtils.createAuthorityList(this.roles.stream()
-                        .map(entity -> ROLE_PREFIX + entity.getRole().name())
-                        .toArray(String[]::new));
-        }
 }

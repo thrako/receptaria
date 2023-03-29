@@ -1,7 +1,9 @@
 package dev.thrako.receptaria.controller.rest;
 
+import dev.thrako.receptaria.security.CurrentUser;
 import dev.thrako.receptaria.service.RecipeService;
 import dev.thrako.receptaria.service.UserService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,11 +25,9 @@ public class RestRecipeController {
 
     @GetMapping("/api/recipes/isAvailable/{title}")
     public Boolean recipeExists (@PathVariable String title,
-                                 Principal principal) {
+                                 @AuthenticationPrincipal CurrentUser author) {
 
-        final Long principalId = userService.getPrincipalId(principal);
-        return recipeService.isAvailableRecipeTitle(principalId, title);
-
+        return recipeService.isAvailableRecipeTitle(author.getId(), title);
     }
 
 }

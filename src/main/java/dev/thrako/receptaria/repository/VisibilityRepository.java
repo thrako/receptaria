@@ -1,10 +1,10 @@
 package dev.thrako.receptaria.repository;
 
-import dev.thrako.receptaria.model.photo.PhotoEntity;
+import dev.thrako.receptaria.model.visibility.VisibilityEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PhotoRepository extends JpaRepository<PhotoEntity, Long> {
+public interface VisibilityRepository extends JpaRepository<VisibilityEntity, Long> {
 
 }

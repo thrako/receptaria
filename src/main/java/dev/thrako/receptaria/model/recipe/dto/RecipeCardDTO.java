@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class RecipeShortDTO {
+public class RecipeCardDTO {
 
     private Long entityId;
 
@@ -22,15 +22,19 @@ public class RecipeShortDTO {
 
     private String lastUpdated;
 
-    private String coverPhotoPath;
+    private String coverPhotoUrl;
 
-    public static RecipeShortDTO fromEntity (RecipeEntity entity) {
+    private boolean canSee;
+
+    private boolean canEdit;
+
+    public static RecipeCardDTO fromEntity (RecipeEntity entity) {
 
         final DateTimeFormatter date = DateTimeFormatter.ofPattern("dd MMM yyyy");
         final DateTimeFormatter time = DateTimeFormatter.ofPattern("hh:mm");
         final LocalDateTime entityLastUpdated = entity.getLastUpdated();
 
-        return new RecipeShortDTO()
+        return new RecipeCardDTO()
                 .setEntityId(entity.getId())
                 .setTitle(entity.getTitle())
                 .setAuthorName(entity.getAuthor().getDisplayName())
@@ -39,13 +43,12 @@ public class RecipeShortDTO {
                         entityLastUpdated.format(date),
                         entityLastUpdated.format(time))
                 )
-//                .setCoverPhotoPath(entity.getPhotos().isEmpty()
-//                        ? "/images/system/no_photo.webp"
-//                        : entity.getPhotos().stream()
-//                            .filter(PhotoEntity::isPrimary)
-//                            .findFirst()
-//                            .orElse(entity.getPhotos().get(0))
-//                            .getUrl().replace("src/main/resources/static", ""))
+                .setCoverPhotoUrl(entity.getPhotos().isEmpty()
+                        ? "/images/system/no_photo.webp"
+                        : entity.getPhotos().stream()
+                            .filter(PhotoEntity::isPrimary)
+                            .findFirst()
+                            .orElse(entity.getPhotos().get(0)).getUrl())
                 ;
     }
 

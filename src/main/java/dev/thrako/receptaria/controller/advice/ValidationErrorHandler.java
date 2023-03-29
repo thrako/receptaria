@@ -1,6 +1,6 @@
 package dev.thrako.receptaria.controller.advice;
 
-import dev.thrako.receptaria.utility.ErrorMap;
+import dev.thrako.receptaria.error.ErrorMap;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;

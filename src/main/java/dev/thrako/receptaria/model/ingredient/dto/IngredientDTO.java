@@ -19,10 +19,4 @@ public class IngredientDTO {
 
     private String unitName;
 
-    public IngredientDTO (String ingredientName, String quantity, String unitName) {
-
-        this.ingredientName = ingredientName;
-        this.quantity = quantity;
-        this.unitName = unitName;
-    }
 }
