@@ -1,12 +1,13 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
-  <th:block th:insert="~{general.html :: head-include}">&nbsp;</th:block>
-  <title th:text="recipeCard.title">Receptaria</title>
-  <meta id="csrf" hidden th:name="${_csrf.getHeaderName()}" th:value="${_csrf.getToken()}">
+    <th:block th:insert="~{general.html :: head-include}">&nbsp;</th:block>
+    <title th:text="${recipeVM.title} + ' by ' + ${recipeVM.author.displayName}">Receptaria</title>
+    <meta id="csrf" hidden th:name="${_csrf.getHeaderName()}" th:value="${_csrf.getToken()}">
 </head>
 
 <body>
@@ -16,10 +17,59 @@
 
 <div class="content">
 
-  <p th:text="|This is the page for recipe with id ${recipeCard.getEntityId()}|">Coming soon</p>
-  <br>
-  <p>Rest is coming soon...</p>
+    <p th:text="|This is the page for recipe with id ${recipeVM.id}|">&nbsp;</p>
+    <p th:text="|${recipeVM.title} by ${recipeVM.author.displayName}|">&nbsp;</p>
+    <br>
+    <th:block th:each="photo, photoStat : ${recipeVM.listPhotoVM}">
+        <div style="display: inline-flex; padding: 5px 5px; height: 150px; width: 150px">
+            <img class="photo-file"
+                 th:src="${photo.url}" src=""
+                 th:alt="${photo.description}" alt="">
+        </div>
+    </th:block>
+    <br>
+    <br>
+        <ul> Ingredients:
+            <li th:each="ingredient, ingrStat : ${recipeVM.listIngredientVM}">
+            <span th:text="${ingredient.ingredientName}">&nbsp;</span>
+            <span th:text="${ingredient.quantity}?: ''">&nbsp;</span>
+            <span th:text="${ingredient.unitName}?: ''">&nbsp;</span>
+            </li>
+        </ul>
+    <br>
+    <p th:text="'Preparation time: ' + ${recipeVM.preparationTime}">&nbsp;</p>
+    <p th:text="'Cooking time: ' + ${recipeVM.cookingTime}">&nbsp;</p>
+    <p th:text="'Servings: ' + ${recipeVM.servings}">&nbsp;</p>
+    <p th:text="'Likes: ' + ${recipeVM.likes.size()}">&nbsp;</p>
+    <p th:text="'Description: ' + ${recipeVM.description}">&nbsp;</p>
+    <p th:text="'Can edit: ' + ${recipeVM.canEdit}">&nbsp;</p>
+    <p th:text="'Added on: ' + ${#temporals.format(recipeVM.addedOn, 'dd MMM yyyy  HH:mm')}">&nbsp;</p>
+    <p th:text="'Last updated: ' + ${#temporals.format(recipeVM.lastUpdated, 'dd MMM yyyy  HH:mm')}">&nbsp;</p>
+    <br>
 
+    <input id="isLiked" type="hidden" th:value="${recipeVM.isLiked}">
+
+    <div style="display: inline-flex; gap: 0 10px">
+
+        <div th:if="${contextAuthorities.get(T(dev.thrako.receptaria.constant.ContextAuthority).LIKE)}">
+        <img id="likedFalse"
+
+             th:src="@{'/images/system/heart-empty.png'}" src="" alt="heart icon"
+             height="20px" width="20px"
+             onclick="toggleLiked()">
+
+        <img id="likedTrue"
+
+             th:src="@{'/images/system/heart-full.png'}" src="" alt="heart icon"
+             height="20px" width="20px"
+             onclick="toggleLiked()">
+        </div>
+        <input th:if="${recipeVM.canEdit}" type="button" onclick="deleteRecipe()" value="Edit">
+        <input th:if="${recipeVM.canDelete}" type="button" onclick="deleteRecipe()" value="Delete">
+
+    </div>
+    <br>
+    <h2>Make me look better, pleeeease!</h2>
 
 </div>
 
@@ -27,7 +77,7 @@
 <footer th:replace="~{general.html :: footer}">&nbsp;</footer>
 
 <!-- JAVA SCRIPT -->
-<script src="/javascript/recipe-add.js"></script>
+<script src="/javascript/recipe-show.js"></script>
 
 </body>
 

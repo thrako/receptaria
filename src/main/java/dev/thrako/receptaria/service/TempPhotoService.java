@@ -1,13 +1,13 @@
 package dev.thrako.receptaria.service;
 
-import dev.thrako.receptaria.exception.CloudException;
-import dev.thrako.receptaria.exception.NoSuchTempPhotoException;
-import dev.thrako.receptaria.model.photo.TempPhotoEntity;
-import dev.thrako.receptaria.model.photo.dto.PhotoBM;
-import dev.thrako.receptaria.model.photo.dto.PhotoDTO;
-import dev.thrako.receptaria.model.photo.dto.PhotoVM;
-import dev.thrako.receptaria.repository.TempPhotoRepository;
-import dev.thrako.receptaria.utility.CloudUtility;
+import dev.thrako.receptaria.error.exception.CloudException;
+import dev.thrako.receptaria.error.exception.NoSuchTempPhotoException;
+import dev.thrako.receptaria.model.entity.photo.TempPhotoEntity;
+import dev.thrako.receptaria.model.entity.photo.dto.PhotoBM;
+import dev.thrako.receptaria.model.entity.photo.dto.PhotoDTO;
+import dev.thrako.receptaria.model.entity.photo.dto.PhotoVM;
+import dev.thrako.receptaria.model.repository.TempPhotoRepository;
+import dev.thrako.receptaria.service.utility.CloudUtility;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;

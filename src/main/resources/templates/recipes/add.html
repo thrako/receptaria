@@ -63,15 +63,15 @@
                             <div class="grid-photo">
                                 <input type="hidden"
                                        th:id="|photo-id-${upStat.index}|"
-                                       th:field="*{photoVMList[__${upStat.index}__].id}">
+                                       th:field="*{photoVMList[__${upStat.index}__].tempId}">
                                 <input type="hidden"
                                        th:field="*{photoVMList[__${upStat.index}__].tempRecipeId}">
 
                                 <label class="grid-photo-left">
                                     <input th:id="|photo-primary-${upStat.index}|" class="grid-photo-left photo-primary"
                                            th:name="primaryPhotoId"
-                                           th:value="*{photoVMList[__${upStat.index}__].id}"
-                                           type="radio" th:checked="${photoVM.id == recipeBM.primaryPhotoId}">
+                                           th:value="*{photoVMList[__${upStat.index}__].tempId}"
+                                           type="radio" th:checked="${photoVM.tempId == recipeBM.primaryPhotoId}">
                                 </label>
 
                                 <div class="grid-photo-center">
@@ -227,8 +227,8 @@
                             <option th:each="unit : ${units}" th:text="${unit}">Some unit</option>
                         </datalist>
 
-                        <th:block th:if="${recipeBM.ingredientDTOS}"
-                                  th:each="ingredient, itemStat : ${recipeBM.ingredientDTOS}">
+                        <th:block th:if="${recipeBM.listIngredientBM}"
+                                  th:each="ingredient, itemStat : ${recipeBM.listIngredientBM}">
 
                             <div th:id="|ingredient-box-${itemStat.index}|" class="ingredient-box">
 
@@ -237,18 +237,18 @@
 
                                     <input type="text" th:value="${ingredient.getIngredientName}"
                                            th:id="|ingredient-name-${itemStat.index}|" class="ingredient-name left"
-                                           th:name="|ingredientDTOS[${itemStat.index}].ingredientName|"
+                                           th:name="|listIngredientBM[${itemStat.index}].ingredientName|"
                                            placeholder="Name">
 
                                     <input type="text" th:value="${ingredient.getQuantity}"
                                            th:id="|ingredient-quantity-${itemStat.index}|"
                                            class="ingredient-quantity center"
-                                           th:name="|ingredientDTOS[${itemStat.index}].quantity|"
+                                           th:name="|listIngredientBM[${itemStat.index}].quantity|"
                                            placeholder="Quantity">
 
                                     <input list="units" th:value="${ingredient.getUnitName}"
                                            th:id="|ingredient-unit-${itemStat.index}|" class="ingredient-unit right"
-                                           th:name="|ingredientDTOS[${itemStat.index}].unitName|"
+                                           th:name="|listIngredientBM[${itemStat.index}].unitName|"
                                            placeholder="Unit">
 
                                     <input type="button" value="X"
@@ -256,10 +256,10 @@
                                            th:onclick="|removeElement('ingredient-box-${itemStat.index}')|">
                                 </div>
 
-                                <div th:if="*{ingredientDTOS[__${itemStat.index}__].ingredientName.isEmpty()}"
+                                <div th:if="*{listIngredientBM[__${itemStat.index}__].ingredientName.isEmpty()}"
                                      th:class="errors-ctr">
                                     <ul>
-                                        <li th:errors="*{ingredientDTOS[__${itemStat.index}__].ingredientName}">Error
+                                        <li th:errors="*{listIngredientBM[__${itemStat.index}__].ingredientName}">Error
                                         </li>
                                     </ul>
                                 </div>

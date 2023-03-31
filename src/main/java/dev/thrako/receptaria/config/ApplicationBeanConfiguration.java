@@ -1,13 +1,11 @@
 package dev.thrako.receptaria.config;
 
-import dev.thrako.receptaria.model.ingredient.IngredientEntity;
-import dev.thrako.receptaria.model.ingredient.dto.IngredientDTO;
-import dev.thrako.receptaria.model.photo.PhotoEntity;
-import dev.thrako.receptaria.model.photo.dto.PhotoBM;
-import dev.thrako.receptaria.model.recipe.RecipeEntity;
-import dev.thrako.receptaria.model.recipe.dto.RecipeBM;
-import dev.thrako.receptaria.model.user.UserEntity;
-import dev.thrako.receptaria.model.user.dto.UserLoginBM;
+import dev.thrako.receptaria.model.entity.ingredient.IngredientEntity;
+import dev.thrako.receptaria.model.entity.ingredient.dto.IngredientBM;
+import dev.thrako.receptaria.model.entity.recipe.RecipeEntity;
+import dev.thrako.receptaria.model.entity.recipe.dto.RecipeBM;
+import dev.thrako.receptaria.model.entity.user.UserEntity;
+import dev.thrako.receptaria.model.entity.user.dto.UserLoginBM;
 import dev.thrako.receptaria.service.IngredientNameService;
 import dev.thrako.receptaria.service.UnitService;
 import org.modelmapper.Converter;
@@ -19,8 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Configuration
@@ -57,7 +53,7 @@ public class ApplicationBeanConfiguration {
 
         ModelMapper recipeMapper = new ModelMapper();
 
-        Converter<List<IngredientDTO>, List<IngredientEntity>> ingredientConverter = ctx -> (ctx.getSource() == null)
+        Converter<List<IngredientBM>, List<IngredientEntity>> ingredientConverter = ctx -> (ctx.getSource() == null)
                     ? new ArrayList<>()
                     : ctx.getSource()
                         .stream()
@@ -71,7 +67,7 @@ public class ApplicationBeanConfiguration {
         recipeMapper.createTypeMap(RecipeBM.class, RecipeEntity.class)
                 .addMappings(mpr -> mpr.map(RecipeBM::getTitle, RecipeEntity::setTitle))
 //                .addMappings(mpr -> mpr.using(photoConverter).map(RecipeBM::getPhotoDTOS, RecipeEntity::setPhotos))
-                .addMappings(mpr -> mpr.using(ingredientConverter).map(RecipeBM::getIngredientDTOS, RecipeEntity::setIngredients))
+                .addMappings(mpr -> mpr.using(ingredientConverter).map(RecipeBM::getListIngredientBM, RecipeEntity::setIngredients))
                 .addMappings(mpr -> mpr.map(RecipeBM::getPreparationHours, RecipeEntity::addPreparationHours))
                 .addMappings(mpr -> mpr.map(RecipeBM::getPreparationMinutes, RecipeEntity::addPreparationMinutes))
                 .addMappings(mpr -> mpr.map(RecipeBM::getCookingHours, RecipeEntity::addCookingHours))

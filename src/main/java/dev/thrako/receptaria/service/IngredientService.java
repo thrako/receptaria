@@ -1,7 +1,7 @@
 package dev.thrako.receptaria.service;
 
-import dev.thrako.receptaria.model.ingredient.IngredientEntity;
-import dev.thrako.receptaria.repository.IngredientRepository;
+import dev.thrako.receptaria.model.entity.ingredient.IngredientEntity;
+import dev.thrako.receptaria.model.repository.IngredientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

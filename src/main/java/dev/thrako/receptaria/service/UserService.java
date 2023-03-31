@@ -1,14 +1,13 @@
 package dev.thrako.receptaria.service;
 
 import dev.thrako.receptaria.constant.Role;
-import dev.thrako.receptaria.exception.UserNotFoundException;
-import dev.thrako.receptaria.model.recipe.dto.RecipeCardDTO;
-import dev.thrako.receptaria.model.user.UserEntity;
-import dev.thrako.receptaria.model.user.dto.UserProfileDTO;
-import dev.thrako.receptaria.model.user.dto.UserRegistrationBM;
-import dev.thrako.receptaria.repository.RecipeRepository;
-import dev.thrako.receptaria.repository.RoleRepository;
-import dev.thrako.receptaria.repository.UserRepository;
+import dev.thrako.receptaria.error.exception.UserNotFoundException;
+import dev.thrako.receptaria.model.entity.user.UserEntity;
+import dev.thrako.receptaria.model.entity.user.dto.UserProfileVM;
+import dev.thrako.receptaria.model.entity.user.dto.UserRegistrationBM;
+import dev.thrako.receptaria.model.repository.RecipeRepository;
+import dev.thrako.receptaria.model.repository.RoleRepository;
+import dev.thrako.receptaria.model.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -50,27 +49,15 @@ public class UserService {
         this.userRepository.saveAndFlush(userEntity);
     }
 
-    public UserProfileDTO getUserProfileById (Long id) {
+    public UserProfileVM getUserProfileById (Long id) {
 
-        return this.findUserById(id).map(this::mapToProfileDTO)
-                //TODO Make custom Exception
+        return this.findUserById(id).map(UserProfileVM::fromEntity)
                 .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found!"));
     }
 
     public Optional<UserEntity> findUserById (Long id) {
 
         return this.userRepository.findUserById(id);
-    }
-
-    private UserProfileDTO mapToProfileDTO (UserEntity entity) {
-
-        return new UserProfileDTO()
-                .setDisplayName(entity.getDisplayName())
-                .setActive(entity.isActive())
-                .setUserRecipes(recipeRepository.findByAuthor_Id(entity.getId())
-                        .stream()
-                        .map(RecipeCardDTO::fromEntity)
-                        .toList());
     }
 
     public boolean existsByEmail (String email) {
@@ -90,4 +77,5 @@ public class UserService {
                 .map(UserEntity::getDisplayName)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No such user exists!"));
     }
+
 }

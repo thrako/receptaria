@@ -1,7 +1,7 @@
 package dev.thrako.receptaria.service;
 
-import dev.thrako.receptaria.model.photo.PhotoEntity;
-import dev.thrako.receptaria.repository.PhotoRepository;
+import dev.thrako.receptaria.model.entity.photo.PhotoEntity;
+import dev.thrako.receptaria.model.repository.PhotoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

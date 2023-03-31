@@ -1,6 +1,6 @@
 package dev.thrako.receptaria.service;
 
-import dev.thrako.receptaria.repository.VisibilityRepository;
+import dev.thrako.receptaria.model.repository.VisibilityRepository;
 import org.springframework.stereotype.Service;
 
 @Service

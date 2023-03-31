@@ -37,15 +37,15 @@ function addIngredient() {
         <div class="grid-ingredient angle-border">
             <input type="text" 
                    id="ingredient-name-${ingredientIdx}" class="ingredient-name left" 
-                   name="ingredientDTOS[${ingredientIdx}].ingredientName"
+                   name="listIngredientBM[${ingredientIdx}].ingredientName"
                    placeholder="Name">
             <input type="text" 
                    id="ingredient-quantity-${ingredientIdx}" class="ingredient-quantity center" 
-                   name="ingredientDTOS[${ingredientIdx}].quantity"
+                   name="listIngredientBM[${ingredientIdx}].quantity"
                    placeholder="Quantity">
             <input list="units" 
                    id="ingredient-unit-${ingredientIdx}" class="ingredient-unit right" 
-                   name="ingredientDTOS[${ingredientIdx}].unitName"
+                   name="listIngredientBM[${ingredientIdx}].unitName"
                    placeholder="Unit">
             <input type="button" 
                    class="sign-x btn-x" 
@@ -158,12 +158,12 @@ function addPhoto(photo) {
     let html =
         `
         <div id="photo-box-${fileIdx}" class="grid-photo">
-            <input type="hidden" id="photo-id-${fileIdx}" name="recipeBM.photoVMList[${fileIdx}].id}" value="${photo.id}">
+            <input type="hidden" id="photo-id-${fileIdx}" name="recipeBM.photoVMList[${fileIdx}].tempId}" value="${photo.tempId}">
             <input type="hidden" name="recipeBM.photoVMList[${fileIdx}].tempRecipeId}" value="${photo.tempRecipeId}">
             
             <label class="grid-photo-left">
-                <input id="photo-primary-${photo.id}" class="grid-photo-left photo-primary" 
-                       name="primaryPhotoId" value="${photo.id}" 
+                <input id="photo-primary-${photo.tempId}" class="grid-photo-left photo-primary" 
+                       name="primaryPhotoId" value="${photo.tempId}" 
                        type="radio">
             </label>
         
@@ -287,9 +287,9 @@ function renumberIngredientBoxes() {
     let ingredientUnits = document.getElementsByClassName("ingredient-unit");
 
     for (let idx = 0; idx < ingredientBoxes.length; idx++) {
-        ingredientNames[idx].name = `ingredientDTOS[${idx}].ingredientName`;
-        ingredientQuantities[idx].name = `ingredientDTOS[${idx}].quantity`;
-        ingredientUnits[idx].name = `ingredientDTOS[${idx}].unitName`;
+        ingredientNames[idx].name = `listIngredientBM[${idx}].ingredientName`;
+        ingredientQuantities[idx].name = `listIngredientBM[${idx}].quantity`;
+        ingredientUnits[idx].name = `listIngredientBM[${idx}].unitName`;
     }
 }
 

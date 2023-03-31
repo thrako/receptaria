@@ -14,7 +14,7 @@
     <nav th:replace="~{general.html :: leftbar}">&nbsp;</nav>
     <div sec:authorize="isAuthenticated() == false" class="content">Welcome to this amateurish website about recipes!</div>
     <div sec:authorize="isAuthenticated()" class="content">Welcome <span sec:authentication="name"></span>! Nice to see you!</div>
-<!--    <nav th:replace="~{general.html :: rightbar}">&nbsp;</nav>-->
+    <nav th:replace="~{general.html :: rightbar}">&nbsp;</nav>
 
     <footer th:replace="~{general.html :: footer}">&nbsp;</footer>
 

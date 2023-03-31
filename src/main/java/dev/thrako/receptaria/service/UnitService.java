@@ -1,7 +1,7 @@
 package dev.thrako.receptaria.service;
 
-import dev.thrako.receptaria.model.unit.UnitEntity;
-import dev.thrako.receptaria.repository.UnitRepository;
+import dev.thrako.receptaria.model.entity.unit.UnitEntity;
+import dev.thrako.receptaria.model.repository.UnitRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

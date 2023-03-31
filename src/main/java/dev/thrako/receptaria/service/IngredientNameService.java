@@ -1,7 +1,7 @@
 package dev.thrako.receptaria.service;
 
-import dev.thrako.receptaria.model.ingredient_name.IngredientNameEntity;
-import dev.thrako.receptaria.repository.IngredientNameRepository;
+import dev.thrako.receptaria.model.entity.ingredient_name.IngredientNameEntity;
+import dev.thrako.receptaria.model.repository.IngredientNameRepository;
 import org.springframework.stereotype.Service;
 
 @Service

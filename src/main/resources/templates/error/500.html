@@ -3,7 +3,9 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{general.html :: head}">
+<head>
+    <th:block th:insert="~{general.html :: head-include}">&nbsp;</th:block>
+    <title>Receptaria :: Error</title>
 </head>
 
 <body>

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:insert="~{general.html :: head-include}">&nbsp;</th:block>
+    <title>Receptaria :: Error</title>
+</head>
+
+<body>
+
+    <header th:replace="~{general.html :: header}">&nbsp;</header>
+
+    <nav th:replace="~{general.html :: leftbar}">&nbsp;</nav>
+    <div class="content">
+        <p th:text="${T(dev.thrako.receptaria.constant.CustomErrors).BAD_REQUEST.message}">Some error</p>
+        <br>
+        <p><a href="/">Go Home</a></p>
+    </div>
+    <nav th:replace="~{general.html :: rightbar}">&nbsp;</nav>
+
+    <footer th:replace="~{general.html :: footer}">&nbsp;</footer>
+
+</body>
+
+</html>
