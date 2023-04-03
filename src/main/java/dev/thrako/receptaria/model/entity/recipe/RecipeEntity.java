@@ -1,6 +1,6 @@
 package dev.thrako.receptaria.model.entity.recipe;
 
-import dev.thrako.receptaria.constant.VisibilityStatus;
+import dev.thrako.receptaria.common.constant.VisibilityStatus;
 import dev.thrako.receptaria.model.entity.ingredient.IngredientEntity;
 import dev.thrako.receptaria.model.entity.user.UserEntity;
 import dev.thrako.receptaria.model.entity.photo.PhotoEntity;
@@ -135,4 +135,13 @@ public class RecipeEntity {
         return this;
     }
 
+    public boolean addLike(UserEntity userEntity) {
+
+        return this.likes.add(userEntity);
+    }
+
+    public boolean removeLike (UserEntity userEntity) {
+
+        return this.likes.remove(userEntity);
+    }
 }

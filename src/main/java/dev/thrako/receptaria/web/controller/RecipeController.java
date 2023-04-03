@@ -3,7 +3,7 @@ package dev.thrako.receptaria.web.controller;
 import dev.thrako.receptaria.model.entity.photo.dto.PhotoVM;
 import dev.thrako.receptaria.model.entity.recipe.dto.RecipeBM;
 import dev.thrako.receptaria.model.entity.recipe.dto.RecipeCardVM;
-import dev.thrako.receptaria.security.CurrentUser;
+import dev.thrako.receptaria.common.security.CurrentUser;
 import dev.thrako.receptaria.service.*;
 import dev.thrako.receptaria.service.utility.RecipeKeeper;
 import jakarta.validation.Valid;
@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-import static dev.thrako.receptaria.constant.Constants.BINDING_RESULT_PATH;
+import static dev.thrako.receptaria.common.constant.Constants.BINDING_RESULT_PATH;
 
 @Controller
 public class RecipeController {
@@ -106,7 +106,7 @@ public class RecipeController {
                              Model model,
                              @AuthenticationPrincipal CurrentUser currentUser) {
 
-        model.addAttribute("recipeVM", this.recipeService.getRecipeVM(id));
+        model.addAttribute("recipeVM", this.recipeKeeper.getRecipeVMForUser(id, currentUser));
         model.addAttribute("contextAuthorities", currentUser.getContextAuthorities());
         model.addAttribute("contextRoles", currentUser.getContextRoles());
 

@@ -59,6 +59,12 @@
             <a th:href="@{/}" class="receptaria-logo">Receptaria</a>
         </div>
         <div th:fragment="search" class="search"></div>
+
+    </div>
+    <div class="admin-panel danger-area"
+         th:fragment="admin-panel"
+         sec:authorize="hasRole('ROLE_ADMIN')">
+        <a class="danger-text padded-10 border-dashed-2" href="#">Admin Area</a>
     </div>
 
 </header>

@@ -1,9 +1,9 @@
 package dev.thrako.receptaria.service.utility;
 
-import dev.thrako.receptaria.constant.ContextAuthority;
-import dev.thrako.receptaria.constant.ContextRole;
+import dev.thrako.receptaria.common.constant.ContextAuthority;
+import dev.thrako.receptaria.common.constant.ContextRole;
 import dev.thrako.receptaria.model.entity.user.UserEntity;
-import dev.thrako.receptaria.security.CurrentUser;
+import dev.thrako.receptaria.common.security.CurrentUser;
 import dev.thrako.receptaria.service.RecipeService;
 import dev.thrako.receptaria.service.UserService;
 import org.springframework.stereotype.Component;
@@ -51,11 +51,11 @@ public class ContextAuthChecker {
             }
             case FOLLOWER -> {
 
-                return author.isFollowedBy(this.userService.getUserEntity(currentUser.getId()));
+                return author.isFollowedBy(this.userService.findById(currentUser.getId()));
             }
             case BLOCKED -> {
 
-                return author.hasBlocked(this.userService.getUserEntity(currentUser.getId()));
+                return author.hasBlocked(this.userService.findById(currentUser.getId()));
             }
 
             default -> throw new IllegalStateException("Unexpected value: " + contextRole);

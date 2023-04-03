@@ -1,7 +1,7 @@
 package dev.thrako.receptaria;
 
-import dev.thrako.receptaria.constant.Role;
-import dev.thrako.receptaria.constant.VisibilityStatus;
+import dev.thrako.receptaria.common.constant.Role;
+import dev.thrako.receptaria.common.constant.VisibilityStatus;
 import dev.thrako.receptaria.model.entity.role.RoleEntity;
 import dev.thrako.receptaria.model.entity.unit.UnitEntity;
 import dev.thrako.receptaria.model.entity.user.UserEntity;

@@ -1,7 +1,6 @@
 package dev.thrako.receptaria.model.entity.visibility;
 
-import dev.thrako.receptaria.constant.Role;
-import dev.thrako.receptaria.constant.VisibilityStatus;
+import dev.thrako.receptaria.common.constant.VisibilityStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

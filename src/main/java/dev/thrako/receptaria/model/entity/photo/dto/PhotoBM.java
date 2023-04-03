@@ -1,6 +1,6 @@
 package dev.thrako.receptaria.model.entity.photo.dto;
 
-import dev.thrako.receptaria.error.validation.annotation.SupportedFileType;
+import dev.thrako.receptaria.common.error.validation.annotation.SupportedFileType;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;

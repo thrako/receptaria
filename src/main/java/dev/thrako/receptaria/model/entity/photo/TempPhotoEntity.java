@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -35,5 +37,8 @@ public class TempPhotoEntity {
 
     @Column
     private UUID tempRecipeId;
+
+    @CreationTimestamp
+    private LocalDateTime addedOn;
 
 }

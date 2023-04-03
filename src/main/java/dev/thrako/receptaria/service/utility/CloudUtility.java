@@ -2,7 +2,7 @@ package dev.thrako.receptaria.service.utility;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import dev.thrako.receptaria.error.exception.CloudException;
+import dev.thrako.receptaria.common.error.exception.CloudException;
 import dev.thrako.receptaria.model.entity.photo.dto.PhotoDTO;
 import dev.thrako.receptaria.model.entity.photo.dto.PhotoBM;
 import org.springframework.stereotype.Component;

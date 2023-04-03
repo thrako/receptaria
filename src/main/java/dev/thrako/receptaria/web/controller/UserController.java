@@ -1,6 +1,6 @@
 package dev.thrako.receptaria.web.controller;
 
-import dev.thrako.receptaria.security.CurrentUser;
+import dev.thrako.receptaria.common.security.CurrentUser;
 import dev.thrako.receptaria.service.UserService;
 import dev.thrako.receptaria.model.entity.user.dto.UserRegistrationBM;
 import jakarta.validation.Valid;
@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Predicate;
 
-import static dev.thrako.receptaria.constant.Constants.BINDING_RESULT_PATH;
+import static dev.thrako.receptaria.common.constant.Constants.BINDING_RESULT_PATH;
 
 @Controller
 public class UserController {
@@ -89,7 +89,7 @@ public class UserController {
                                   @PathVariable Long id) {
 
 
-        final String displayName = this.userService.getDisplayNameById(id);
+        final String displayName = this.userService.findDisplayNameById(id);
         model.addAttribute("displayName", displayName);
 
         return "profile/other";

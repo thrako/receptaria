@@ -1,12 +1,12 @@
 package dev.thrako.receptaria.web.controller.rest;
 
-import dev.thrako.receptaria.constant.CustomErrors;
-import dev.thrako.receptaria.error.exception.CloudException;
-import dev.thrako.receptaria.error.exception.NoSuchTempPhotoException;
+import dev.thrako.receptaria.common.constant.CustomErrors;
+import dev.thrako.receptaria.common.error.exception.CloudException;
+import dev.thrako.receptaria.common.error.exception.NoSuchTempPhotoException;
 import dev.thrako.receptaria.model.entity.photo.dto.PhotoBM;
 import dev.thrako.receptaria.model.entity.photo.dto.PhotoVM;
 import dev.thrako.receptaria.service.PhotoService;
-import dev.thrako.receptaria.error.message.ErrorMessage;
+import dev.thrako.receptaria.common.message.Message;
 import dev.thrako.receptaria.service.TempPhotoService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -56,7 +56,7 @@ public class RestPhotoController {
 
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
-                    .body(ErrorMessage.from(e.getMessage()));
+                    .body(Message.from(e.getMessage()));
 
         } catch (CloudException e) {
 

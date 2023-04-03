@@ -1,6 +1,6 @@
 package dev.thrako.receptaria.model.entity.recipe.dto;
 
-import dev.thrako.receptaria.constant.VisibilityStatus;
+import dev.thrako.receptaria.common.constant.VisibilityStatus;
 import dev.thrako.receptaria.model.entity.ingredient.dto.IngredientVM;
 import dev.thrako.receptaria.model.entity.photo.dto.PhotoVM;
 import dev.thrako.receptaria.model.entity.recipe.RecipeEntity;
@@ -39,14 +39,6 @@ public class RecipeVM {
 
     private String description;
 
-    private boolean canView;
-
-    private boolean canLike;
-
-    private boolean canEdit;
-
-    private boolean canDelete;
-
     private UserProfileVM author;
 
     private VisibilityStatus visibilityStatus;
@@ -79,33 +71,15 @@ public class RecipeVM {
                         .toList())
                 .setLiked(Boolean.FALSE)
                 .setDescription(entity.getDescription())
-                .setCanView(Boolean.FALSE)
-                .setCanLike(Boolean.FALSE)
-                .setCanEdit(Boolean.FALSE)
-                .setCanDelete(Boolean.FALSE)
                 .setAuthor(UserProfileVM.fromEntity(entity.getAuthor()))
                 .setVisibilityStatus(entity.getVisibilityStatus())
                 .setAddedOn(entity.getAddedOn())
                 .setLastUpdated(entity.getLastUpdated());
     }
 
-    public boolean canView () {
+    public RecipeVM setLiked (boolean liked) {
 
-        return canView;
-    }
-
-    public boolean canLike () {
-
-        return canLike;
-    }
-
-    public boolean canEdit () {
-
-        return canEdit;
-    }
-
-    public boolean canDelete () {
-
-        return canDelete;
+        isLiked = liked;
+        return this;
     }
 }

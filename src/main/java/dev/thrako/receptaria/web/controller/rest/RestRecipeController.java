@@ -1,33 +1,44 @@
 package dev.thrako.receptaria.web.controller.rest;
 
-import dev.thrako.receptaria.security.CurrentUser;
-import dev.thrako.receptaria.service.RecipeService;
-import dev.thrako.receptaria.service.UserService;
+import dev.thrako.receptaria.common.message.Message;
+import dev.thrako.receptaria.common.security.CurrentUser;
+import dev.thrako.receptaria.service.utility.RecipeKeeper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.security.Principal;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class RestRecipeController {
 
-    private final RecipeService recipeService;
-    private final UserService userService;
+    private final RecipeKeeper recipeKeeper;
 
-    public RestRecipeController (RecipeService recipeService,
-                                 UserService userService) {
+    public RestRecipeController (RecipeKeeper recipeKeeper) {
 
-        this.recipeService = recipeService;
-        this.userService = userService;
+        this.recipeKeeper = recipeKeeper;
     }
 
     @GetMapping("/api/recipes/isAvailable/{title}")
     public Boolean recipeExists (@PathVariable String title,
                                  @AuthenticationPrincipal CurrentUser author) {
 
-        return recipeService.isAvailableRecipeTitle(author.getId(), title);
+        return recipeKeeper.isAvailableRecipeTitleForAuthor(title, author);
+    }
+
+    @PostMapping("api/recipes/{id}/like")
+    public ResponseEntity<Message> like (@PathVariable Long id,
+                                         @AuthenticationPrincipal CurrentUser visitor) {
+
+        final int likesCount = this.recipeKeeper.addLike(id, visitor);
+        return ResponseEntity.status(HttpStatus.OK).body(Message.from(likesCount));
+    }
+
+    @PostMapping("api/recipes/{id}/unlike")
+    public ResponseEntity<Message> unlike (@PathVariable Long id,
+                                  @AuthenticationPrincipal CurrentUser visitor) {
+
+        final int likesCount = this.recipeKeeper.removeLike(id, visitor);
+        return ResponseEntity.status(HttpStatus.OK).body(Message.from(likesCount));
     }
 
 }

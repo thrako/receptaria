@@ -1,4 +1,7 @@
 /* ROOT */
+:root, html, body, fieldset, legend, dl, ol, ul {
+    all : revert;
+}
 
 :root {
     accent-color          : olivedrab;
@@ -19,6 +22,7 @@
 * {
     margin : 0;
 }
+
 
 html, body {
     height     : 100%;
@@ -209,73 +213,90 @@ input[data-autocompleted] {
 }
 
 input::placeholder,
-textarea::placeholder{
-    color: var(--color-pale-lavender);
-    opacity: 1;
+textarea::placeholder {
+    color   : var(--color-pale-lavender);
+    opacity : 1;
 }
+
 input:placeholder-shown {
     border : 1px solid var(--color-lavender);
 }
 
 input.sign-x {
-    text-align: center;
+    text-align : center;
+}
+
+a[href], input[type='submit'], input[type='image'], label[for], select, button, .pointer {
+    cursor : pointer;
 }
 
 p, h1, h2, h3, h4, h5, h6 {
     overflow-wrap : break-word;
 }
 
+dl,
+ol,
+ul {
+    padding : 0 0 0 15px;
+    margin  : 0;
+}
+
+ul.no-bullets {
+    list-style-type : none;
+}
+
 fieldset {
-    margin-bottom: 2vh;
-    border : 1px black dashed;
+    margin-bottom : 2vh;
+    border        : 1px black dashed;
 }
 
 fieldset legend {
-    margin-bottom: 1vh;
+    margin-bottom : 1vh;
 }
 
 fieldset legend .legend-lbl {
-    padding: 0 0.5rem;
+    padding : 0 0.5rem;
 }
 
 select {
 
-    appearance: none;
-    outline: 0;
-    border: 3px solid var(--color-primary);
-    border-top : none;
-    border-right : none;
-    box-shadow: none;
+    appearance       : none;
+    outline          : 0;
+    border           : 3px solid var(--color-primary);
+    border-top       : none;
+    border-right     : none;
+    box-shadow       : none;
 
-    flex: 1;
-    padding: 0 0 0 10px;
-    color: black;
-    background-color: white;
-    background-image: none;
-    cursor: pointer;
+    flex             : 1;
+    padding          : 0 0 0 10px;
+    color            : black;
+    background-color : white;
+    background-image : none;
+    cursor           : pointer;
 }
 
 select::-ms-expand {
-    display: none;
+    display : none;
 }
 
 .select {
-    position: relative;
-    display: flex;
-    width: 70%;
-    height: 40px;
+    position : relative;
+    display  : flex;
+    width    : 70%;
+    height   : 40px;
 
-    overflow: hidden;
+    overflow : hidden;
 }
+
 /* Arrow */
 .select::after {
-    content: '\25BD';
-    position: absolute;
-    top: 3px;
-    right: 3px;
-    padding: 8px;
-    color : black;
-    pointer-events: none;
+    content        : '\25BD';
+    position       : absolute;
+    top            : 3px;
+    right          : 3px;
+    padding        : 8px;
+    color          : black;
+    pointer-events : none;
 }
 
 
@@ -331,10 +352,19 @@ select::-ms-expand {
 }
 
 .sign-plus:hover {
-    border : 2px solid white;
-    outline : 2px solid var(--color-primary);
-    color : white;
+    border     : 2px solid white;
+    outline    : 2px solid var(--color-primary);
+    color      : white;
     background : var(--color-primary);
+}
+
+.text-align-center {
+    text-align : center;
+}
+
+.flex-centered {
+    display     : flex;
+    align-items : center;
 }
 
 .like-anchor {
@@ -376,7 +406,7 @@ select::-ms-expand {
     margin           : 8px 0;
     border           : none;
     width            : 100%;
-    background-color: rgb(107 142 35);
+    background-color : rgb(107 142 35);
     color            : white;
     opacity          : 0.9;
     cursor           : pointer;
@@ -403,16 +433,16 @@ select::-ms-expand {
 }
 
 .upload-btn:hover {
-    opacity : 0.7;
+    opacity          : 0.7;
     background-color : var(--color-primary);
-    color: white;
+    color            : white;
 
     border           : 2px solid white;
-    outline           : 2px solid var(--color-primary);
+    outline          : 2px solid var(--color-primary);
 }
 
 .errors-ctr ul {
-    padding: 0 0 0 15px;
+    padding : 0 0 0 15px;
 }
 
 .errors-ctr li {
@@ -465,14 +495,38 @@ select::-ms-expand {
 }
 
 .form-top {
-    width         : 100%;
     height        : 50px;
     background    : black;
     border-radius : 5px 5px 0 0;
 }
 
+.form-top.text {
+    color       : white;
+    font-weight : bold;
+}
+
+.form-top.text.recipe-title {
+
+    padding-left : 10px;
+}
+
+.form-top.text.author {
+    color       : white;
+    font-weight : bold;
+}
+
+.form-top.text.author:hover,
+.form-top.text.author:active {
+    color                     : var(--color-primary);
+    /*text-decoration           : underline;*/
+    /*text-decoration-thickness : 2px;*/
+    /*text-decoration-color     : white;*/
+    /*text-decoration-style     : dotted;*/
+}
+
 .add-form,
-.registration-form {
+.registration-form,
+.recipe-show {
     padding : 2.5vw;
 }
 
@@ -509,14 +563,14 @@ select::-ms-expand {
 }
 
 .grid-photo-center {
-    grid-area           : center;
+    grid-area  : center;
 
-    width               : 150px;
-    height              : 150px;
-    object-fit          : contain;
-    overflow            : hidden;
-    background          : white;
-    border              : 1px solid var(--color-pale-lavender);
+    width      : 150px;
+    height     : 150px;
+    object-fit : contain;
+    overflow   : hidden;
+    background : white;
+    border     : 1px solid var(--color-pale-lavender);
 }
 
 .grid-photo-right {
@@ -525,50 +579,50 @@ select::-ms-expand {
 }
 
 .grid-photo-bottom {
-    grid-area : bottom;
-    overflow-wrap: break-word;
-    -ms-word-wrap: break-word;
-    word-wrap: break-word;
-    -ms-hyphens: auto;
+    grid-area     : bottom;
+    overflow-wrap : break-word;
+    -ms-word-wrap : break-word;
+    word-wrap     : break-word;
+    -ms-hyphens   : auto;
 }
 
 .new-photo-ctr {
-    padding: 0;
+    padding : 0;
 }
 
 .ingredient-box {
-    padding: 10px 5px;
+    padding : 10px 5px;
 }
 
 .ingredient-box .grid-ingredient {
     display               : inline-grid;
-    grid-template-columns: 2fr 1fr 1fr minmax(40px, 3vw);
+    grid-template-columns : 2fr 1fr 1fr minmax(40px, 3vw);
     grid-auto-rows        : auto;
     grid-template-areas   :
         "left  center  right  btn-x";
     padding               : 0 0 10px 10px;
-    width : 100%;
+    width                 : 100%;
 }
 
 .ingredient-box .grid-ingredient .left {
-    grid-area: left;
-    width : 100%;
+    grid-area : left;
+    width     : 100%;
 }
 
 .ingredient-box .grid-ingredient .center {
-    grid-area: center;
-    width : 100%;
+    grid-area : center;
+    width     : 100%;
 }
 
 .ingredient-box .grid-ingredient .right {
-    grid-area: right;
-    width : 100%;
-    text-align: right;
+    grid-area  : right;
+    width      : 100%;
+    text-align : right;
 }
 
 .ingredient-box .grid-ingredient .btn-x {
-    grid-area: btn-x;
-    justify-self: end;
+    grid-area    : btn-x;
+    justify-self : end;
 }
 
 .ingredient-box .angle-border .sign-x {
@@ -579,27 +633,22 @@ select::-ms-expand {
 }
 
 .ingredient-box:has(.sign-x:hover) {
-    outline: 2px var(--color-danger) dashed;
+    outline : 2px var(--color-danger) dashed;
 }
 
 .max-width-800px {
     max-width : 800px;
 }
 
-
-
-
 .registration.sign-in-para {
     text-align : center;
 }
 
-
-
-.add-form .time-servings-ctr {
+.time-servings-ctr {
     grid-area             : time-servings;
     display               : grid;
-    grid-template-columns: min(160px) 1fr min(160px) 1fr 1fr min(180px);
-    grid-template-areas:
+    grid-template-columns : min(160px) 1fr min(160px) 1fr 1fr min(180px);
+    grid-template-areas   :
         "preparation gap1 cooking gap2 gap3 servings";
 }
 
@@ -617,7 +666,7 @@ select::-ms-expand {
 
 .time-picker,
 .servings-picker {
-    display   : flex;
+    display : flex;
 }
 
 .hours-input,
@@ -629,7 +678,7 @@ select::-ms-expand {
     border-bottom : 2px solid #35383D;
 
     text-align    : center;
-    padding : 0;
+    padding       : 0;
 }
 
 .description .notepad {
@@ -637,7 +686,7 @@ select::-ms-expand {
     max-width   : 100%;
     border      : none;
     overflow    : hidden;
-    background: repeating-linear-gradient(#FFFFFF, #FFFFFF 20px, #c1c1c1 20px, #c1c1c13d 22px);
+    background  : repeating-linear-gradient(#FFFFFF, #FFFFFF 20px, #C1C1C1 20px, #C1C1C13D 22px);
     line-height : 22px;
     min-height  : 30vh;
     resize      : vertical;
@@ -650,9 +699,148 @@ select::-ms-expand {
     outline  : none;
 }
 
+.carousel.slide {
+    height           : 480px;
+    max-width        : 100%;
+    background-color : white;
+    display          : flex;
+    justify-content  : center;
+    align-items      : center;
+}
 
+.carousel-img-ctr {
+    height  : 400px;
+    width   : 400px;
+    margin  : auto;
+    display : flex;
+}
 
+.carousel-img-ctr img {
+    object-fit : contain;
+}
 
+.carousel-control-prev,
+.carousel-control-next {
+    opacity : 0.7;
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+    opacity : 1;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    display: inline-block;
+    width: 30px;
+    height: 20px;
+    background: var(--color-darkgrey) no-repeat center center;
+    background-size: 160% 160%;
+    border-radius: 30%;
+}
+
+.carousel-control-next-icon {
+    background-image : url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E");
+}
+
+.carousel-control-prev-icon {
+    background-image : url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E");
+}
+
+.carousel-indicators {
+    gap : 1%;
+}
+
+.carousel-indicators li {
+    background-color: white;
+    height: 10px;
+    color: white;
+    border: 2px solid var(--color-darkgrey);
+}
+
+.carousel-indicators .active {
+    background-color : olivedrab;
+}
+
+.show-ingredient-grid,
+.space-between-grid {
+    display             : grid;
+    grid-template-areas :
+            "left right";
+    justify-content     : space-between;
+    padding             : 0 10px;
+}
+
+.show-ingredient-name,
+.space-between-left {
+    grid-area : left;
+}
+
+.show-ingredient-qty,
+.space-between-right {
+    grid-area : right;
+}
+
+.show-likes-ctr {
+    display : inline-flex;
+    gap     : 10px;
+}
+
+.admin-panel {
+    color: var(--color-danger);
+    display: inline-flex;
+    flex-direction: row;
+    padding: 0 10px;
+}
+
+div.admin-panel > a {
+    position: absolute;
+    top: 40px;
+    right: 10px;
+}
+
+.danger-area {
+    color: var(--color-danger);
+    border-color: var(--color-danger);
+}
+
+.danger-text {
+    color: var(--color-danger);
+}
+
+a:hover.danger-text,
+a:focus.danger-text,
+a:active.danger-text {
+    text-decoration : none;
+    cursor          : pointer;
+    color           : var(--color-danger);
+    background: var(--color-blush-pink);
+}
+
+.admin-panel a.danger-text,
+.admin-panel a:hover.danger-text,
+.admin-panel a:focus.danger-text,
+.admin-panel a:active.danger-text {
+    color: white;
+    border-color: var(--color-danger);
+}
+
+.border-dashed-2 {
+    border: 2px dashed;
+}
+
+.padded-10 {
+    padding: 10px;
+}
+
+.flex-space-between {
+    display: flex;
+    justify-content: space-between;
+}
+
+.gap-10 {
+    gap : 10px;
+}
 
 
 @media screen and (max-width : 800px) {
@@ -662,6 +850,8 @@ select::-ms-expand {
         width      : 100%;
         overflow-x : hidden;
         font-size  : 14px;
+        padding: 0;
+        margin: 0;
     }
 
     body {
@@ -698,15 +888,14 @@ select::-ms-expand {
     }
 
 
-
 }
 
 @media screen and (max-width : 600px) {
-    .add-form .time-servings-ctr {
+    .time-servings-ctr {
         grid-area             : time-servings;
         display               : grid;
         grid-template-columns : min(160px) 1fr min(160px);
-        grid-template-areas :
+        grid-template-areas   :
     "preparation gap servings"
     "cooking     gap none ";
     }

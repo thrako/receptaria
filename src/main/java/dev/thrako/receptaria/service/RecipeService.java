@@ -1,13 +1,12 @@
 package dev.thrako.receptaria.service;
 
-import dev.thrako.receptaria.constant.VisibilityStatus;
-import dev.thrako.receptaria.error.exception.RecipeNotFoundException;
+import dev.thrako.receptaria.common.constant.VisibilityStatus;
+import dev.thrako.receptaria.common.error.exception.RecipeNotFoundException;
 import dev.thrako.receptaria.model.entity.recipe.RecipeEntity;
 import dev.thrako.receptaria.model.entity.recipe.dto.RecipeCardVM;
-import dev.thrako.receptaria.model.entity.recipe.dto.RecipeVM;
 import dev.thrako.receptaria.model.entity.user.UserEntity;
 import dev.thrako.receptaria.model.repository.RecipeRepository;
-import dev.thrako.receptaria.security.CurrentUser;
+import dev.thrako.receptaria.common.security.CurrentUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +29,7 @@ public class RecipeService {
         return recipeRepository.saveAndFlush(recipeEntity);
     }
 
-    public boolean isAvailableRecipeTitle (Long principalId, String recipeTitle) {
+    public boolean isAvailableRecipeTitle (String recipeTitle, Long principalId) {
 
         return !this.recipeRepository.existsByAuthor_IdAndTitle(principalId, recipeTitle);
     }
@@ -50,13 +49,6 @@ public class RecipeService {
                 .toList();
     }
 
-    public RecipeVM getRecipeVM (Long id) {
-
-        return this.recipeRepository
-                .findById(id)
-                .map(RecipeVM::fromEntity)
-                .orElseThrow(() -> new RecipeNotFoundException("No recipe with id %d found!".formatted(id)));
-    }
     public boolean checkCanView (CurrentUser currentUser, Long recipeId) {
 
         final RecipeEntity recipeEntity = findById(recipeId);
@@ -121,5 +113,25 @@ public class RecipeService {
     private static boolean isAuthor (CurrentUser currentUser, RecipeEntity recipeEntity) {
 
         return currentUser.getId().equals(recipeEntity.getAuthor().getId());
+    }
+
+    public boolean addLike (Long recipeId, UserEntity visitorEntity) {
+
+        final RecipeEntity recipeEntity = findById(recipeId);
+        final boolean addSuccess = recipeEntity.addLike(visitorEntity);
+        if (addSuccess) {
+            this.recipeRepository.saveAndFlush(recipeEntity);
+        }
+        return addSuccess;
+    }
+
+    public boolean removeLike (Long recipeId, UserEntity visitorEntity) {
+
+        return findById(recipeId).removeLike(visitorEntity);
+    }
+
+    public void saveAndFlush (RecipeEntity recipeEntity) {
+
+        this.recipeRepository.saveAndFlush(recipeEntity);
     }
 }

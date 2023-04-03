@@ -21,7 +21,7 @@ public class RestUserController {
     @GetMapping("api/users/{id}")
     public UserProfileVM userProfile(@PathVariable Long id) {
 
-        return this.userService.getUserProfileById(id);
+        return this.userService.findUserProfileById(id);
     }
 
 }

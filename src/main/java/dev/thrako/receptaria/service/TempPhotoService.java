@@ -1,7 +1,7 @@
 package dev.thrako.receptaria.service;
 
-import dev.thrako.receptaria.error.exception.CloudException;
-import dev.thrako.receptaria.error.exception.NoSuchTempPhotoException;
+import dev.thrako.receptaria.common.error.exception.CloudException;
+import dev.thrako.receptaria.common.error.exception.NoSuchTempPhotoException;
 import dev.thrako.receptaria.model.entity.photo.TempPhotoEntity;
 import dev.thrako.receptaria.model.entity.photo.dto.PhotoBM;
 import dev.thrako.receptaria.model.entity.photo.dto.PhotoDTO;
@@ -17,7 +17,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 
-import static dev.thrako.receptaria.constant.Constants.FORMAT_NO_SUCH_TEMP_PHOTO;
+import static dev.thrako.receptaria.common.constant.Constants.FORMAT_NO_SUCH_TEMP_PHOTO;
 
 @Service
 public class TempPhotoService {

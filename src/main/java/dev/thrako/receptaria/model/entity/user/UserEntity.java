@@ -4,15 +4,12 @@ import dev.thrako.receptaria.model.entity.recipe.RecipeEntity;
 import dev.thrako.receptaria.model.entity.role.RoleEntity;
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
-import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -88,9 +85,9 @@ public class UserEntity {
         return this.roles.removeAll(List.of(roles));
     }
 
-    public void likeRecipe (RecipeEntity recipe) {
+    public boolean likeRecipe (RecipeEntity recipe) {
 
-        this.likedRecipes.add(recipe);
+        return this.likedRecipes.add(recipe);
     }
 
     public boolean unlikeRecipe (RecipeEntity recipe) {

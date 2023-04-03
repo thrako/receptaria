@@ -303,7 +303,7 @@
                             th:field="*{visibilityStatus}"
                             required>
                         <option value="" selected>-- Please select! --</option>
-                        <option th:each="status : ${T(dev.thrako.receptaria.constant.VisibilityStatus).values()}"
+                        <option th:each="status : ${T(dev.thrako.receptaria.common.constant.VisibilityStatus).values()}"
                                 th:text="${#strings.capitalize(#strings.toLowerCase(status))}"
                                 th:value="${status}">&nbsp;
                         </option>

@@ -6,10 +6,14 @@ import dev.thrako.receptaria.model.entity.photo.PhotoEntity;
 import dev.thrako.receptaria.model.entity.photo.dto.PhotoDTO;
 import dev.thrako.receptaria.model.entity.recipe.RecipeEntity;
 import dev.thrako.receptaria.model.entity.recipe.dto.RecipeBM;
+import dev.thrako.receptaria.model.entity.recipe.dto.RecipeVM;
 import dev.thrako.receptaria.model.entity.user.UserEntity;
+import dev.thrako.receptaria.common.security.CurrentUser;
 import dev.thrako.receptaria.service.*;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -48,7 +52,7 @@ public class RecipeKeeper {
 
         RecipeEntity newRecipeEntity = recipeBM.toEntity();
 
-        final UserEntity author = this.userService.getUserEntity(authorId);
+        final UserEntity author = this.userService.findById(authorId);
         newRecipeEntity.setAuthor(author);
 
         final RecipeEntity savedRecipeEntity = this.recipeService.save(newRecipeEntity);
@@ -85,5 +89,50 @@ public class RecipeKeeper {
     }
 
 
+    public boolean isAvailableRecipeTitleForAuthor (String title, CurrentUser author) {
+
+        return recipeService.isAvailableRecipeTitle(title, author.getId());
+    }
+
+    public int addLike (Long recipeId, CurrentUser visitor) {
+
+        final UserEntity visitorEntity = this.userService.findById(visitor.getId());
+        final RecipeEntity recipeEntity = this.recipeService.findById(recipeId);
+
+        if (!recipeEntity.addLike(visitorEntity) || !visitorEntity.likeRecipe(recipeEntity)) {
+
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        userService.saveAndFlush(visitorEntity);
+        recipeService.saveAndFlush(recipeEntity);
+
+        return recipeEntity.getLikes().size();
+    }
+
+    public int removeLike (Long recipeId, CurrentUser visitor) {
+
+        final UserEntity visitorEntity = this.userService.findById(visitor.getId());
+        final RecipeEntity recipeEntity = this.recipeService.findById(recipeId);
+
+        if (!recipeEntity.removeLike(visitorEntity) || !visitorEntity.unlikeRecipe(recipeEntity)) {
+
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        userService.saveAndFlush(visitorEntity);
+        recipeService.saveAndFlush(recipeEntity);
+
+        return recipeEntity.getLikes().size();
+    }
+
+    public RecipeVM getRecipeVMForUser (Long id, CurrentUser currentUser) {
+
+        final UserEntity userEntity = this.userService.findById(currentUser.getId());
+        final RecipeEntity recipeEntity = this.recipeService.findById(id);
+
+        return RecipeVM.fromEntity(recipeEntity)
+                .setLiked(recipeEntity.getLikes().contains(userEntity));
+    }
 }
 

@@ -1,13 +1,13 @@
 package dev.thrako.receptaria.model.entity.user.dto;
 
-import dev.thrako.receptaria.error.validation.annotation.PasswordsMatch;
-import dev.thrako.receptaria.error.validation.annotation.UniqueEmail;
+import dev.thrako.receptaria.common.error.validation.annotation.PasswordsMatch;
+import dev.thrako.receptaria.common.error.validation.annotation.UniqueEmail;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import static dev.thrako.receptaria.constant.Constants.Registration.*;
+import static dev.thrako.receptaria.common.constant.Constants.Registration.*;
 
 
 @Getter

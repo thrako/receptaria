@@ -1,10 +1,10 @@
 package dev.thrako.receptaria.model.entity.recipe.dto;
 
-import dev.thrako.receptaria.constant.VisibilityStatus;
+import dev.thrako.receptaria.common.constant.VisibilityStatus;
 import dev.thrako.receptaria.model.entity.ingredient.dto.IngredientBM;
 import dev.thrako.receptaria.model.entity.photo.dto.PhotoVM;
 import dev.thrako.receptaria.model.entity.recipe.RecipeEntity;
-import dev.thrako.receptaria.error.validation.annotation.UniqueRecipeForUser;
+import dev.thrako.receptaria.common.error.validation.annotation.UniqueRecipeForUser;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

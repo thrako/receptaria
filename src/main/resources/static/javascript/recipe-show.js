@@ -1,32 +1,46 @@
 let likedTrueElement = document.getElementById('likedTrue');
 let likedFalseElement = document.getElementById('likedFalse');
 let isLikedElement = document.getElementById('isLiked');
+let isLiked = isLikedElement.value === 'true';
+
+let csrfHeaderName = document.getElementById("csrf").getAttribute("name");
+let csrfHeaderToken = document.getElementById("csrf").getAttribute("value");
 
 function showLiked() {
 
-    if (isLikedElement.value === 'true') {
-
-        likedTrueElement.style.display = 'block';
-        likedFalseElement.style.display = 'none';
-    } else {
-
-        likedTrueElement.style.display = 'none';
-        likedFalseElement.style.display = 'block';
-    }
+    likedTrueElement.style.display = (isLiked) ? 'block' : 'none';
+    likedFalseElement.style.display = (isLiked) ? 'none' : 'block';
 }
 
 function toggleLiked() {
 
-    if (isLikedElement.value === 'true') {
 
-        isLikedElement.value = 'false';
-    } else {
+    isLiked = !isLiked;
 
-        isLikedElement.value = 'true';
-    }
-    //TODO
-    console.log('Send some request to database')
-    showLiked();
+    let recipeId = document.getElementById('recipe-id').getAttribute('value');
+    let pathEnd = (isLiked) ? 'like' : 'unlike';
+
+    fetch(`/api/recipes/${recipeId}/${pathEnd}`, {
+        method: "POST",
+        headers: {
+            [csrfHeaderName]: csrfHeaderToken
+        }
+    })
+        .then(function (response) {
+            if (response.ok) {
+                return response.json();
+            } else {
+                isLiked = !isLiked;
+            }
+        })
+        .then(function (data) {
+            let count = data.message;
+            document.getElementById('likes-counter').innerText = count;
+            isLikedElement.value = isLiked.toString();
+            showLiked();
+        });
+
+
 }
 
 function deleteRecipe() {
