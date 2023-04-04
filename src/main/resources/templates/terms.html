@@ -3,7 +3,10 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{general.html :: head}">&nbsp;</head>
+<head>
+    <th:block th:insert="~{general.html :: head-include}">&nbsp;</th:block>
+    <title>Receptaria :: Terms & Conditions</title>
+</head>
 
 <body>
 

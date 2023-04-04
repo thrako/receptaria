@@ -2,7 +2,7 @@ package dev.thrako.receptaria.web.controller.rest;
 
 import dev.thrako.receptaria.common.error.exception.IllegalTargetException;
 import dev.thrako.receptaria.common.message.Message;
-import dev.thrako.receptaria.common.security.CurrentUser;
+import dev.thrako.receptaria.model.security.CurrentUser;
 import dev.thrako.receptaria.model.entity.user.dto.UserVM;
 import dev.thrako.receptaria.common.error.exception.NotAuthorizedException;
 import dev.thrako.receptaria.service.UserService;
@@ -31,7 +31,7 @@ public class RestAdminController {
     @GetMapping("api/admin/users")
     public List<UserVM> getUsers() {
 
-        return this.userService.getListUserVM();
+        return this.userService.getAllUsersVM();
     }
 
     @PostMapping("/api/admin/users/{userId}/activate")

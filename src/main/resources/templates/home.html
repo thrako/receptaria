@@ -4,7 +4,9 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="~{general.html :: head}">
+<head>
+    <th:block th:insert="~{general.html :: head-include}">&nbsp;</th:block>
+    <title>Receptaria</title>
 </head>
 
 <body>

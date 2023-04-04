@@ -1,7 +1,7 @@
 package dev.thrako.receptaria.web.controller.rest;
 
 import dev.thrako.receptaria.common.message.Message;
-import dev.thrako.receptaria.common.security.CurrentUser;
+import dev.thrako.receptaria.model.security.CurrentUser;
 import dev.thrako.receptaria.service.utility.RecipeKeeper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,10 +1,8 @@
 package dev.thrako.receptaria.web.controller;
 
-import dev.thrako.receptaria.model.entity.photo.dto.PhotoVM;
 import dev.thrako.receptaria.model.entity.recipe.dto.RecipeBM;
 import dev.thrako.receptaria.model.entity.recipe.dto.RecipeCardVM;
-import dev.thrako.receptaria.common.security.CurrentUser;
-import dev.thrako.receptaria.service.*;
+import dev.thrako.receptaria.model.security.CurrentUser;
 import dev.thrako.receptaria.service.utility.RecipeKeeper;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,28 +24,19 @@ import static dev.thrako.receptaria.common.constant.Constants.BINDING_RESULT_PAT
 public class RecipeController {
 
     private final RecipeKeeper recipeKeeper;
-    private final RecipeService recipeService;
-    private final UnitService unitService;
-    private final TempPhotoService tempPhotoService;
 
 
     @Autowired
-    public RecipeController (RecipeKeeper recipeKeeper,
-                             RecipeService recipeService,
-                             UnitService unitService,
-                             TempPhotoService tempPhotoService) {
+    public RecipeController (RecipeKeeper recipeKeeper) {
 
         this.recipeKeeper = recipeKeeper;
-        this.recipeService = recipeService;
-        this.unitService = unitService;
-        this.tempPhotoService = tempPhotoService;
     }
 
 
     @ModelAttribute("units")
     public void initUnits (Model model) {
 
-        model.addAttribute("units", unitService.getDistinctUnitNames());
+        model.addAttribute("units", recipeKeeper.getDistinctUnitNames());
     }
 
     @ModelAttribute("recipeBM")
@@ -78,13 +67,7 @@ public class RecipeController {
                              RedirectAttributes redirectAttrs,
                              @AuthenticationPrincipal CurrentUser author) {
 
-        final UUID tempRecipeId = recipeBM.getTempRecipeId();
-        final Long primaryPhotoId = recipeBM.getPrimaryPhotoId();
-
-        this.tempPhotoService.updatePrimaryFlag(tempRecipeId, primaryPhotoId);
-
-        final List<PhotoVM> photoVMList = this.tempPhotoService.getListPhotoVM(tempRecipeId);
-        recipeBM.setPhotoVMList(photoVMList);
+        this.recipeKeeper.process(recipeBM);
 
         checkUniqueTitle(bindingResult);
 
@@ -114,12 +97,32 @@ public class RecipeController {
     }
 
     @GetMapping("/recipes/all")
-    public String getAll (Model model) {
+    public String getAll (Model model, @AuthenticationPrincipal CurrentUser currentUser) {
 
-        final List<RecipeCardVM> recipeCards = this.recipeService.getRecipeCards();
+        final List<RecipeCardVM> recipeCards = this.recipeKeeper.getCardsAll(currentUser);
         model.addAttribute("recipeCards", recipeCards);
 
-        return "recipes/all";
+        return "recipes/list";
+    }
+
+    @GetMapping("/recipes/mine")
+    public String getOwn (Model model, @AuthenticationPrincipal CurrentUser currentUser) {
+
+        final List<RecipeCardVM> recipeCards = this.recipeKeeper.getCardsOwn(currentUser);
+        model.addAttribute("recipeCards", recipeCards);
+
+        return "recipes/list";
+    }
+
+    @GetMapping("/recipes/author/{authorId}")
+    public String getOwn (Model model,
+                          @AuthenticationPrincipal CurrentUser currentUser,
+                          @PathVariable Long authorId) {
+
+        final List<RecipeCardVM> recipeCards = this.recipeKeeper.getCardsByAuthor(currentUser, authorId);
+        model.addAttribute("recipeCards", recipeCards);
+
+        return "recipes/list";
     }
 
     private static void checkUniqueTitle (BindingResult bindingResult) {

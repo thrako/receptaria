@@ -1,6 +1,6 @@
 package dev.thrako.receptaria.web.controller.rest;
 
-import dev.thrako.receptaria.model.entity.user.dto.UserProfileVM;
+import dev.thrako.receptaria.model.entity.user.dto.UserShortVM;
 import dev.thrako.receptaria.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +19,7 @@ public class RestUserController {
     }
 
     @GetMapping("api/users/{id}")
-    public UserProfileVM userProfile(@PathVariable Long id) {
+    public UserShortVM userProfile(@PathVariable Long id) {
 
         return this.userService.findUserProfileById(id);
     }
