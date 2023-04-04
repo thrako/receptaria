@@ -14,6 +14,8 @@ function renderGreetingHtml(result) {
     content.innerHTML = `<p>Hello, ${result.displayName}</p>`;
 }
 
+
+
 let index = document.URL.lastIndexOf("/");
 let userId = document.URL.substring(index + 1);
 renderUserData(userId);

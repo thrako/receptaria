@@ -1,4 +1,4 @@
-package dev.thrako.receptaria.common.config;
+package dev.thrako.receptaria.config;
 
 import dev.thrako.receptaria.service.utility.ContextAuthChecker;
 import dev.thrako.receptaria.web.interceptor.ContextAuthorizationInterceptor;

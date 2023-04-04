@@ -24,9 +24,10 @@
 <body>
 
 <header th:fragment="header"
-        class="header"
->
+        class="header">
+
     <div th:fragment="login-panel" class="login-panel">
+
         <div sec:authorize="isAnonymous()"
              class="signup">
             <a th:href="@{/registration}" class="sign-up">Sign up</a>
@@ -64,7 +65,7 @@
     <div class="admin-panel danger-area"
          th:fragment="admin-panel"
          sec:authorize="hasRole('ROLE_ADMIN')">
-        <a class="danger-text padded-10 border-dashed-2" href="#">Admin Area</a>
+        <a class="danger-text padded-10 border-dashed-2" th:href="@{/admin/dashboard}">Admin Area</a>
     </div>
 
 </header>

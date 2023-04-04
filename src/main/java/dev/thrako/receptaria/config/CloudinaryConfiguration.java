@@ -1,4 +1,4 @@
-package dev.thrako.receptaria.common.config;
+package dev.thrako.receptaria.config;
 
 import com.cloudinary.Cloudinary;
 import org.springframework.beans.factory.annotation.Value;

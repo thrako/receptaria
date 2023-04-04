@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.css" rel="stylesheet"/>
+    <th:block th:insert="~{general.html :: head-include}">&nbsp;</th:block>
+    <meta id="csrf" hidden th:name="${_csrf.getHeaderName()}" th:value="${_csrf.getToken()}">
+    <link rel="stylesheet" th:href="@{/css/admin.css}"/>
+    <title>Receptaria :: Admin Area</title>
+</head>
+
+<body>
+
+<header th:fragment="header"
+        class="header">
+
+    <div th:fragment="login-panel" class="login-panel">
+
+        <div sec:authorize="isAnonymous()"
+             class="signup">
+            <a th:href="@{/registration}" class="sign-up">Sign up</a>
+        </div>
+
+        <div sec:authorize="isAnonymous()"
+             class="login">
+            <a th:href="@{/login}" class="login">Login</a>
+        </div>
+
+        <div sec:authorize="isAuthenticated()"
+             class="displayName">
+                    <span>
+                        Logged in as: <a th:href="@{/users/me}"><span sec:authentication="name">Bob</span></a>
+                    </span>
+        </div>
+
+        <div sec:authorize="isAuthenticated()">
+            <form th:method="POST"
+                  th:action="@{/logout}"
+            >
+                <button type="submit" class="like-anchor">Logout</button>
+            </form>
+        </div>
+
+    </div>
+    <div th:fragment="logo-circle" class="logo-circle">&nbsp</div>
+    <div th:fragment="logo-panel" class="logo-panel">
+        <div th:fragment="logo" class="logo">
+            <a th:href="@{/}" class="receptaria-logo">Receptaria</a>
+        </div>
+        <div th:fragment="search" class="search"></div>
+
+    </div>
+    <div class="admin-panel danger-area"
+         th:fragment="admin-panel"
+         sec:authorize="hasRole('ROLE_ADMIN')">
+        <a class="danger-text padded-10 border-dashed-2" th:href="@{/}">EXIT</a>
+    </div>
+
+</header>
+
+<nav th:fragment="leftbar" class="left-bar">
+    <div class="left-link-ctr">
+        <a th:href="@{/admin/users}">
+            <span class="dot">&nbsp;</span>
+            <span th:text="'Users'">Link</span>
+        </a>
+    </div>
+</nav>
+
+<div class="content">
+
+    <p>Master, these are all users currently known to me:</p>
+
+    <table id="dtUsers" class="table table-striped table-hover table-bordered table-sm table-responsive">
+        <thead class="table-dark">
+        <tr>
+            <th class="th-sm text-center"><b>Id</b>
+            </th>
+            <th class="th-sm text-center"><b>Email</b>
+            </th>
+            <th class="th-sm text-center"><b>Display Name</b>
+            </th>
+            <th class="th-sm text-center"><b>Active</b>
+            </th>
+            <th class="th-sm text-center"><b>Moderator</b>
+            </th>
+            <th class="th-sm text-center"><b>Admin</b>
+            </th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td class="text-center"
+                th:text="${user.id}">id</td>
+            <td class="text-center"
+                th:text="${user.email}">email</td>
+            <td class="text-center"
+                th:text="${user.displayName}">display name</td>
+            <td class="text-align-center">
+                <label class="text-center">
+                    <input th:id="|active-${user.id}|"
+                           type="checkbox"
+                           th:checked="${user.isActive()}"
+                           th:onclick="|toggleActive(${user.id})|"
+                           th:disabled="${user.isAdmin()}">
+                </label>
+            </td>
+            <td class="text-align-center">
+                <label>
+                    <input th:id="|moderator-${user.id}|"
+                           type="checkbox"
+                           th:value="${user.id}"
+                           th:checked="${user.isModerator()}"
+                           th:onclick="|toggleModerator(${user.id})|"
+                           th:disabled="${user.isAdmin()}">
+                </label>
+            </td>
+            <td class="text-align-center">
+                <label>
+                    <input th:id="|is-admin-${user.id}|"
+                           type="checkbox"
+                           th:checked="${user.isAdmin()}"
+                           disabled>
+                </label>
+            </td>
+        </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<nav th:replace="~{general.html :: rightbar}">&nbsp;</nav>
+
+<footer th:replace="~{general.html :: footer}">&nbsp;</footer>
+
+<script src="/javascript/admin.js"></script>
+
+</body>
+
+</html>

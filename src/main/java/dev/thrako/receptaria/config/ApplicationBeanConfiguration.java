@@ -1,4 +1,4 @@
-package dev.thrako.receptaria.common.config;
+package dev.thrako.receptaria.config;
 
 import dev.thrako.receptaria.model.entity.ingredient.IngredientEntity;
 import dev.thrako.receptaria.model.entity.ingredient.dto.IngredientBM;

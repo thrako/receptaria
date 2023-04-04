@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.css"
+          integrity="sha512-9oXHUIbY5ggztQSpGM/F8ffumz2nTHkG81Qxvm/JJOlcj0nPu8T/A/vCXmlJRP2wt4iF3L2zL+P1rF2odicJ3Q=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <!-- Font Awesome -->
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+            rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+    <link
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+            rel="stylesheet"
+    />
+    <!-- MDB -->
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.css"
+            rel="stylesheet"
+    />
+    <th:block th:insert="~{general.html :: head-include}">&nbsp;</th:block>
+    <link rel="stylesheet" th:href="@{/css/admin.css}"/>
+    <title>Receptaria :: Admin Area</title>
+</head>
+
+<body>
+
+<header th:fragment="header"
+        class="header">
+
+    <div th:fragment="login-panel" class="login-panel">
+
+        <div sec:authorize="isAnonymous()"
+             class="signup">
+            <a th:href="@{/registration}" class="sign-up">Sign up</a>
+        </div>
+
+        <div sec:authorize="isAnonymous()"
+             class="login">
+            <a th:href="@{/login}" class="login">Login</a>
+        </div>
+
+        <div sec:authorize="isAuthenticated()"
+             class="displayName">
+                    <span>
+                        Logged in as: <a th:href="@{/users/me}"><span sec:authentication="name">Bob</span></a>
+                    </span>
+        </div>
+
+        <div sec:authorize="isAuthenticated()">
+            <form th:method="POST"
+                  th:action="@{/logout}"
+            >
+                <button type="submit" class="like-anchor">Logout</button>
+            </form>
+        </div>
+
+    </div>
+    <div th:fragment="logo-circle" class="logo-circle">&nbsp</div>
+    <div th:fragment="logo-panel" class="logo-panel">
+        <div th:fragment="logo" class="logo">
+            <a th:href="@{/}" class="receptaria-logo">Receptaria</a>
+        </div>
+        <div th:fragment="search" class="search"></div>
+
+    </div>
+    <div class="admin-panel danger-area"
+         th:fragment="admin-panel"
+         sec:authorize="hasRole('ROLE_ADMIN')">
+        <a class="danger-text padded-10 border-dashed-2" th:href="@{/}">EXIT</a>
+    </div>
+
+</header>
+
+<nav th:fragment="leftbar" class="left-bar">
+    <div class="left-link-ctr">
+        <a th:href="@{/admin/users}">
+            <span class="dot">&nbsp;</span>
+            <span th:text="'Users'">Link</span>
+        </a>
+    </div>
+</nav>
+
+<div class="content">
+
+    <p>Welcome Master! How may I please you, today?</p>
+
+</div>
+
+<nav th:replace="~{general.html :: rightbar}">&nbsp;</nav>
+
+<footer th:replace="~{general.html :: footer}">&nbsp;</footer>
+
+</body>
+
+</html>

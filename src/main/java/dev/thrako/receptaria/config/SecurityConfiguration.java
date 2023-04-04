@@ -1,5 +1,7 @@
-package dev.thrako.receptaria.common.config;
+package dev.thrako.receptaria.config;
 
+import dev.thrako.receptaria.common.constant.Constants;
+import dev.thrako.receptaria.common.constant.Role;
 import dev.thrako.receptaria.model.repository.UserRepository;
 import dev.thrako.receptaria.service.AppUserDetailsService;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -25,6 +27,8 @@ public class SecurityConfiguration {
                     .permitAll()
                 .requestMatchers("/login/**", "/registration", "/registration/success")
                     .anonymous()
+                .requestMatchers("/admin/**", "/api/admin/**")
+                    .hasRole(Role.ADMIN.name())
                 .anyRequest()
                     .authenticated()
             .and()

@@ -14,7 +14,6 @@ function showLiked() {
 
 function toggleLiked() {
 
-
     isLiked = !isLiked;
 
     let recipeId = document.getElementById('recipe-id').getAttribute('value');
@@ -39,12 +38,10 @@ function toggleLiked() {
             isLikedElement.value = isLiked.toString();
             showLiked();
         });
-
-
 }
 
 function deleteRecipe() {
-    //TODO
+    //TODO Delete Recipe
     console.log('Implement me please!')
 }
 
