@@ -90,7 +90,7 @@ public class UserService {
         final UserEntity userEntity = this.findById(userId);
 
         if (userEntity.isActive()) {
-            throw new IllegalStateException("Trying to inactivate inactive user!");
+            throw new IllegalStateException("Trying to activate an active user!");
         }
 
         userEntity.setActive(Boolean.TRUE);
@@ -106,7 +106,7 @@ public class UserService {
         final UserEntity userEntity = this.findById(userId);
 
         if (!userEntity.isActive()) {
-            throw new IllegalStateException("Trying to inactivate inactive user!");
+            throw new IllegalStateException("Trying to inactivate an inactive user!");
         }
 
         if (hasRole(userEntity, Role.ADMIN)) {
