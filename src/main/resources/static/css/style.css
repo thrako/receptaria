@@ -225,6 +225,7 @@ canvas,
 svg {
 
     display   : block;
+
     max-width : 100%;
 }
 
@@ -609,9 +610,9 @@ select {
 
 .form-top .recipe-title {
 
-    font-size: 30px;
+    font-size   : 30px;
 
-    margin-left: 20px;
+    margin-left : 20px;
 }
 
 .form-top.text.author {
@@ -852,9 +853,12 @@ select {
 
 .carousel-img-ctr {
 
-    height  : 400px;
-    width   : 400px;
+    height  : 300px;
+
+    width   : 300px;
+
     margin  : auto;
+
     display : flex;
 }
 
@@ -1033,48 +1037,48 @@ span.icon-ctr:focus {
 }
 
 .card.box {
-    padding: 20px;
-    margin: 20px 0;
-    background: white;
+    padding    : 20px;
+    margin     : 20px 0;
+    background : white;
 }
 
 .card.grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    grid-template-rows: 1fr auto auto 1fr;
-    grid-template-areas: "photo none none"
+    display               : grid;
+    grid-template-columns : 2fr 1fr 1fr;
+    grid-template-rows    : 1fr auto auto 1fr;
+    grid-template-areas   : "photo none none"
         "photo title title"
         "photo author author"
         "photo update update";
-    padding: 5px 10px;
-    cursor: pointer;
+    padding               : 5px 10px;
+    cursor                : pointer;
 }
 
 .card.photo {
-    grid-area: photo;
-    display: flex;
-    min-height: 15vh;
-    height: 20vw;
-    align-self: center;
-    justify-self: start;
+    grid-area    : photo;
+    display      : flex;
+    min-height   : 15vh;
+    height       : 20vw;
+    align-self   : center;
+    justify-self : start;
 }
 
 .card.photo img {
-    object-fit: contain;
+    object-fit : contain;
 }
 
 .card.title {
-    grid-area : title;
-    font-size: 30px;
-    font-weight: bold;
-    justify-self: center;
+    grid-area    : title;
+    font-size    : 30px;
+    font-weight  : bold;
+    justify-self : center;
 }
 
 .card.author {
-    grid-area: author;
-    width: 50%;
-    justify-self: end;
-    text-align: end;
+    grid-area    : author;
+    width        : 50%;
+    justify-self : end;
+    text-align   : end;
 }
 
 .card.author:hover,
@@ -1084,9 +1088,9 @@ span.icon-ctr:focus {
 }
 
 .card.last-updated {
-    grid-area: update;
-    align-self: end;
-    justify-self: end;
+    grid-area    : update;
+    align-self   : end;
+    justify-self : end;
 }
 
 
@@ -1124,10 +1128,10 @@ span.icon-ctr:focus {
     }
 
     body .content {
-        grid-area : content;
-        padding   : 10px 2.5VW;
-        width     : 95vw;
-        justify-self: center;
+        grid-area    : content;
+        padding      : 10px 2.5VW;
+        width        : 95vw;
+        justify-self : center;
     }
 
     .content-vw {
@@ -1138,12 +1142,18 @@ span.icon-ctr:focus {
 }
 
 @media screen and (max-width : 600px) {
+
     .time-servings-ctr {
         grid-area             : time-servings;
         display               : grid;
-        grid-template-columns : min(160px) 1fr min(160px);
+        grid-template-columns : min(160px) 1fr min(120px);
         grid-template-areas   :
     "preparation gap servings"
     "cooking     gap none ";
+    }
+
+    .carousel-img-ctr {
+        height : 60vw;
+        width  : 60vw;
     }
 }
