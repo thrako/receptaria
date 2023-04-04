@@ -3,7 +3,7 @@ package dev.thrako.receptaria.service.utility;
 import dev.thrako.receptaria.common.constant.ContextAuthority;
 import dev.thrako.receptaria.common.constant.ContextRole;
 import dev.thrako.receptaria.model.entity.user.UserEntity;
-import dev.thrako.receptaria.common.security.CurrentUser;
+import dev.thrako.receptaria.model.security.CurrentUser;
 import dev.thrako.receptaria.service.RecipeService;
 import dev.thrako.receptaria.service.UserService;
 import org.springframework.stereotype.Component;

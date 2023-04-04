@@ -308,6 +308,7 @@ fieldset {
 fieldset legend {
 
     margin-bottom : 1vh;
+    padding       : 0;
 }
 
 fieldset legend .legend-lbl {
@@ -453,28 +454,28 @@ select {
 
 .like-anchor {
 
-    display                : inline;
-    box-sizing             : content-box;
-    align-items            : normal;
-    text-align             : start;
+    display            : inline;
+    box-sizing         : content-box;
+    align-items        : normal;
+    text-align         : start;
 
-    width                  : auto;
-    height                 : auto;
+    width              : auto;
+    height             : auto;
 
-    padding                : 0;
-    background-color       : rgba(0, 0, 0, 0);
-    border-color           : rgb(0, 0, 238);
-    border-style           : none;
-    color                  : var(--color-primary);
-    outline                : 1 solid var(--color-danger);
+    padding            : 0;
+    background-color   : rgba(0, 0, 0, 0);
+    border-color       : rgb(0, 0, 238);
+    border-style       : none;
+    color              : var(--color-primary);
+    outline            : 1 solid var(--color-danger);
 
-    font                   : inherit;
-    cursor                 : pointer;
+    font               : inherit;
+    cursor             : pointer;
 
-    perspective-origin     : 0 0;
-    transform-origin       : 0 0;
+    perspective-origin : 0 0;
+    transform-origin   : 0 0;
 
-    -moz-appearance        : none;
+    -moz-appearance    : none;
 
 }
 
@@ -596,9 +597,8 @@ select {
 
 .form-top {
 
-    height        : 50px;
-    background    : black;
-    border-radius : 5px 5px 0 0;
+    height     : 50px;
+    background : black;
 }
 
 .form-top.text {
@@ -607,9 +607,11 @@ select {
     font-weight : bold;
 }
 
-.form-top.text.recipe-title {
+.form-top .recipe-title {
 
-    padding-left : 10px;
+    font-size: 30px;
+
+    margin-left: 20px;
 }
 
 .form-top.text.author {
@@ -633,8 +635,19 @@ select {
 
 .shadowed {
 
-    box-shadow    : 10px 10px 40px rgba(0, 0, 0, 0.15);
+    box-shadow : 10px 10px 40px rgba(0, 0, 0, 0.15);
+}
+
+.rounded-10 {
+    border-radius : 10px 10px;
+}
+
+.rounded-10.bottom {
     border-radius : 0 0 10px 10px;
+}
+
+.rounded-10.top {
+    border-radius : 10px 10px 0 0;
 }
 
 .photo-box {
@@ -854,6 +867,7 @@ select {
 .carousel-control-next {
 
     opacity : 0.7;
+    width   : 10%;
 }
 
 .carousel-control-prev:hover,
@@ -1018,6 +1032,63 @@ span.icon-ctr:focus {
     background : var(--color-primary);
 }
 
+.card.box {
+    padding: 20px;
+    margin: 20px 0;
+    background: white;
+}
+
+.card.grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: 1fr auto auto 1fr;
+    grid-template-areas: "photo none none"
+        "photo title title"
+        "photo author author"
+        "photo update update";
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.card.photo {
+    grid-area: photo;
+    display: flex;
+    min-height: 15vh;
+    height: 20vw;
+    align-self: center;
+    justify-self: start;
+}
+
+.card.photo img {
+    object-fit: contain;
+}
+
+.card.title {
+    grid-area : title;
+    font-size: 30px;
+    font-weight: bold;
+    justify-self: center;
+}
+
+.card.author {
+    grid-area: author;
+    width: 50%;
+    justify-self: end;
+    text-align: end;
+}
+
+.card.author:hover,
+.card.author:focus,
+.card.author:active {
+    color : var(--color-primary);
+}
+
+.card.last-updated {
+    grid-area: update;
+    align-self: end;
+    justify-self: end;
+}
+
 
 @media screen and (max-width : 800px) {
 
@@ -1048,8 +1119,7 @@ span.icon-ctr:focus {
         padding : 5px 20px 20px 0;
     }
 
-    body .right-bar,
-    body .content {
+    body .right-bar {
         padding : 5px 30px;
     }
 
@@ -1057,6 +1127,7 @@ span.icon-ctr:focus {
         grid-area : content;
         padding   : 10px 2.5VW;
         width     : 95vw;
+        justify-self: center;
     }
 
     .content-vw {

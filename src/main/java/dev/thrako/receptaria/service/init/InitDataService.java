@@ -1,4 +1,4 @@
-package dev.thrako.receptaria;
+package dev.thrako.receptaria.service.init;
 
 import dev.thrako.receptaria.common.constant.Role;
 import dev.thrako.receptaria.common.constant.VisibilityStatus;
@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 @Component
-public class InitData implements CommandLineRunner {
+public class InitDataService implements CommandLineRunner {
 
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
@@ -28,10 +28,10 @@ public class InitData implements CommandLineRunner {
     private final VisibilityRepository visibilityRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public InitData (RoleRepository roleRepository,
-                     UserRepository userRepository,
-                     UnitRepository unitRepository,
-                     VisibilityRepository visibilityRepository, PasswordEncoder passwordEncoder) {
+    public InitDataService (RoleRepository roleRepository,
+                            UserRepository userRepository,
+                            UnitRepository unitRepository,
+                            VisibilityRepository visibilityRepository, PasswordEncoder passwordEncoder) {
 
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;

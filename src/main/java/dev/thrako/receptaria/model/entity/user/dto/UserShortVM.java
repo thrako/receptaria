@@ -12,15 +12,15 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @NoArgsConstructor
 @ToString
-public class UserProfileVM {
+public class UserShortVM {
 
     private Long id;
 
     private String displayName;
 
-    public static UserProfileVM fromEntity (UserEntity entity) {
+    public static UserShortVM fromEntity (UserEntity entity) {
 
-        return new UserProfileVM()
+        return new UserShortVM()
                 .setId(entity.getId())
                 .setDisplayName(entity.getDisplayName());
     }

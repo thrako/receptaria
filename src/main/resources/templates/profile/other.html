@@ -3,7 +3,9 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{general.html :: head}">
+<head>
+    <th:block th:insert="~{general.html :: head-include}">&nbsp;</th:block>
+    <title th:text="'Receptaria :: '+${displayName}">Receptaria</title>
 </head>
 
 <body>
@@ -14,6 +16,7 @@
 
     <div class="content">
         <p>This is the profile of <span th:text="${displayName}"></span>!</p>
+        <p><a th:href="|/recipes/author/${userId}|">See user recipes</a></p>
     </div>
 
     <nav th:replace="~{general.html :: rightbar}">&nbsp;</nav>

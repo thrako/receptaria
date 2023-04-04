@@ -95,6 +95,12 @@ public class TempPhotoService {
         final Optional<TempPhotoEntity> optionalTempPhoto = this.tempPhotoRepository.findById(id);
         final TempPhotoEntity tempPhotoEntity = optionalTempPhoto
                 .orElseThrow(() -> new NoSuchTempPhotoException(FORMAT_NO_SUCH_TEMP_PHOTO.formatted(id)));
+
+        delete(tempPhotoEntity);
+    }
+
+    public void delete (TempPhotoEntity tempPhotoEntity) {
+
         try {
             this.cloudUtility.delete(tempPhotoEntity.getPublicId()) ;
             this.tempPhotoRepository.delete(tempPhotoEntity);
@@ -102,5 +108,10 @@ public class TempPhotoService {
             throw new CloudException(e);
         }
 
+    }
+
+    public List<TempPhotoEntity> getAll () {
+
+        return this.tempPhotoRepository.findAll();
     }
 }

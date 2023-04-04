@@ -4,10 +4,10 @@ import dev.thrako.receptaria.common.constant.Role;
 import dev.thrako.receptaria.common.error.exception.IllegalTargetException;
 import dev.thrako.receptaria.common.error.exception.NotAuthorizedException;
 import dev.thrako.receptaria.common.error.exception.UserNotFoundException;
-import dev.thrako.receptaria.common.security.CurrentUser;
+import dev.thrako.receptaria.model.security.CurrentUser;
 import dev.thrako.receptaria.model.entity.role.RoleEntity;
 import dev.thrako.receptaria.model.entity.user.UserEntity;
-import dev.thrako.receptaria.model.entity.user.dto.UserProfileVM;
+import dev.thrako.receptaria.model.entity.user.dto.UserShortVM;
 import dev.thrako.receptaria.model.entity.user.dto.UserRegistrationBM;
 import dev.thrako.receptaria.model.entity.user.dto.UserVM;
 import dev.thrako.receptaria.model.repository.RoleRepository;
@@ -55,9 +55,9 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found!"));
     }
 
-    public UserProfileVM findUserProfileById (Long id) {
+    public UserShortVM findUserProfileById (Long id) {
 
-        return UserProfileVM.fromEntity(this.findById(id));
+        return UserShortVM.fromEntity(this.findById(id));
     }
 
     public boolean existsByEmail (String email) {
@@ -65,22 +65,22 @@ public class UserService {
         return this.userRepository.existsByEmail(email);
     }
 
-    public String findDisplayNameById (Long id) {
-
-        return this.findById(id).getDisplayName();
-    }
-
     public void saveAndFlush (UserEntity userEntity) {
 
         this.userRepository.saveAndFlush(userEntity);
     }
 
-    public List<UserVM> getListUserVM () {
+    public List<UserVM> getAllUsersVM () {
 
         return this.userRepository.findAll()
                 .stream()
                 .map(UserVM::fromEntity)
                 .toList();
+    }
+
+    public UserVM getUserVMById (Long userId) {
+
+        return UserVM.fromEntity(findById(userId));
     }
 
     public void activate (Long userId, CurrentUser requester) {
@@ -169,6 +169,7 @@ public class UserService {
         return userEntity.getRoles().stream().anyMatch(r -> r.getRole().equals(role));
     }
 
+    @SuppressWarnings("SameParameterValue")
     private RoleEntity getRole (Role role) {
 
         return this.roleRepository.getByRole(role);

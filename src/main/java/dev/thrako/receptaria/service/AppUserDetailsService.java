@@ -1,7 +1,7 @@
 package dev.thrako.receptaria.service;
 
 import dev.thrako.receptaria.model.repository.UserRepository;
-import dev.thrako.receptaria.common.security.CurrentUser;
+import dev.thrako.receptaria.model.security.CurrentUser;
 import jakarta.transaction.Transactional;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

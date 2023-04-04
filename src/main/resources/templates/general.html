@@ -1,4 +1,5 @@
 <!doctype html>
+<!--suppress HtmlUnknownTag -->
 <html th:fragment="html"
       lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
@@ -71,27 +72,27 @@
 </header>
 
 <nav th:fragment="leftbar" class="left-bar">
-    <div sec:authorize="isAuthenticated()" class="left-link-ctr">
+
+<!--    sec:authorize="isAuthenticated()"-->
+    <div  class="left-link-ctr">
         <a th:href="@{/recipes/all}">
             <span class="dot">&nbsp;</span>
             <span th:text="'All Recipes'">Link</span>
         </a>
     </div>
     <div sec:authorize="isAuthenticated()" class="left-link-ctr">
-        <a th:href="@{/recipes/add}" href=#>
+        <a th:href="@{/recipes/mine}">
             <span class="dot">&nbsp;</span>
-            <span th:text="'Add New Recipe'">Link</span>
+            <span th:text="'My Recipes'">Link</span>
         </a>
     </div>
-    <div class="left-link-ctr">
-        <a href=#><span class="dot">&nbsp;</span><span>Link</span></a>
+    <div sec:authorize="isAuthenticated()" class="left-link-ctr">
+        <a th:href="@{/recipes/add}" href=#>
+            <span class="dot">&nbsp;</span>
+            <span th:text="'New Recipe'">Link</span>
+        </a>
     </div>
-    <div class="left-link-ctr">
-        <a href=#><span class="dot">&nbsp;</span><span>Link</span></a>
-    </div>
-    <div class="left-link-ctr">
-        <a href=#><span class="dot">&nbsp;</span><span>Another Link</span></a>
-    </div>
+
 </nav>
 
 <div th:fragment="content" class="content">Some content</div>

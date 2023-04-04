@@ -7,7 +7,6 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
@@ -20,7 +19,9 @@ public class RecipeCardVM {
 
     private String authorName;
 
-    private String lastUpdated;
+    private Long authorId;
+
+    private LocalDateTime lastUpdated;
 
     private String coverPhotoUrl;
 
@@ -30,25 +31,18 @@ public class RecipeCardVM {
 
     public static RecipeCardVM fromEntity (RecipeEntity entity) {
 
-        final DateTimeFormatter date = DateTimeFormatter.ofPattern("dd MMM yyyy");
-        final DateTimeFormatter time = DateTimeFormatter.ofPattern("hh:mm");
-        final LocalDateTime entityLastUpdated = entity.getLastUpdated();
-
         return new RecipeCardVM()
                 .setEntityId(entity.getId())
                 .setTitle(entity.getTitle())
                 .setAuthorName(entity.getAuthor().getDisplayName())
-                .setLastUpdated("%s, %s at %sh".formatted(
-                        entityLastUpdated.getDayOfWeek().toString(),
-                        entityLastUpdated.format(date),
-                        entityLastUpdated.format(time))
-                )
+                .setAuthorId(entity.getAuthor().getId())
+                .setLastUpdated(entity.getLastUpdated())
                 .setCoverPhotoUrl(entity.getPhotos().isEmpty()
                         ? "/images/system/no_photo.webp"
                         : entity.getPhotos().stream()
-                            .filter(PhotoEntity::isPrimary)
-                            .findFirst()
-                            .orElse(entity.getPhotos().get(0)).getUrl())
+                        .filter(PhotoEntity::isPrimary)
+                        .findFirst()
+                        .orElse(entity.getPhotos().get(0)).getUrl())
                 ;
     }
 

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:insert="~{general.html :: head-include}">&nbsp;</th:block>
+    <title>Receptaria</title>
+</head>
+
+<body>
+
+<header th:replace="~{general.html :: header}">&nbsp;</header>
+
+<nav th:replace="~{general.html :: leftbar}">&nbsp;</nav>
+<div class="content">
+
+    <th:block th:each="card : ${recipeCards}">
+        <div class="card box shadowed rounded-10">
+                <div class="card grid" th:onclick="|location.href = '/recipes/__${card.entityId}__'|">
+                    <div class="card photo"><img th:src="${card.getCoverPhotoUrl()}" src=""
+                                                 th:alt="|${card.getTitle()} cover photo|" alt=""></div>
+                    <div class="card title" th:text="${card.getTitle()}">&nbsp;</div>
+                    <div class="card author" th:text="| by ${card.getAuthorName()}|"
+                    th:onclick="|event.stopPropagation(); location.href = '/users/__${card.authorId}__'|">&nbsp;</div>
+                    <div class="card last-updated"
+                         th:text="${'last updated ' + #temporals.format(card.lastUpdated, 'dd MMM yyyy')}">
+                        31 Dec 2023
+                    </div>
+                </div>
+        </div>
+    </th:block>
+
+</div>
+
+<nav th:replace="~{general.html :: rightbar}">&nbsp;</nav>
+
+<footer th:replace="~{general.html :: footer}">&nbsp;</footer>
+
+
+</body>
+
+</html>

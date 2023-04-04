@@ -1,6 +1,5 @@
 package dev.thrako.receptaria.config;
 
-import dev.thrako.receptaria.common.constant.Constants;
 import dev.thrako.receptaria.common.constant.Role;
 import dev.thrako.receptaria.model.repository.UserRepository;
 import dev.thrako.receptaria.service.AppUserDetailsService;
@@ -23,7 +22,7 @@ public class SecurityConfiguration {
             .authorizeHttpRequests()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
                     .permitAll()
-                .requestMatchers("/", "/error/**", "/test", "/api/test")
+                .requestMatchers("/", "/error/**", "/recipes/all", "/test", "/api/test")
                     .permitAll()
                 .requestMatchers("/login/**", "/registration", "/registration/success")
                     .anonymous()

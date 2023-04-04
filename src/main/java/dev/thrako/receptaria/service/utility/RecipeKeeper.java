@@ -4,11 +4,13 @@ import dev.thrako.receptaria.model.entity.ingredient.IngredientEntity;
 import dev.thrako.receptaria.model.entity.ingredient.dto.IngredientBM;
 import dev.thrako.receptaria.model.entity.photo.PhotoEntity;
 import dev.thrako.receptaria.model.entity.photo.dto.PhotoDTO;
+import dev.thrako.receptaria.model.entity.photo.dto.PhotoVM;
 import dev.thrako.receptaria.model.entity.recipe.RecipeEntity;
 import dev.thrako.receptaria.model.entity.recipe.dto.RecipeBM;
+import dev.thrako.receptaria.model.entity.recipe.dto.RecipeCardVM;
 import dev.thrako.receptaria.model.entity.recipe.dto.RecipeVM;
 import dev.thrako.receptaria.model.entity.user.UserEntity;
-import dev.thrako.receptaria.common.security.CurrentUser;
+import dev.thrako.receptaria.model.security.CurrentUser;
 import dev.thrako.receptaria.service.*;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class RecipeKeeper {
@@ -85,7 +88,6 @@ public class RecipeKeeper {
                 .setIngredientName(ingredientNameService.getOrCreateByName(dto.getIngredientName()))
                 .setQuantity(dto.getQuantity())
                 .setUnit(unitService.getOrCreateByName(dto.getUnitName()));
-
     }
 
 
@@ -133,6 +135,37 @@ public class RecipeKeeper {
 
         return RecipeVM.fromEntity(recipeEntity)
                 .setLiked(recipeEntity.getLikes().contains(userEntity));
+    }
+
+    public void process (RecipeBM recipeBM) {
+
+        final UUID tempRecipeId = recipeBM.getTempRecipeId();
+        final Long primaryPhotoId = recipeBM.getPrimaryPhotoId();
+
+        this.tempPhotoService.updatePrimaryFlag(tempRecipeId, primaryPhotoId);
+
+        final List<PhotoVM> photoVMList = this.tempPhotoService.getListPhotoVM(tempRecipeId);
+        recipeBM.setPhotoVMList(photoVMList);
+    }
+
+    public List<String> getDistinctUnitNames () {
+
+        return this.unitService.getDistinctUnitNames();
+    }
+
+    public List<RecipeCardVM> getCardsAll (CurrentUser currentUser) {
+
+        return this.recipeService.getCardsAll(currentUser);
+    }
+
+    public List<RecipeCardVM> getCardsOwn (CurrentUser currentUser) {
+
+        return this.recipeService.getCardsOwn(currentUser);
+    }
+
+    public List<RecipeCardVM> getCardsByAuthor (CurrentUser currentUser, Long authorId) {
+
+        return this.recipeService.getRecipeCardsByAuthor(currentUser, authorId);
     }
 }
 

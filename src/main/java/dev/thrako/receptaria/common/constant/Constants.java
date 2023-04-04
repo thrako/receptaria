@@ -1,11 +1,14 @@
 package dev.thrako.receptaria.common.constant;
 
+import java.time.Duration;
+
 public enum Constants {
     ;
     public static final String BINDING_RESULT_PATH = "org.springframework.validation.BindingResult.";
     public static final String ROLE_PREFIX = "ROLE_";
     public static final String FORMAT_USER_WITH_EMAIL_NOT_FOUND = "User with email: %s not found!";
     public static final String FORMAT_NO_SUCH_TEMP_PHOTO = "Temporary photo with id: %d does not exist.";
+    public static final Duration MAX_ALLOWED_TEMP_PHOTO_DURATION = Duration.ofHours(24);
 
     public enum Registration {
 

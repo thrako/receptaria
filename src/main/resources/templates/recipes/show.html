@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!--suppress XmlDuplicatedId -->
 <html lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
@@ -31,10 +32,12 @@
 
 <div class="content">
 
-    <div class="shadowed">
-        <div class="form-top text">
+    <div class="shadowed rounded-10">
 
+        <div class="form-top text rounded-10 top">
             <div class="space-between-grid">
+
+                <!--Recipe Title-->
                 <div class="space-between-left flex-centered">
                     <div class="recipe-title flex-centered" th:text="|${recipeVM.title} |">&nbsp;</div>
                     <div class="flex-centered">&nbsp by &nbsp</div>
@@ -42,20 +45,17 @@
                        th:href="|/users/${recipeVM.author.id}|"
                        th:text="| ${recipeVM.author.displayName}|"></a>
                 </div>
-
-                <div class="space-between-right flex-centered"
-                     th:text="'аdded on: ' + ${#temporals.format(recipeVM.addedOn, 'dd MMM yyyy')}">
-                </div>
             </div>
-
-
         </div>
 
         <div class="recipe-show">
 
             <div class="space-between-grid">
+                <!--Likes-->
                 <div class="space-between-left show-likes-ctr">
+
                     <input id="isLiked" type="hidden" th:value="${recipeVM.isLiked}">
+
                     <div th:if="${contextAuthorities.get(T(dev.thrako.receptaria.common.constant.ContextAuthority).LIKE)}">
                         <a href="#">
                             <img id="likedFalse"
@@ -71,6 +71,7 @@
                                  onclick="toggleLiked();return false">
                         </a>
                     </div>
+
                     <div th:unless="${contextAuthorities.get(T(dev.thrako.receptaria.common.constant.ContextAuthority).LIKE)}">
                         <img th:src="@{'/images/system/heart-full.png'}" src="" alt="heart icon"
                              height="20px" width="20px">
@@ -78,25 +79,28 @@
                         <span id="likedFalse"></span>
 
                     </div>
+
                     <div id="likes-counter" th:text="${recipeVM.likes.size()}">&nbsp;</div>
                 </div>
-                <div class="space-between-right"
-                     th:text="'Last updated: ' + ${#temporals.format(recipeVM.lastUpdated, 'dd MMM yyyy  HH:mm')}">
-                    &nbsp;
+
+                <!--Last Updated-->
+                <div class="space-between-right  flex-centered"
+                     th:text="'last updated: ' + ${#temporals.format(recipeVM.lastUpdated, 'dd MMM yyyy  HH:mm')}">
                 </div>
             </div>
 
+            <!--Carousel-->
             <div id="myCarousel" class="carousel slide" data-interval="false" data-ride="carousel">
-                <!-- Indicators -->
+                <!--Indicators-->
                 <ol class="carousel-indicators">
                     <li th:each="photo, photoStat : ${recipeVM.listPhotoVM}"
-                        data-target="#myCarousel" \
+                        data-target="#myCarousel"
                         th:data-slide-to="${photoStat.index}"
                         th:classappend="(${photoStat.first}) ? 'active' : ''">
                     </li>
                 </ol>
 
-                <!-- Wrapper for slides -->
+                <!--Wrapper for slides-->
                 <div class="carousel-inner">
                     <div th:each="photo, photoStat : ${recipeVM.listPhotoVM}"
                          class="carousel-item"
@@ -109,19 +113,17 @@
                     </div>
                 </div>
 
-                <!-- Left and right controls -->
+                <!--Left and right controls-->
                 <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
-<!--                    <span class="carousel-control-prev-icon"></span>-->
                     <span class="icon-ctr"><i class="bi bi-chevron-left"></i></span>
                     <span class="sr-only">Previous</span>
                 </a>
                 <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
-<!--                    <span class="carousel-control-next-icon"></span>-->
                     <span class="icon-ctr"><i class="bi bi-chevron-right fa-lg"></i></span>
                     <span class="sr-only">Next</span>
                 </a>
             </div>
-
+            <!--Ingrdients-->
             <fieldset>
                 <legend><b><i class="legend-lbl">Ingredients</i></b></legend>
                 <div>
@@ -138,7 +140,7 @@
                     </ul>
                 </div>
             </fieldset>
-
+            <!--Time & Servings-->
             <div class="time-servings-ctr">
                 <fieldset class="preparation">
                     <legend>
@@ -161,13 +163,13 @@
                     <p class="text-align-center" th:text="${recipeVM.servings}">&nbsp;</p>
                 </fieldset>
             </div>
-
+            <!--Description-->
             <fieldset class="description">
                 <legend><b><i class="legend-lbl">Description</i></b></legend>
 
                 <div class="notepad" th:text="${recipeVM.description}"></div>
             </fieldset>
-
+            <!--Danger Area-->
             <div class="gap-10 flex-space-between">
                 <div class="danger-area"
                      th:if="${contextAuthorities.get(T(dev.thrako.receptaria.common.constant.ContextAuthority).EDIT)}">

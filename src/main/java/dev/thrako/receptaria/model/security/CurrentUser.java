@@ -1,4 +1,4 @@
-package dev.thrako.receptaria.common.security;
+package dev.thrako.receptaria.model.security;
 
 import dev.thrako.receptaria.common.constant.ContextAuthority;
 import dev.thrako.receptaria.common.constant.ContextRole;
@@ -84,19 +84,14 @@ public class CurrentUser extends User {
         this.contextAuthorities.put(ContextAuthority.DELETE, Boolean.FALSE);
     }
 
-    public void setViewAuthority (Boolean flag) {
+    public void put (ContextRole role, Boolean value) {
 
-        this.contextAuthorities.put(ContextAuthority.VIEW, flag);
+        this.contextRoles.put(role, value);
     }
 
-    public void setEditAuthority (Boolean flag) {
+    public void put (ContextAuthority authority, Boolean value) {
 
-        this.contextAuthorities.put(ContextAuthority.EDIT, flag);
-    }
-
-    public void setDeleteAuthority (Boolean flag) {
-
-        this.contextAuthorities.put(ContextAuthority.DELETE, flag);
+        this.contextAuthorities.put(authority, value);
     }
 
     public Boolean has (ContextAuthority contextAuthority) {

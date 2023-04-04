@@ -3,22 +3,16 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{general.html :: head}">
+<head>
+    <th:block th:insert="~{general.html :: head-include}">&nbsp;</th:block>
+    <title>Receptaria :: My Profile</title>
 </head>
 
 <body>
 
     <header th:replace="~{general.html :: header}">&nbsp;</header>
 
-    <nav class="left-bar">
-
-        <div class="left-link-ctr">
-            <a href=#><span class="dot">&nbsp;</span><span>My Recipes</span></a>
-        </div>
-        <div class="left-link-ctr">
-            <a th:href="@{/recipes/add}"><span class="dot">&nbsp;</span><span>Add Recipe</span></a>
-        </div>
-    </nav>
+    <nav th:replace="~{general.html :: leftbar}">&nbsp;</nav>
 
     <div class="content">
         <p>Hello, <span th:text="${displayName}"></span>! How are you doing lately?</p>

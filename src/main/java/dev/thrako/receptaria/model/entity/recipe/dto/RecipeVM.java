@@ -4,7 +4,7 @@ import dev.thrako.receptaria.common.constant.VisibilityStatus;
 import dev.thrako.receptaria.model.entity.ingredient.dto.IngredientVM;
 import dev.thrako.receptaria.model.entity.photo.dto.PhotoVM;
 import dev.thrako.receptaria.model.entity.recipe.RecipeEntity;
-import dev.thrako.receptaria.model.entity.user.dto.UserProfileVM;
+import dev.thrako.receptaria.model.entity.user.dto.UserShortVM;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,13 +33,13 @@ public class RecipeVM {
 
     private Integer servings;
 
-    private List<UserProfileVM> likes;
+    private List<UserShortVM> likes;
 
     private boolean isLiked;
 
     private String description;
 
-    private UserProfileVM author;
+    private UserShortVM author;
 
     private VisibilityStatus visibilityStatus;
 
@@ -67,11 +67,11 @@ public class RecipeVM {
                 ))
                 .setServings(entity.getServings())
                 .setLikes(entity.getLikes().stream()
-                        .map(UserProfileVM::fromEntity)
+                        .map(UserShortVM::fromEntity)
                         .toList())
                 .setLiked(Boolean.FALSE)
                 .setDescription(entity.getDescription())
-                .setAuthor(UserProfileVM.fromEntity(entity.getAuthor()))
+                .setAuthor(UserShortVM.fromEntity(entity.getAuthor()))
                 .setVisibilityStatus(entity.getVisibilityStatus())
                 .setAddedOn(entity.getAddedOn())
                 .setLastUpdated(entity.getLastUpdated());

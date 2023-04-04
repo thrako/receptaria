@@ -1,11 +1,12 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<!DOCTYPE html>
+<!--suppress HtmlFormInputWithoutLabel, ThymeleafVariablesResolveInspection -->
 <html lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <th:block th:insert="~{general.html :: head-include}">&nbsp;</th:block>
-    <title>Add new recipe</title>
+    <title>Receptaria :: New Recipe</title>
     <meta id="csrf" hidden th:name="${_csrf.getHeaderName()}" th:value="${_csrf.getToken()}">
 </head>
 
@@ -19,10 +20,10 @@
     <p>Please fill in and submit the form below to create a recipe:</p>
     <br>
 
-    <div class="content-vw shadowed">
+    <div class="content-vw shadowed rounded-10">
 
         <!-- TOP -->
-        <div id="recipe-add-form-top" class="form-top"></div>
+        <div id="recipe-add-form-top" class="form-top rounded-10 top"></div>
 
         <!-- ADD FORM -->
         <form id="recipe-add-form" class="add-form"

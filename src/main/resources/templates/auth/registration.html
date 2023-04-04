@@ -1,11 +1,12 @@
 <!doctype html>
+<!--suppress ThymeleafVariablesResolveInspection -->
 <html lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <th:block th:insert="~{general.html :: head-include}">&nbsp;</th:block>
-    <title>Registration</title>
+    <title>Receptaria :: Registration</title>
 </head>
 
 <body>
@@ -19,9 +20,9 @@
 
 <!--    <div class="content-vw shadowed">-->
 
-    <div class="content-vw shadowed">
-        <div class="form-top"></div>
-        <form id="reg-form" class="max-width-800px registration-form"
+    <div class="content-vw shadowed rounded-10">
+        <div class="form-top rounded-10 top"></div>
+        <form id="reg-form" class="max-width-800px registration-form rounded-10 bottom"
               th:method="POST" th:action="@{/registration}"
               th:object="${userRegistrationBM}">
 
