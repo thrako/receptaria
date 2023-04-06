@@ -13,10 +13,14 @@
     <header th:replace="~{general.html :: header}">&nbsp;</header>
 
     <nav th:replace="~{general.html :: leftbar}">&nbsp;</nav>
-    <div class="content">
+    <div th:if="${displayName}" class="content">
         Congratulations, <th:block th:text="${displayName}"></th:block>!
         You have registered successfully.
         You can now log in from <a th:href="@{/login}">here</a> using your credentials!
+    </div>
+    <div th:unless="${displayName}">
+        <p>This is our registration success page. Please log in from <a th:href="@{/login}">here</a> using your credentials.</p>
+        <p>Do not have an account? Get one from <a th:href="@{/registration}">here</a>.</p>
     </div>
     <nav th:replace="~{general.html :: rightbar}">&nbsp;</nav>
 

@@ -18,8 +18,9 @@ public class ApplicationBeanConfiguration {
 
         ModelMapper mapper = new ModelMapper();
 
-        Converter<String, String> passwordHash = ctx -> ctx.getSource() == null ? null :
-                passwordEncoder.encode(ctx.getSource());
+        Converter<String, String> passwordHash = ctx -> ctx.getSource() == null
+                                                        ? null
+                                                        : passwordEncoder.encode(ctx.getSource());
 
         mapper.createTypeMap(UserLoginBM.class, UserEntity.class)
                 .addMappings(mpr -> mpr.using(passwordHash).map(UserLoginBM::getPassword, UserEntity::setPassword));

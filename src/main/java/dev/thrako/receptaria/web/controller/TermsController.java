@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class TermsController {
 
     @GetMapping("/terms")
-    public String index () {
+    public String getTerms () {
 
         return "terms";
     }

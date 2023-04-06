@@ -6,6 +6,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class ReceptariaApplicationTests {
 
+//    @Value("#{environment.getProperty('CLOUDINARY_URL')}") String cloudinaryUrl;
+
     @Test
     void contextLoads () {
 

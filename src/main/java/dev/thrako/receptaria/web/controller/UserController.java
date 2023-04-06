@@ -6,6 +6,7 @@ import dev.thrako.receptaria.service.UserService;
 import dev.thrako.receptaria.model.entity.user.dto.UserRegistrationBM;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Arrays;
@@ -46,7 +48,7 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    public String doRegister (@Valid UserRegistrationBM userRegistrationBM,
+    public ModelAndView doRegister (@Valid UserRegistrationBM userRegistrationBM,
                               BindingResult bindingResult,
                               RedirectAttributes redirectAttrs) {
 
@@ -55,13 +57,13 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             redirectAttrs.addFlashAttribute("userRegistrationBM", userRegistrationBM);
             redirectAttrs.addFlashAttribute(BINDING_RESULT_PATH + userRegistrationBM, bindingResult);
-            return "redirect:/registration";
+            return new ModelAndView("auth/registration", HttpStatusCode.valueOf(400));
         }
 
         this.userService.register(userRegistrationBM);
         redirectAttrs.addFlashAttribute("displayName", userRegistrationBM.getDisplayName());
 
-        return "redirect:/registration/success";
+        return new ModelAndView("redirect:/registration/success");
     }
 
     @GetMapping("/registration/success")
@@ -88,7 +90,6 @@ public class UserController {
     @GetMapping("/users/{id:^[0-9]*}")
     public String getUserProfile (Model model,
                                   @PathVariable Long id) {
-
 
         final UserVM userVM = this.userService.getUserVMById(id);
         model.addAttribute("displayName", userVM.getDisplayName());

@@ -27,11 +27,13 @@ spring:
       mode: always
 
   h2:
-    console.enabled: true
     console:
+      enabled: true
+
       path: /h2-console
-      settings.trace: false
-      settings.web-allow-others: false
+      settings:
+        trace: true
+        web-allow-others: true
 
   servlet:
     multipart:
