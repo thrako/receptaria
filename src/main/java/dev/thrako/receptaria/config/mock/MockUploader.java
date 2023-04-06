@@ -5,11 +5,11 @@ import com.cloudinary.ProgressCallback;
 import com.cloudinary.Uploader;
 import com.cloudinary.strategies.AbstractUploaderStrategy;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+@SuppressWarnings("rawtypes")
 public class MockUploader extends Uploader {
 
     Cloudinary cloudinary;
@@ -23,7 +23,7 @@ public class MockUploader extends Uploader {
                                 Map<String, Object> params,
                                 Map options,
                                 Object file,
-                                ProgressCallback progressCallback) throws IOException {
+                                ProgressCallback progressCallback) {
 
                 return null;
             }
@@ -52,8 +52,9 @@ public class MockUploader extends Uploader {
     }
 
     @Override
-    public Map rename(String fromPublicId, String toPublicId, Map options) {
+    public Map rename(String fromPublicId, String toPublicId, Map ignored) {
 
+        this.uploaderMap.remove(fromPublicId);
         this.uploaderMap.put(toPublicId, "https://picsum.photos/200");
 
         final HashMap<String, String> map = new HashMap<>();
