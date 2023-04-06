@@ -47,3 +47,7 @@ logging:
         SQL: WARN
         type:
           descriptor: TRACE
+
+cloud:
+  service:
+    enabled: false

@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "cloud.service.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Cloudinary instantiated if true, MockCloudinary otherwise."
+  }
+] }

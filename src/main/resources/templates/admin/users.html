@@ -105,8 +105,7 @@
             <td class="text-align-center">
                 <label class="text-center">
                     <input th:id="|active-${user.id}|"
-                           type="checkbox"
-                           th:checked="${user.isActive()}"
+                           type="checkbox" th:checked="${user.isActive()}"
                            th:onclick="|toggleActive(${user.id})|"
                            th:disabled="${user.isAdmin()}">
                 </label>
@@ -114,9 +113,7 @@
             <td class="text-align-center">
                 <label>
                     <input th:id="|moderator-${user.id}|"
-                           type="checkbox"
-                           th:value="${user.id}"
-                           th:checked="${user.isModerator()}"
+                           type="checkbox" th:checked="${user.isModerator()}"
                            th:onclick="|toggleModerator(${user.id})|"
                            th:disabled="${user.isAdmin()}">
                 </label>
@@ -124,8 +121,7 @@
             <td class="text-align-center">
                 <label>
                     <input th:id="|is-admin-${user.id}|"
-                           type="checkbox"
-                           th:checked="${user.isAdmin()}"
+                           type="checkbox" th:checked="${user.isAdmin()}"
                            disabled>
                 </label>
             </td>
