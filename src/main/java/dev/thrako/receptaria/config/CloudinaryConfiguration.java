@@ -15,7 +15,7 @@ public class CloudinaryConfiguration {
     String cloudinaryUrl;
 
     @Bean
-    @ConditionalOnExpression("${cloud.service.enabled} == true")
+    @ConditionalOnExpression("${cloud.service.mocked} == false")
     public Cloudinary cloudinary () {
 
         final Cloudinary cloudinary = new Cloudinary(cloudinaryUrl);
@@ -24,10 +24,10 @@ public class CloudinaryConfiguration {
     }
 
     @Bean
-    @ConditionalOnExpression("${cloud.service.enabled} == false")
+    @ConditionalOnExpression("${cloud.service.mocked} == true")
     public Cloudinary mockCloudinary () {
 
-        System.out.println("|||---+++===Cloudinary, SORRY FOR MOCKING YOU!===+++---||| by thrako");
+        System.out.println("\u001B[32m \033[40m ---=== SORRY FOR MOCKING YOU, Cloudinary! ===--- by thrako with love\u001B[0m");
 
         return new MockCloudinary();
     }

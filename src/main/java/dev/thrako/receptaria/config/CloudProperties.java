@@ -8,19 +8,19 @@ import org.springframework.context.annotation.Configuration;
 public class CloudProperties {
 
     /**
-     * Enables instantiation of Cloudinary instance, MockCloudinary instance is instantiated otherwise.
+     * Enables instantiation of MockCloudinary instance, for Cloudinary instance set property to false.
      */
-    private boolean enabled = true;
+    private boolean mocked = false;
 
 
-    public boolean getEnabled () {
+    public boolean getMocked () {
 
-        return enabled;
+        return mocked;
     }
 
-    public void setEnabled (boolean enabled) {
+    public void setMocked (boolean mocked) {
 
-        this.enabled = enabled;
+        this.mocked = mocked;
     }
 }
 
