@@ -82,7 +82,8 @@ public class RecipeController {
 
         final Long recipeId = this.recipeKeeper.save(recipeBM, author.getId());
 
-        return new ModelAndView("redirect:/recipes/%d".formatted(recipeId), HttpStatus.CREATED);
+        return new ModelAndView("redirect:/recipes/%d".formatted(recipeId),
+                                HttpStatus.FOUND);
     }
 
     @GetMapping("/recipes/{id}")
