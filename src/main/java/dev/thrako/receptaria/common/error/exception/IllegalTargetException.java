@@ -1,9 +1,13 @@
 package dev.thrako.receptaria.common.error.exception;
 
-public class IllegalTargetException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
-    public IllegalTargetException (String message) {
+public class IllegalTargetException extends ResponseStatusException {
 
-        super(message);
+
+    public IllegalTargetException (String reason) {
+
+        super(HttpStatus.UNPROCESSABLE_ENTITY, reason);
     }
 }

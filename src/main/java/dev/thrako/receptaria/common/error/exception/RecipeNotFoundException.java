@@ -1,16 +1,14 @@
 package dev.thrako.receptaria.common.error.exception;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.NoSuchElementException;
+public class RecipeNotFoundException extends ResponseStatusException {
 
-@ResponseStatus(value = HttpStatus.NOT_FOUND)
-public class RecipeNotFoundException extends NoSuchElementException {
+    public RecipeNotFoundException (String reason) {
 
-
-    public RecipeNotFoundException (String s) {
-
-        super(s);
+        super(HttpStatus.NOT_FOUND, reason);
     }
+
+
 }

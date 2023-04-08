@@ -1,11 +1,12 @@
 package dev.thrako.receptaria.common.error.exception;
 
-import java.util.NoSuchElementException;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
-public class NoSuchTempPhotoException extends NoSuchElementException {
+public class NoSuchTempPhotoException extends ResponseStatusException {
 
-    public NoSuchTempPhotoException (String s) {
+    public NoSuchTempPhotoException (String reason) {
 
-        super(s);
+        super(HttpStatus.NOT_FOUND, reason);
     }
 }

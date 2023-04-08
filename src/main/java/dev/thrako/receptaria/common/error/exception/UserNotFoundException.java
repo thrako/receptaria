@@ -1,9 +1,12 @@
 package dev.thrako.receptaria.common.error.exception;
 
-public class UserNotFoundException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
-    public UserNotFoundException (String s) {
+public class UserNotFoundException extends ResponseStatusException {
 
-        super(s);
+    public UserNotFoundException (String reason) {
+
+        super(HttpStatus.NOT_FOUND, reason);
     }
 }
