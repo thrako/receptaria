@@ -74,8 +74,8 @@ class ContextAuthorizationInterceptorIT {
                                         .setAuthorId(1L)
                                         .setTempRecipeId(UUID.randomUUID()))
                                 .with(csrf()))
-                .andExpect(status().isCreated())
                 .andExpect(flash().attributeCount(0))
+                .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("/recipes/{[0-9]*}"));
 
         mockMvc.perform(post("/recipes/add")
@@ -87,8 +87,8 @@ class ContextAuthorizationInterceptorIT {
                                         .setDescription("testDescription_2")
                                         .setVisibilityStatus(VisibilityStatus.FOLLOWERS))
                                 .with(csrf()))
-                .andExpect(status().isCreated())
                 .andExpect(flash().attributeCount(0))
+                .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("/recipes/{[0-9]*}"));
 
         mockMvc.perform(post("/recipes/add")
@@ -101,7 +101,7 @@ class ContextAuthorizationInterceptorIT {
                                         .setVisibilityStatus(VisibilityStatus.PUBLIC))
                                 .with(csrf())
                 )
-                .andExpect(status().isCreated())
+                .andExpect(status().is3xxRedirection())
                 .andExpect(flash().attributeCount(0))
                 .andExpect(redirectedUrlPattern("/recipes/{[0-9]*}"));
     }
@@ -123,8 +123,8 @@ class ContextAuthorizationInterceptorIT {
                                         .setDescription("testDescription_4")
                                         .setVisibilityStatus(VisibilityStatus.PRIVATE))
                                 .with(csrf()))
-                .andExpect(status().isCreated())
                 .andExpect(flash().attributeCount(0))
+                .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("/recipes/{[0-9]*}"));
 
         mockMvc.perform(post("/recipes/add")
@@ -136,8 +136,8 @@ class ContextAuthorizationInterceptorIT {
                                         .setDescription("testDescription_5")
                                         .setVisibilityStatus(VisibilityStatus.FOLLOWERS))
                                 .with(csrf()))
-                .andExpect(status().isCreated())
                 .andExpect(flash().attributeCount(0))
+                .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("/recipes/{[0-9]*}"));
 
         mockMvc.perform(post("/recipes/add")
@@ -149,8 +149,8 @@ class ContextAuthorizationInterceptorIT {
                                         .setDescription("testDescription_6")
                                         .setVisibilityStatus(VisibilityStatus.PUBLIC))
                                 .with(csrf()))
-                .andExpect(status().isCreated())
                 .andExpect(flash().attributeCount(0))
+                .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("/recipes/{[0-9]*}"));
     }
 
@@ -171,8 +171,8 @@ class ContextAuthorizationInterceptorIT {
                                         .setDescription("testDescription_7")
                                         .setVisibilityStatus(VisibilityStatus.PRIVATE))
                                 .with(csrf()))
-                .andExpect(status().isCreated())
                 .andExpect(flash().attributeCount(0))
+                .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("/recipes/{[0-9]*}"));
 
         mockMvc.perform(post("/recipes/add")
@@ -184,8 +184,8 @@ class ContextAuthorizationInterceptorIT {
                                         .setDescription("testDescription_8")
                                         .setVisibilityStatus(VisibilityStatus.FOLLOWERS))
                                 .with(csrf()))
-                .andExpect(status().isCreated())
                 .andExpect(flash().attributeCount(0))
+                .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("/recipes/{[0-9]*}"));
 
         mockMvc.perform(post("/recipes/add")
@@ -197,8 +197,8 @@ class ContextAuthorizationInterceptorIT {
                                         .setDescription("testDescription_9")
                                         .setVisibilityStatus(VisibilityStatus.PUBLIC))
                                 .with(csrf()))
-                .andExpect(status().isCreated())
                 .andExpect(flash().attributeCount(0))
+                .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("/recipes/{[0-9]*}"));
     }
 

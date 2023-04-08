@@ -109,7 +109,7 @@ class RecipeControllerIT {
             userDetailsServiceBeanName = "userDetailsService",
             setupBefore = TestExecutionEvent.TEST_EXECUTION
     )
-    void postAddRecipe_byLoggedUserWithCompleteData_returnsCreated () throws Exception {
+    void postAddRecipe_byLoggedUserWithCompleteData_returnsRedirectToNewlyCreated () throws Exception {
 
         RecipeBM recipeBM = new RecipeBM()
                 .setAuthorId(1L)
@@ -137,7 +137,7 @@ class RecipeControllerIT {
                                 .flashAttr("recipeBM", recipeBM)
                                 .with(csrf())
                 )
-                .andExpect(status().isCreated())
+                .andExpect(status().is3xxRedirection())
                 .andExpect(flash().attributeCount(0))
                 .andExpect(redirectedUrlPattern("/recipes/{[0-9]*}"));
     }
@@ -217,7 +217,7 @@ class RecipeControllerIT {
                                           .flashAttr("recipeBM", recipeBM)
                                           .with(csrf())
                 )
-                .andExpect(status().isCreated())
+                .andExpect(status().is3xxRedirection())
                 .andExpect(flash().attributeCount(0))
                 .andExpect(redirectedUrlPattern("/recipes/{[0-9]*}"))
                 .andReturn().getResponse().getRedirectedUrl();
