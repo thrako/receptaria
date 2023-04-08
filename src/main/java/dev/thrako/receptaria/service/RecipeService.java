@@ -7,7 +7,6 @@ import dev.thrako.receptaria.model.entity.recipe.dto.RecipeCardVM;
 import dev.thrako.receptaria.model.entity.user.UserEntity;
 import dev.thrako.receptaria.model.repository.RecipeRepository;
 import dev.thrako.receptaria.model.security.CurrentUser;
-import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -135,9 +134,10 @@ public class RecipeService {
             case PRIVATE -> {
                 return Boolean.FALSE;
             }
-            case FOLLOWERS -> {
+            case FOLLOWERS -> //noinspection DuplicateBranchesInSwitch
+            {
                 //TODO if (is in followers list) return TRUE;
-                throw new NotImplementedException("TODO if (is in followers list) return TRUE");
+                return Boolean.FALSE;
             }
             case PUBLIC -> {
                 return Boolean.TRUE;

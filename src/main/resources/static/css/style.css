@@ -1116,7 +1116,6 @@ span.icon-ctr:focus {
             "rightbar"
             "footer";
         grid-gap              : 0;
-        min-height            : 100%;
     }
 
     body .left-bar {

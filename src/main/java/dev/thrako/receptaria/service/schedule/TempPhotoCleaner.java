@@ -25,8 +25,6 @@ public class TempPhotoCleaner {
     @Scheduled(fixedRate = 6 * 60 * 60 * 1000L)
     private void checkExpired () {
 
-
-
         final Predicate<TempPhotoEntity> expired = e -> {
 
             final Duration durationPast = Duration.between(e.getAddedOn(), LocalDateTime.now());

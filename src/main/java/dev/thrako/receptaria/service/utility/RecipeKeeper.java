@@ -1,5 +1,6 @@
 package dev.thrako.receptaria.service.utility;
 
+import dev.thrako.receptaria.common.error.exception.UserNotFoundException;
 import dev.thrako.receptaria.model.entity.ingredient.IngredientEntity;
 import dev.thrako.receptaria.model.entity.ingredient.dto.IngredientBM;
 import dev.thrako.receptaria.model.entity.photo.PhotoEntity;
@@ -164,6 +165,11 @@ public class RecipeKeeper {
     }
 
     public List<RecipeCardVM> getCardsByAuthor (CurrentUser currentUser, Long authorId) {
+
+        if ( ! this.userService.existsById(authorId)) {
+
+            throw new UserNotFoundException("User with id " + authorId + " not found!");
+        }
 
         return this.recipeService.getRecipeCardsByAuthor(currentUser, authorId);
     }

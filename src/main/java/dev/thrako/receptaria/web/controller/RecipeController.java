@@ -6,17 +6,17 @@ import dev.thrako.receptaria.model.security.CurrentUser;
 import dev.thrako.receptaria.service.utility.RecipeKeeper;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 import static dev.thrako.receptaria.common.constant.Constants.BINDING_RESULT_PATH;
 
@@ -58,14 +58,15 @@ public class RecipeController {
                     .setAuthorId(author.getId());
         }
 
+
         return "recipes/add";
     }
 
     @PostMapping("/recipes/add")
-    public String addRecipe (@Valid RecipeBM recipeBM,
-                             BindingResult bindingResult,
-                             RedirectAttributes redirectAttrs,
-                             @AuthenticationPrincipal CurrentUser author) {
+    public ModelAndView addRecipe (@Valid RecipeBM recipeBM,
+                                   BindingResult bindingResult,
+                                   RedirectAttributes redirectAttrs,
+                                   @AuthenticationPrincipal CurrentUser author) {
 
         this.recipeKeeper.process(recipeBM);
 
@@ -76,12 +77,12 @@ public class RecipeController {
             redirectAttrs.addFlashAttribute("recipeBM", recipeBM);
             redirectAttrs.addFlashAttribute(BINDING_RESULT_PATH.concat("recipeBM"), bindingResult);
 
-            return "redirect:/recipes/add";
+            return new ModelAndView("redirect:/recipes/add", HttpStatus.BAD_REQUEST);
         }
 
         final Long recipeId = this.recipeKeeper.save(recipeBM, author.getId());
 
-        return "redirect:/recipes/%d".formatted(recipeId);
+        return new ModelAndView("redirect:/recipes/%d".formatted(recipeId), HttpStatus.CREATED);
     }
 
     @GetMapping("/recipes/{id}")
@@ -115,9 +116,9 @@ public class RecipeController {
     }
 
     @GetMapping("/recipes/author/{authorId}")
-    public String getOwn (Model model,
-                          @AuthenticationPrincipal CurrentUser currentUser,
-                          @PathVariable Long authorId) {
+    public String getByAuthor (Model model,
+                               @AuthenticationPrincipal CurrentUser currentUser,
+                               @PathVariable Long authorId) {
 
         final List<RecipeCardVM> recipeCards = this.recipeKeeper.getCardsByAuthor(currentUser, authorId);
         model.addAttribute("recipeCards", recipeCards);

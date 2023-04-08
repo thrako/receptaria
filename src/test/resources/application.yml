@@ -50,4 +50,4 @@ logging:
 
 cloud:
   service:
-    enabled: false
+    mocked: true

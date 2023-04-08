@@ -65,6 +65,11 @@ public class UserService {
         return this.userRepository.existsByEmail(email);
     }
 
+    public boolean existsById (Long id) {
+
+        return this.userRepository.findUserById(id).isPresent();
+    }
+
     public void saveAndFlush (UserEntity userEntity) {
 
         this.userRepository.saveAndFlush(userEntity);

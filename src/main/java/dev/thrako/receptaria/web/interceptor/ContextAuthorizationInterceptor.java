@@ -46,8 +46,8 @@ public class ContextAuthorizationInterceptor implements HandlerInterceptor {
 
         Arrays.stream(ContextAuthority.values())
                 .forEach(contextAuthority -> currentUser
-                        .put(contextAuthority, contextAuthChecker
-                                                        .check(contextAuthority, currentUser, recipeId)));
+                        .put(contextAuthority,
+                             contextAuthChecker.check(contextAuthority, currentUser, recipeId)));
 
         if (Boolean.FALSE == currentUser.has(ContextAuthority.VIEW)) {
 
@@ -56,8 +56,8 @@ public class ContextAuthorizationInterceptor implements HandlerInterceptor {
 
         Arrays.stream(ContextRole.values())
                 .forEach(contextRole -> currentUser
-                        .put(contextRole, contextAuthChecker
-                                                  .check(contextRole, currentUser, recipeId)));
+                        .put(contextRole,
+                             contextAuthChecker.check(contextRole, currentUser, recipeId)));
 
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }

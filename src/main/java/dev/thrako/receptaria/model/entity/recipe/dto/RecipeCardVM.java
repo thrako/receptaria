@@ -25,10 +25,6 @@ public class RecipeCardVM {
 
     private String coverPhotoUrl;
 
-    private boolean canSee;
-
-    private boolean canEdit;
-
     public static RecipeCardVM fromEntity (RecipeEntity entity) {
 
         return new RecipeCardVM()
